@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI 算力硬件产业链：四大层级拆解</title>
+  <style>
+    :root {
+      --paper: #f8f8f5;
+      --ink: #050505;
+      --muted: #666;
+      --line: #bdbdbd;
+      --blue: #071b5c;
+      --red: #f23a2e;
+      --green: #37a833;
+      --soft-blue: #e9f0ff;
+      --soft-red: #fff0ee;
+      --soft-gray: #f3f3f1;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: #deded8;
+      color: var(--ink);
+      font-family: "Songti SC", "Noto Serif CJK SC", "SimSun", "Times New Roman", serif;
+    }
+
+    .page {
+      position: relative;
+      width: 1024px;
+      min-height: 1536px;
+      margin: 0 auto;
+      padding: 28px 28px 34px;
+      background:
+        radial-gradient(circle at 50% 20%, rgba(255,255,255,0.9), rgba(248,248,245,0.96) 48%, rgba(226,226,218,0.45) 100%),
+        linear-gradient(90deg, rgba(0,0,0,0.018) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(0,0,0,0.014) 1px, transparent 1px),
+        var(--paper);
+      background-size: auto, 18px 18px, 18px 18px, auto;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.22);
+    }
+
+    .page::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        repeating-linear-gradient(
+          -25deg,
+          transparent 0,
+          transparent 138px,
+          rgba(120,120,120,0.08) 139px,
+          rgba(120,120,120,0.08) 141px,
+          transparent 142px,
+          transparent 220px
+        );
+      opacity: 0.45;
+      z-index: 1;
+    }
+
+    .watermarks {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      opacity: 0.12;
+      color: #777;
+      font-size: 23px;
+      font-weight: 700;
+      transform: rotate(-25deg);
+    }
+
+    .watermarks span {
+      position: absolute;
+      white-space: nowrap;
+    }
+
+    .content {
+      position: relative;
+      z-index: 3;
+    }
+
+    .topline {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-size: 22px;
+      color: #333;
+      letter-spacing: 0;
+    }
+
+    .topline .dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #333;
+      display: inline-block;
+    }
+
+    h1 {
+      margin: 28px 0 12px;
+      text-align: center;
+      font-size: 46px;
+      line-height: 1.08;
+      font-weight: 900;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 23px;
+      color: #333;
+      margin-bottom: 18px;
+      line-height: 1.35;
+    }
+
+    .main-rule {
+      height: 2px;
+      background: #000;
+      margin: 0 0 24px;
+    }
+
+    .layers {
+      display: grid;
+      gap: 14px;
+    }
+
+    .layer-card {
+      position: relative;
+      background: #fff;
+      border: 2px solid var(--ink);
+      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+    }
+
+    .layer-card.blue  { border-color: var(--blue); }
+    .layer-card.red   { border-color: var(--red); }
+    .layer-card.gray  { border-color: #555; }
+
+    .layer-card::before,
+    .layer-card::after {
+      content: "";
+      position: absolute;
+      width: 26px;
+      height: 26px;
+      background: var(--paper);
+      z-index: 2;
+    }
+
+    .layer-card::before {
+      top: -2px; left: -2px;
+      border-right: 2px solid currentColor;
+      border-bottom: 2px solid currentColor;
+      border-bottom-right-radius: 18px;
+    }
+
+    .layer-card::after {
+      right: -2px; bottom: -2px;
+      border-left: 2px solid currentColor;
+      border-top: 2px solid currentColor;
+      border-top-left-radius: 18px;
+    }
+
+    .layer-card.blue  { color: var(--blue); }
+    .layer-card.red   { color: var(--red); }
+    .layer-card.black { color: var(--ink); }
+    .layer-card.gray  { color: #555; }
+
+    .layer-head {
+      display: grid;
+      grid-template-columns: 78px 1fr 320px;
+      align-items: center;
+      min-height: 78px;
+      padding: 12px 18px;
+      border-bottom: 1px solid var(--line);
+      color: var(--ink);
+    }
+
+    .iconbox {
+      width: 54px;
+      height: 54px;
+      display: grid;
+      place-items: center;
+      color: currentColor;
+    }
+
+    .iconbox svg {
+      width: 48px;
+      height: 48px;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      fill: none;
+    }
+
+    .layer-title {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      color: var(--ink);
+    }
+
+    .layer-title strong {
+      color: currentColor;
+      font-size: 25px;
+      font-weight: 900;
+    }
+
+    .layer-title span {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .layer-summary {
+      font-size: 15px;
+      line-height: 1.35;
+      color: #222;
+      text-align: right;
+    }
+
+    .layer-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      color: var(--ink);
+    }
+
+    .layer-table th,
+    .layer-table td {
+      border-bottom: 1px solid var(--line);
+      border-right: 1px solid var(--line);
+      padding: 8px 10px;
+      font-size: 15px;
+      line-height: 1.32;
+      vertical-align: middle;
+    }
+
+    .layer-table th:last-child,
+    .layer-table td:last-child { border-right: none; }
+
+    .layer-table tr:last-child td { border-bottom: none; }
+
+    .layer-table th {
+      font-size: 15px;
+      font-weight: 900;
+      background: rgba(0,0,0,0.035);
+    }
+
+    .layer-table .segment  { width: 19%; font-weight: 900; text-align: center; }
+    .layer-table .function { width: 24%; }
+    .layer-table .scarcity { width: 35%; }
+    .layer-table .targets  { width: 22%; font-weight: 700; text-align: center; }
+
+    .conclusion {
+      border-top: 1px solid var(--line);
+      padding: 8px 14px 10px;
+      font-size: 16px;
+      line-height: 1.35;
+      color: #111;
+      background: rgba(0,0,0,0.018);
+    }
+
+    .conclusion b { color: currentColor; }
+
+    /* ── 景气排行 ── */
+    .ranking {
+      margin-top: 22px;
+      padding: 0 24px;
+    }
+
+    .ranking-title {
+      text-align: center;
+      font-size: 22px;
+      font-weight: 900;
+      margin-bottom: 12px;
+    }
+
+    .ranking-grid {
+      display: grid;
+      grid-template-columns: 128px 1fr 1fr 1fr 128px;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .side-note {
+      font-size: 18px;
+      line-height: 1.65;
+      text-align: center;
+      color: #222;
+    }
+
+    .rank-node {
+      min-height: 186px;
+      padding: 16px 14px;
+      border: 2px solid #000;
+      border-radius: 50%;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+    }
+
+    .rank-node.blue  { border-color: var(--blue); color: var(--blue); }
+    .rank-node.red   { border-color: var(--red);  color: var(--red); }
+    .rank-node.black { border-color: #000;         color: #000; }
+
+    .rank       { font-size: 16px; font-weight: 900; margin-bottom: 5px; }
+    .direction  { font-size: 23px; font-weight: 900; margin-bottom: 6px; }
+    .rank-sub   { font-size: 14px; line-height: 1.4; color: #444; }
+
+    /* ── 底部信息栏 ── */
+    .footnote {
+      margin-top: 28px;
+      padding-top: 10px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      color: #555;
+    }
+
+    /* ── 红绿标签 ── */
+    .tag {
+      display: inline-block;
+      padding: 1px 7px;
+      font-size: 13px;
+      font-weight: 700;
+      border-radius: 3px;
+      margin-left: 5px;
+    }
+    .tag.up   { background: #ffeaea; color: var(--red); }
+    .tag.down { background: #eafbea; color: var(--green); }
+    .tag.neu  { background: #f0f0f0; color: #555; }
+
+    /* 景气箭头连接 */
+    .rank-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- 水印 -->
+  <div class="watermarks">
+    <span style="top:120px;left:60px">AI算力硬件产业链</span>
+    <span style="top:380px;left:300px">AI算力硬件产业链</span>
+    <span style="top:640px;left:80px">AI算力硬件产业链</span>
+    <span style="top:900px;left:360px">AI算力硬件产业链</span>
+    <span style="top:1160px;left:120px">AI算力硬件产业链</span>
+    <span style="top:1400px;left:280px">AI算力硬件产业链</span>
+  </div>
+
+  <div class="content">
+
+    <!-- 顶部标识行 -->
+    <div class="topline">
+      <span>产业链深度研究</span>
+      <span class="dot"></span>
+      <span>2026</span>
+      <span class="dot"></span>
+      <span>AI 算力硬件</span>
+    </div>
+
+    <h1>AI 算力硬件产业链<br>四大层级拆解</h1>
+
+    <div class="subtitle">
+      从芯片到基础设施——梳理算力扩张核心路径，识别景气弹性节点
+    </div>
+
+    <div class="main-rule"></div>
+
+    <!-- ════════════════════════════════
+         四大层级卡片
+    ════════════════════════════════ -->
+    <div class="layers">
+
+      <!-- ① 核心芯片层 -->
+      <div class="layer-card blue">
+        <div class="layer-head">
+          <div class="iconbox">
+            <svg viewBox="0 0 48 48">
+              <rect x="14" y="14" width="20" height="20" rx="2"/>
+              <line x1="10" y1="19" x2="14" y2="19"/><line x1="10" y1="24" x2="14" y2="24"/><line x1="10" y1="29" x2="14" y2="29"/>
+              <line x1="34" y1="19" x2="38" y2="19"/><line x1="34" y1="24" x2="38" y2="24"/><line x1="34" y1="29" x2="38" y2="29"/>
+              <line x1="19" y1="10" x2="19" y2="14"/><line x1="24" y1="10" x2="24" y2="14"/><line x1="29" y1="10" x2="29" y2="14"/>
+              <line x1="19" y1="34" x2="19" y2="38"/><line x1="24" y1="34" x2="24" y2="38"/><line x1="29" y1="34" x2="29" y2="38"/>
+            </svg>
+          </div>
+          <div class="layer-title">
+            <strong>① 核心芯片层</strong>
+            <span>算力生产的原点</span>
+          </div>
+          <div class="layer-summary">
+            GPU / AI ASIC / 先进封装<br>
+            <b>景气度：</b><span class="tag up">↑↑ 极强</span>
+          </div>
+        </div>
+        <table class="layer-table">
+          <colgroup>
+            <col class="segment"/><col class="function"/><col class="scarcity"/><col class="targets"/>
+          </colgroup>
+          <thead>
+            <tr>
+              <th>细分赛道</th><th>核心功能</th><th>稀缺性 / 壁垒</th><th>代表标的</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>GPU / AI加速芯片</td>
+              <td>大模型训练与推理的核心算力单元</td>
+              <td>EUV光刻机卡脖、台积电2nm产能稀缺；CUDA生态锁定；研发周期5年+</td>
+              <td>英伟达 NVDA<br>AMD / 华为昇腾</td>
+            </tr>
+            <tr>
+              <td>AI ASIC定制芯片</td>
+              <td>针对特定模型的专用推理加速</td>
+              <td>设计门槛极高；需深度绑定客户；一旦定型进入者极难替代</td>
+              <td>谷歌TPU、亚马逊Trainium<br>寒武纪 688256</td>
+            </tr>
+            <tr>
+              <td>先进封装（CoWoS/SoIC）</td>
+              <td>将HBM与GPU集成，突破带宽瓶颈</td>
+              <td>台积电CoWoS产能全球唯一；A100→H100带宽增益50%以上靠封装实现</td>
+              <td>台积电 TSM<br>长电科技 600584</td>
+            </tr>
+            <tr>
+              <td>HBM高带宽内存</td>
+              <td>为GPU提供超大带宽内存</td>
+              <td>SK海力士、三星、镁光三巨头垄断；切换成本极高；供不应求至少持续2年</td>
+              <td>SK海力士<br>兆易创新 603986</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="conclusion">
+          <b>层级小结：</b>整条产业链的利润锚点。英伟达毛利率80%+印证定价权。中国替代路径：华为昇腾 + 寒武纪，但EDA/IP短板仍是天花板。<b>重点关注先进封装国产化进度</b>（长电、通富微电）。
+        </div>
+      </div>
+
+      <!-- ② 板级/系统层 -->
+      <div class="layer-card black">
+        <div class="layer-head">
+          <div class="iconbox">
+            <svg viewBox="0 0 48 48">
+              <rect x="6" y="12" width="36" height="24" rx="2"/>
+              <rect x="10" y="17" width="8" height="6" rx="1"/>
+              <rect x="20" y="17" width="8" height="6" rx="1"/>
+              <rect x="30" y="17" width="8" height="6" rx="1"/>
+              <line x1="10" y1="30" x2="38" y2="30"/>
+              <line x1="14" y1="36" x2="14" y2="40"/>
+              <line x1="34" y1="36" x2="34" y2="40"/>
+            </svg>
+          </div>
+          <div class="layer-title">
+            <strong style="color:var(--ink)">② 板级 / 系统层</strong>
+            <span style="color:#333">算力单元的载体与互联</span>
+          </div>
+          <div class="layer-summary">
+            服务器主板 / GPU基板 / 高速互联<br>
+            <b>景气度：</b><span class="tag up">↑↑ 强</span>
+          </div>
+        </div>
+        <table class="layer-table">
+          <colgroup>
+            <col class="segment"/><col class="function"/><col class="scarcity"/><col class="targets"/>
+          </colgroup>
+          <thead>
+            <tr>
+              <th>细分赛道</th><th>核心功能</th><th>稀缺性 / 壁垒</th><th>代表标的</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>AI服务器/整机</td>
+              <td>集成GPU、CPU、内存的完整算力节点</td>
+              <td>ODM格局集中（鸿海/广达/纬颖）；AI服务器单价10-30万美元，量价齐升</td>
+              <td>浪潮信息 000977<br>超微 SMCI</td>
+            </tr>
+            <tr>
+              <td>GPU基板/载板</td>
+              <td>连接HBM与GPU Die的关键有机基板</td>
+              <td>ABF基板技术壁垒高；CoWoS基板全球仅少数厂商供应；产能扩张2年周期</td>
+              <td>深南电路 002916<br>兴森科技 002436</td>
+            </tr>
+            <tr>
+              <td>NVLink / InfiniBand互联</td>
+              <td>GPU间超高速互联，构建万卡集群</td>
+              <td>英伟达NVLink自有技术，生态强绑定；InfiniBand网卡博通/迈络思垄断</td>
+              <td>英伟达 NVDA<br>博通 AVGO</td>
+            </tr>
+            <tr>
+              <td>高速铜缆/DAC</td>
+              <td>短距高速信号传输，替代部分光模块</td>
+              <td>切换成本低，但对信号完整性要求苛刻；国内厂商快速追赶</td>
+              <td>生益科技 600183<br>沪电股份 002463</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="conclusion">
+          <b>层级小结：</b>景气度随GPU出货高度同步。<b>GPU基板（ABF载板）是近两年最稀缺环节之一</b>，国内深南电路已进入英伟达供应链。AI服务器ODM受益最直接但毛利率薄，关注国产替代基板机会。
+        </div>
+      </div>
+
+      <!-- ③ 网络与光互联层 -->
+      <div class="layer-card red">
+        <div class="layer-head">
+          <div class="iconbox">
+            <svg viewBox="0 0 48 48">
+              <circle cx="24" cy="24" r="10"/>
+              <circle cx="10" cy="14" r="4"/>
+              <circle cx="38" cy="14" r="4"/>
+              <circle cx="10" cy="34" r="4"/>
+              <circle cx="38" cy="34" r="4"/>
+              <line x1="14" y1="17" x2="19" y2="21"/>
+              <line x1="34" y1="17" x2="29" y2="21"/>
+              <line x1="14" y1="31" x2="19" y2="27"/>
+              <line x1="34" y1="31" x2="29" y2="27"/>
+            </svg>
+          </div>
+          <div class="layer-title">
+            <strong>③ 网络与光互联层</strong>
+            <span>算力集群的神经系统</span>
+          </div>
+          <div class="layer-summary">
+            光模块 / 交换机 / CPO<br>
+            <b>景气度：</b><span class="tag up">↑↑↑ 爆发</span>
+          </div>
+        </div>
+        <table class="layer-table">
+          <colgroup>
+            <col class="segment"/><col class="function"/><col class="scarcity"/><col class="targets"/>
+          </colgroup>
+          <thead>
+            <tr>
+              <th>细分赛道</th><th>核心功能</th><th>稀缺性 / 壁垒</th><th>代表标的</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>800G/1.6T光模块</td>
+              <td>数据中心内超高速光信号传输</td>
+              <td>从400G升级至800G，价格翻倍；国内光迅、中际旭创技术追上；产能紧张</td>
+              <td>中际旭创 300308<br>天孚通信 300394</td>
+            </tr>
+            <tr>
+              <td>高速交换机/路由器</td>
+              <td>连接万卡集群的骨干网络设备</td>
+              <td>博通Tomahawk/Jericho芯片垄断；思科/Arista软件生态壁垒深；订单能见度高</td>
+              <td>博通 AVGO<br>新华三/华为</td>
+            </tr>
+            <tr>
+              <td>CPO共封装光学</td>
+              <td>将光器件封装入交换机，降低功耗</td>
+              <td>2025-2026年量产元年；解决下一代数据中心功耗瓶颈；先发者吃整个市场</td>
+              <td>博通 AVGO<br>光迅科技 002281</td>
+            </tr>
+            <tr>
+              <td>硅光芯片</td>
+              <td>用CMOS工艺制造光器件，降本增效</td>
+              <td>与CMOS制程高度兼容；英特尔/意法已规模出货；国内追赶中</td>
+              <td>英特尔 INTC<br>源杰科技 688498</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="conclusion">
+          <b>层级小结：</b>光模块是2023-2025年弹性最大赛道，<b>中际旭创涨幅一度超10倍印证景气</b>。CPO是下一个爆发点。国产光模块已实现技术突破，出口受管制但内需爆发可对冲。重点关注800G→1.6T升级周期。
+        </div>
+      </div>
+
+      <!-- ④ 基础设施层 -->
+      <div class="layer-card gray">
+        <div class="layer-head">
+          <div class="iconbox">
+            <svg viewBox="0 0 48 48">
+              <rect x="8" y="8" width="32" height="6" rx="1"/>
+              <rect x="8" y="18" width="32" height="6" rx="1"/>
+              <rect x="8" y="28" width="32" height="6" rx="1"/>
+              <rect x="8" y="38" width="14" height="5" rx="1"/>
+              <path d="M28 34 L34 41 L40 34"/>
+              <line x1="34" y1="28" x2="34" y2="41"/>
+            </svg>
+          </div>
+          <div class="layer-title">
+            <strong style="color:#555">④ 基础设施层</strong>
+            <span style="color:#444">算力的土地与电力</span>
+          </div>
+          <div class="layer-summary">
+            IDC / 液冷 / 电源 / UPS<br>
+            <b>景气度：</b><span class="tag up">↑↑ 强</span>
+          </div>
+        </div>
+        <table class="layer-table">
+          <colgroup>
+            <col class="segment"/><col class="function"/><col class="scarcity"/><col class="targets"/>
+          </colgroup>
+          <thead>
+            <tr>
+              <th>细分赛道</th><th>核心功能</th><th>稀缺性 / 壁垒</th><th>代表标的</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>数据中心IDC</td>
+              <td>提供算力托管与运营环境</td>
+              <td>优质地块、电力批文、网络骨干接入构成稀缺资源；选址决定生死</td>
+              <td>万国数据 GDS<br>秦淮数据</td>
+            </tr>
+            <tr>
+              <td>液冷散热</td>
+              <td>解决高密度AI服务器散热瓶颈</td>
+              <td>H100单卡TDP 700W，传统风冷已到极限；液冷渗透率2024年<5%→2026年将超30%</td>
+              <td>英维克 002837<br>申菱环境 301018</td>
+            </tr>
+            <tr>
+              <td>高压直流/模块电源</td>
+              <td>为AI服务器稳定供电</td>
+              <td>AI服务器对电源质量要求极高；48V HVDC成标配；整体电源方案切换周期快</td>
+              <td>台达电子<br>伊戈尔 002922</td>
+            </tr>
+            <tr>
+              <td>UPS/储能备电</td>
+              <td>数据中心不间断电力保障</td>
+              <td>大型IDC必配；AI算力密度提升拉升UPS容量需求；磷酸铁锂替代铅酸加速</td>
+              <td>科华数据 002335<br>动力源 600405</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="conclusion">
+          <b>层级小结：</b>液冷是2024-2026最确定的基础设施弹性赛道，<b>渗透率提升空间巨大</b>。IDC受益于算力需求长期增长，但受监管影响波动大。电源模块因AI服务器单台用电翻倍而量价齐升。
+        </div>
+      </div>
+
+    </div><!-- /layers -->
+
+
+    <!-- ══════════════════════
+         景气排行榜
+    ══════════════════════ -->
+    <div class="ranking">
+      <div class="ranking-title">▎ 四大层级景气排行 · 当前周期</div>
+      <div class="ranking-grid">
+
+        <div class="side-note">
+          供给端<br>稀缺性<br>↕<br>需求端<br>确定性
+        </div>
+
+        <!-- 第一：光互联 -->
+        <div class="rank-node red">
+          <div class="rank">🥇 第一</div>
+          <div class="direction">网络光互联</div>
+          <div class="rank-sub">
+            800G→1.6T升级周期<br>
+            CPO量产元年临近<br>
+            国产技术突破 + 内需爆发
+          </div>
+        </div>
+
+        <!-- 第二：核心芯片 -->
+        <div class="rank-node blue">
+          <div class="rank">🥈 第二</div>
+          <div class="direction">核心芯片</div>
+          <div class="rank-sub">
+            英伟达定价权无可撼动<br>
+            HBM持续供不应求<br>
+            先进封装国产化机会
+          </div>
+        </div>
+
+        <!-- 第三：基础设施 -->
+        <div class="rank-node black">
+          <div class="rank">🥉 第三</div>
+          <div class="direction">基础设施</div>
+          <div class="rank-sub">
+            液冷渗透率加速拉升<br>
+            电源量价齐升逻辑清晰<br>
+            IDC扩张受政策扰动
+          </div>
+        </div>
+
+        <div class="side-note">
+          左侧为<br>当前景气<br>最强方向<br>↕<br>右侧为<br>长期布局<br>优先方向
+        </div>
+
+      </div>
+
+      <!-- 附注说明行 -->
+      <div style="margin-top:14px;font-size:15px;color:#555;text-align:center;line-height:1.6">
+        ※ 板级/系统层（AI服务器、GPU基板）景气度同样强劲，因高度依附芯片层排序靠后，但
+        <b>ABF载板/深南电路</b>等国产替代细分赛道值得重点跟踪。
+      </div>
+    </div>
+
+    <!-- 底部信息行 -->
+    <div class="footnote">
+      <span>数据仅供研究参考，不构成投资建议</span>
+      <span>AI 算力硬件产业链深度研究 · 2026</span>
+      <span>景气度评级基于产能利用率、订单能见度、毛利率趋势综合判断</span>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /page -->
+
+</body>
+</html>
