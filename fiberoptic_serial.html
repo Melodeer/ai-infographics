@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>光纤·AI算力链 — 微信连载版（共6张）</title>
+<style>
+/* ============================================================
+   通用样式
+   ============================================================ */
+:root {
+  --paper: #f8f8f5;
+  --ink: #050505;
+  --muted: #666;
+  --line: #bdbdbd;
+  --blue: #071b5c;
+  --red: #f23a2e;
+  --gold: #c48b0d;
+  --bg-blue: #e9f0ff;
+  --bg-red: #fff0ee;
+  --bg-gray: #f3f3f1;
+  --bg-gold: #fdf6e8;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: #d0d0c8;
+  font-family: "Songti SC","Noto Serif CJK SC","SimSun","Times New Roman",serif;
+  color: var(--ink);
+  padding: 40px 20px 60px;
+}
+
+/* ──── 每一张卡片 ──── */
+.card {
+  position: relative;
+  width: 750px;
+  margin: 0 auto 60px;
+  background:
+    radial-gradient(circle at 50% 14%, rgba(255,255,255,0.92), rgba(248,248,245,0.96) 48%, rgba(226,226,218,0.45) 100%),
+    linear-gradient(90deg, rgba(0,0,0,0.018) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(0,0,0,0.014) 1px, transparent 1px),
+    var(--paper);
+  background-size: auto, 18px 18px, 18px 18px, auto;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+}
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    -25deg, transparent 0, transparent 138px,
+    rgba(120,120,120,0.06) 139px, rgba(120,120,120,0.06) 141px,
+    transparent 142px, transparent 220px
+  );
+  opacity: 0.4;
+  z-index: 1;
+}
+.wm {
+  position: absolute;
+  top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  pointer-events: none;
+  z-index: 100;
+  opacity: 0.045;
+  transform: rotate(-20deg);
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+  gap: 80px 120px;
+}
+.wm span {
+  font-size: 26px;
+  color: #333;
+  font-weight: 500;
+  white-space: nowrap;
+  letter-spacing: 3px;
+}
+
+.body {
+  position: relative;
+  z-index: 3;
+  padding: 28px 34px 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ──── 导航条 ──── */
+.nav-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #777;
+  letter-spacing: 0.5px;
+  margin-bottom: 18px;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 10px;
+}
+.nav-bar .page-num {
+  font-weight: 900;
+  font-size: 13px;
+  color: var(--blue);
+}
+.nav-bar .cat-tag {
+  display: inline-block;
+  padding: 1px 9px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  border: 1px solid #aaa;
+  color: #555;
+}
+
+/* ──── 底部脚注 ──── */
+.foot {
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  text-align: center;
+  font-size: 11px;
+  color: var(--blue);
+  font-weight: 700;
+}
+
+/* ──── 复用小组件 ──── */
+.h1-main { text-align: center; font-size: 38px; font-weight: 900; line-height: 1.15; margin: 6px 0 10px; }
+.subtitle { text-align: center; font-size: 14.5px; color: #444; line-height: 1.6; margin-bottom: 14px; }
+.main-rule { height: 2px; background: #000; margin: 0 0 14px; }
+.section-title {
+  font-size: 15px; font-weight: 900;
+  margin: 14px 0 9px;
+  padding-left: 10px;
+  border-left: 4px solid var(--blue);
+  line-height: 1.2;
+  color: var(--ink);
+}
+.section-title.red { border-left-color: var(--red); }
+.section-title.blue { border-left-color: var(--blue); }
+.section-title.gold { border-left-color: var(--gold); }
+
+.tagline-bar {
+  background: #fff;
+  border: 2px solid var(--red);
+  padding: 11px 18px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 900;
+  color: var(--red);
+  margin-bottom: 14px;
+  letter-spacing: 1px;
+}
+.oneliner-box {
+  background: var(--bg-blue);
+  border-left: 4px solid var(--blue);
+  padding: 10px 14px;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--blue);
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+.chain-flow {
+  display: flex; align-items: stretch;
+  margin: 0 0 14px;
+  background: #fff;
+  border: 1.5px solid var(--line);
+  flex-wrap: wrap;
+}
+.chain-node {
+  flex: 1; text-align: center;
+  padding: 9px 4px;
+  border-right: 1px solid var(--line);
+  font-size: 12.5px; font-weight: 700;
+  line-height: 1.4; color: var(--ink);
+  min-width: 70px;
+}
+.chain-node:last-child { border-right: none; }
+.chain-node.hl-blue { background: var(--bg-blue); color: var(--blue); }
+.chain-node.hl-red { background: var(--bg-red); color: var(--red); }
+.chain-node.hl-gold { background: var(--bg-gold); color: var(--gold); }
+.chain-node sub { display:block; font-size:10px; font-weight:400; color:#666; margin-top:2px; }
+.chain-arrow { display: flex; align-items: center; padding: 0 1px; font-size: 16px; color: #bbb; flex-shrink: 0; }
+
+.triple-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+.corner-card {
+  position: relative;
+  border: 2px solid var(--line);
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.corner-card { border-color: var(--line); color: var(--ink); }
+.corner-card.blue { border-color: var(--blue); color: var(--blue); }
+.corner-card.red { border-color: var(--red); color: var(--red); }
+.corner-card.gold { border-color: var(--gold); color: var(--gold); }
+.corner-card::before, .corner-card::after {
+  content: ""; position: absolute; width: 18px; height: 18px; background: var(--paper); z-index: 2;
+}
+.corner-card::before { top:-2px; left:-2px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; border-bottom-right-radius: 10px; }
+.corner-card::after { right:-2px; bottom:-2px; border-left: 2px solid currentColor; border-top: 2px solid currentColor; border-top-left-radius: 10px; }
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+.demand-item {
+  background: #fff; border: 1.5px solid var(--blue);
+  border-left: 5px solid var(--blue);
+  padding: 8px 11px; font-size: 12.5px; line-height: 1.5; color: #222;
+  margin-bottom: 7px;
+}
+.demand-item b { color: var(--blue); }
+.supply-item {
+  background: #fff; border: 1.5px solid var(--red);
+  border-left: 5px solid var(--red);
+  padding: 8px 11px; font-size: 12.5px; line-height: 1.5; color: #222;
+  margin-bottom: 7px;
+}
+.supply-item b { color: var(--red); }
+
+.gap-banner {
+  background: linear-gradient(90deg, var(--bg-red) 0%, #ffe8e5 50%, var(--bg-red) 100%);
+  border: 2px solid var(--red);
+  padding: 12px 16px;
+  text-align: center;
+  margin: 10px 0;
+}
+.gap-row { display: flex; justify-content: space-around; align-items: center; }
+.gap-num { font-size: 26px; font-weight: 900; color: var(--red); line-height: 1.1; }
+.gap-label { font-size: 11.5px; color: #555; margin-top: 3px; }
+
+.price-table { width: 100%; border-collapse: collapse; background: #fff; border: 1.5px solid var(--line); margin-bottom: 10px; font-size: 13px; }
+.price-table th, .price-table td { border: 1px solid var(--line); padding: 7px 10px; vertical-align: middle; line-height: 1.35; }
+.price-table thead tr { background: rgba(7,27,92,0.05); }
+.price-table th { font-weight: 900; font-size: 12.5px; }
+.price-table .pv { font-weight: 900; color: var(--red); font-size: 15px; }
+.price-table .cv { font-weight: 700; color: var(--red); }
+.price-table .av { font-weight: 900; color: var(--gold); font-size: 15px; }
+
+.data-hl { background: rgba(242,58,46,0.08); padding: 1px 4px; font-weight: 700; color: var(--red); border-radius: 2px; }
+.data-hl.blue { background: rgba(7,27,92,0.06); color: var(--blue); }
+.data-hl.gold { background: rgba(196,139,13,0.1); color: var(--gold); }
+.data-muted { color: var(--muted); font-weight: 400; }
+
+.highlight-box {
+  background: #fff; border: 2px solid var(--red);
+  padding: 12px 15px; margin-bottom: 12px;
+}
+.highlight-box .hl-title { font-size: 13.5px; font-weight: 900; margin-bottom: 6px; color: var(--red); }
+.highlight-box .hl-body { font-size: 12.5px; line-height: 1.6; color: #222; }
+
+.target-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-bottom: 12px; }
+.target-card { border: 1.5px solid var(--line); background: #fff; }
+.target-head { display: flex; align-items: center; gap: 6px; padding: 7px 10px; border-bottom: 1px solid var(--line); background: rgba(0,0,0,0.02); }
+.target-name { font-size: 15px; font-weight: 900; color: var(--blue); }
+.target-cat { font-size: 10px; color: #666; margin-left: auto; }
+.target-body { padding: 7px 10px 9px; font-size: 12px; line-height: 1.55; color: #222; }
+.target-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 5px; }
+.target-tag { font-size: 10.5px; padding: 1px 6px; border-radius: 2px; font-weight: 700; }
+.target-tag.pos { background: var(--bg-blue); color: var(--blue); }
+.target-tag.risk { background: var(--bg-red); color: var(--red); }
+.target-tag.gold { background: var(--bg-gold); color: var(--gold); }
+
+.risk-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+.risk-item { background: var(--bg-red); border-left: 3px solid var(--red); padding: 8px 10px; font-size: 12px; line-height: 1.45; color: #222; }
+.risk-item b { color: var(--red); display: block; margin-bottom: 2px; }
+
+.closing-bar {
+  background: var(--blue); color: #fff;
+  padding: 14px 18px;
+  text-align: center;
+  font-size: 15px; font-weight: 900; line-height: 1.6;
+  margin-top: 12px;
+}
+
+.extrude-flow {
+  display: flex; align-items: center;
+  justify-content: center; flex-wrap: wrap; gap: 5px;
+  padding: 10px 8px; background: #fff; border: 1.5px solid var(--line); margin-bottom: 14px;
+}
+.extrude-node { border: 1.5px solid var(--red); padding: 7px 9px; font-size: 11.5px; font-weight: 700; color: var(--red); background: var(--bg-red); text-align: center; max-width: 130px; line-height: 1.4; }
+.extrude-arrow { font-size: 16px; color: var(--red); }
+
+/* vs对比条 */
+.a2-vs-bar { display: flex; align-items: center; padding: 10px 14px; background: #fff; border: 1.5px solid var(--line); margin-bottom: 8px; font-size: 13px; }
+.a2-vs-bar .vs-label { min-width: 100px; font-weight: 700; color: var(--ink); }
+.a2-vs-bar .vs-normal { flex: 1; text-align: center; color: var(--muted); }
+.a2-vs-bar .vs-sep { font-size: 16px; color: #bbb; padding: 0 10px; }
+.a2-vs-bar .vs-a2 { flex: 1; text-align: center; color: var(--gold); font-weight: 900; }
+
+.next-hint {
+  text-align: center;
+  font-size: 11px;
+  color: #aaa;
+  margin-top: 10px;
+  padding: 6px;
+  border: 1px dashed #ccc;
+  letter-spacing: 1px;
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════════
+     第 01 张：封面 · 标题区
+     ════════════════════════════════════════════════════════ -->
+<div class="card" id="card1">
+  <div class="wm"><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span></div>
+  <div class="body">
+    <div class="nav-bar">
+      <span>光纤·AI算力链涨价图谱</span>
+      <span class="page-num">01 / 06</span>
+      <span class="cat-tag">AI算力材料</span>
+    </div>
+
+    <!-- 主视觉区 -->
+    <div style="text-align:center;margin:20px 0 12px;">
+      <div style="font-size:13px;color:#888;letter-spacing:2px;margin-bottom:6px;">涨价信息图谱 · 2026年6月</div>
+      <div style="font-size:48px;font-weight:900;line-height:1.1;color:var(--ink);">光纤</div>
+      <div style="font-size:24px;font-weight:700;color:var(--blue);margin:6px 0 14px;letter-spacing:1px;">AI数据中心的血管</div>
+      <div style="height:3px;background:var(--ink);margin:0 auto 18px;width:90%;"></div>
+    </div>
+
+    <!-- 核心数据展示 -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;">
+      <div class="corner-card red" style="padding:16px 14px;text-align:center;">
+        <div style="font-size:12px;color:#888;margin-bottom:6px;">G.657.A2 光纤涨幅</div>
+        <div style="font-size:42px;font-weight:900;color:var(--red);line-height:1;">+585%</div>
+        <div style="font-size:13px;color:#555;margin-top:4px;">35 → 240 元/芯公里</div>
+        <div style="font-size:11px;color:#999;margin-top:3px;">2025年基准 → 2026年6月</div>
+      </div>
+      <div class="corner-card blue" style="padding:16px 14px;text-align:center;">
+        <div style="font-size:12px;color:#888;margin-bottom:6px;">A2 光棒涨幅</div>
+        <div style="font-size:42px;font-weight:900;color:var(--blue);line-height:1;">+550%</div>
+        <div style="font-size:13px;color:#555;margin-top:4px;">22-30 → 160 元</div>
+        <div style="font-size:11px;color:#999;margin-top:3px;">日本设备交期至2028</div>
+      </div>
+    </div>
+
+    <!-- 核心矛盾 -->
+    <div style="background:var(--bg-red);border:2px solid var(--red);padding:14px 18px;margin-bottom:18px;text-align:center;">
+      <div style="font-size:12px;color:var(--muted);margin-bottom:5px;">核心矛盾</div>
+      <div style="font-size:15px;font-weight:900;color:var(--red);line-height:1.55;">
+        光棒扩产周期 <span style="font-size:19px;">18-24月</span>，核心设备来自日本<br>
+        交期排至 <span style="font-size:20px;letter-spacing:1px;">2028年</span>，全球A2量产企业不超 <span style="font-size:20px;">10家</span>
+      </div>
+    </div>
+
+    <!-- 大标语 -->
+    <div class="tagline-bar" style="font-size:20px;">
+      AI算力涨价三巨头 · 最长周期品种
+    </div>
+
+    <!-- 概念说明 -->
+    <div style="background:#fff;border:1.5px solid var(--line);padding:14px 18px;margin-bottom:18px;">
+      <div style="font-size:13px;font-weight:900;color:var(--blue);margin-bottom:8px;">▸ 一句话定位</div>
+      <div style="font-size:14px;line-height:1.65;color:#222;">
+        光纤 = AI数据中心GPU集群互联的<b style="color:var(--red);">物理管道</b>，万卡GPU集群需<b style="color:var(--red);">10-50万芯公里</b>光纤。<br>
+        AI数据中心不是将人连接到互联网，而是将<b style="color:var(--red);">成千上万个GPU连接成一整台超级计算机</b>——
+        光纤就是这台超级计算机的血管系统。
+      </div>
+    </div>
+
+    <!-- 产业链位置 -->
+    <div style="font-size:13px;font-weight:900;color:var(--muted);margin-bottom:8px;text-align:center;letter-spacing:1px;">产业链位置：高纯SiCl₄/GeCl₄ → ★光棒★ → 拉丝 → 成缆 → 敷设 → AI数据中心</div>
+
+    <div class="next-hint">
+      👇 共6张 · 向右滑动查看全系列
+    </div>
+
+    <div class="foot">
+      <span class="brand">公众号：欧派呦呦鹿鸣</span>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════════
+     第 02 张：30秒入门
+     ════════════════════════════════════════════════════════ -->
+<div class="card" id="card2">
+  <div class="wm"><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span></div>
+  <div class="body">
+    <div class="nav-bar">
+      <span>30秒入门</span>
+      <span class="page-num">02 / 06</span>
+      <span class="cat-tag">基础认知</span>
+    </div>
+
+    <div class="section-title blue">▎ 光纤从何而来？从高纯化学到AI数据中心</div>
+
+    <!-- 生产流程 -->
+    <div class="chain-flow" style="margin-bottom:18px;">
+      <div class="chain-node hl-blue">高纯SiCl₄<br>/GeCl₄/石英<sub>纯度99.9999999%</sub></div>
+      <div class="chain-arrow">→</div>
+      <div class="chain-node hl-red">VAD/OVD制成<br>光棒<sub>★瓶颈环节<br>日本设备垄断</sub></div>
+      <div class="chain-arrow">→</div>
+      <div class="chain-node">2000℃<br>高温拉丝<sub>直径125μm</sub></div>
+      <div class="chain-arrow">→</div>
+      <div class="chain-node">双层涂覆<br>保护层<sub>丙烯酸树脂</sub></div>
+      <div class="chain-arrow">→</div>
+      <div class="chain-node">多根成缆<sub>敷设到<br>数据中心</sub></div>
+      <div class="chain-arrow">→</div>
+      <div class="chain-node hl-red">万卡GPU<br>集群互联<sub>AI终端</sub></div>
+    </div>
+
+    <div class="section-title gold" style="margin-top:18px;">▎ 为什么A2比普通光纤贵150%？（三组关键对比）</div>
+
+    <!-- 三张对比卡 -->
+    <div class="triple-grid" style="margin-bottom:16px;">
+      <div class="corner-card gold" style="padding:12px;">
+        <div style="font-size:20px;margin-bottom:6px;">◯</div>
+        <div style="font-size:14px;font-weight:900;color:var(--gold);margin-bottom:6px;">弯曲半径差异</div>
+        <div style="font-size:12.5px;line-height:1.65;color:#111;">
+          <span class="data-muted">普通光纤</span><br>
+          <span class="data-muted" style="font-size:15px;font-weight:700;">30mm</span><br>
+          <span style="color:var(--gold);margin-top:6px;display:inline-block;">A2 光纤</span><br>
+          <span class="data-hl gold" style="font-size:15px;">7.5mm</span><br>
+          <span style="font-size:11px;color:var(--gold);font-weight:700;">→ 可绕指尖</span>
+        </div>
+      </div>
+      <div class="corner-card gold" style="padding:12px;">
+        <div style="font-size:20px;margin-bottom:6px;">⚙</div>
+        <div style="font-size:14px;font-weight:900;color:var(--gold);margin-bottom:6px;">技术壁垒</div>
+        <div style="font-size:12.5px;line-height:1.65;color:#111;">
+          <span class="data-muted">普通光纤</span><br>
+          <span class="data-muted">折射率剖面简单</span><br>
+          <span style="color:var(--gold);margin-top:6px;display:inline-block;">A2光纤</span><br>
+          <span style="color:var(--gold);font-weight:700;">微米级折射率沟槽</span><br>
+          <span style="font-size:11px;color:var(--gold);font-weight:700;">→ 光棒设计极致复杂</span>
+        </div>
+      </div>
+      <div class="corner-card gold" style="padding:12px;">
+        <div style="font-size:20px;margin-bottom:6px;">🏭</div>
+        <div style="font-size:14px;font-weight:900;color:var(--gold);margin-bottom:6px;">供应格局</div>
+        <div style="font-size:12.5px;line-height:1.65;color:#111;">
+          <span class="data-muted">普通光纤</span><br>
+          <span class="data-muted">企业 众多</span><br>
+          <span style="color:var(--gold);margin-top:6px;display:inline-block;">A2光纤</span><br>
+          <span class="data-hl gold" style="font-size:15px;">不超过10家</span><br>
+          <span style="font-size:11px;color:var(--gold);font-weight:700;">→ 全球稳定量产</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- A2独立性说明 -->
+    <div style="background:#fff;border:2px solid var(--gold);padding:14px 16px;margin-bottom:14px;">
+      <div style="font-size:13.5px;font-weight:900;color:var(--gold);margin-bottom:8px;">★ A2涨价不是光纤涨价潮的子集</div>
+      <div style="font-size:13px;line-height:1.65;color:#222;">
+        A2是一个 <span class="data-hl gold">独立的、更剧烈的供需失衡故事</span>。
+        普通光纤G652D涨了400%，已属惊人——但A2涨了550%，比普通光纤又高出40%。<br>
+        AI数据中心的机柜内部走线必须用A2——弯曲半径从30mm缩至7.5mm才能胜任高密度机柜的狭小空间。
+      </div>
+    </div>
+
+    <div class="oneliner-box">
+      普通光纤是连接城市的国道，A2是数据中心机柜间的毛细血管——只有绕指柔般的A2光纤才能胜任万卡集群的密集走线。
+    </div>
+
+    <div class="next-hint">👉 03/06 · 涨了多少钱？</div>
+    <div class="foot">
+      <span class="brand">公众号：欧派呦呦鹿鸣</span>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════════
+     第 03 张：涨了多少
+     ════════════════════════════════════════════════════════ -->
+<div class="card" id="card3">
+  <div class="wm"><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span></div>
+  <div class="body">
+    <div class="nav-bar">
+      <span>价格爬升</span>
+      <span class="page-num">03 / 06</span>
+      <span class="cat-tag">价格数据</span>
+    </div>
+
+    <div class="section-title red">▎ 涨了多少：A2光纤价格爬升阶梯（元/芯公里）</div>
+
+    <!-- A2光纤价格爬升阶梯 SVG -->
+    <div class="corner-card red" style="padding:14px;margin-bottom:14px;">
+      <svg viewBox="0 0 680 280" style="width:100%;">
+        <defs>
+          <pattern id="gfa" width="20" height="20" patternUnits="userSpaceOnUse">
+            <path d="M20 0L0 0 0 20" fill="none" stroke="rgba(0,0,0,0.04)" stroke-width="0.5"/>
+          </pattern>
+        </defs>
+        <rect width="680" height="280" fill="url(#gfa)"/>
+        <!-- Y轴 -->
+        <line x1="100" y1="20" x2="100" y2="255" stroke="var(--muted)" stroke-width="1"/>
+        <text x="92" y="26" text-anchor="end" font-size="12" fill="var(--muted)">240</text>
+        <text x="92" y="72" text-anchor="end" font-size="12" fill="var(--muted)">180</text>
+        <text x="92" y="118" text-anchor="end" font-size="12" fill="var(--muted)">120</text>
+        <text x="92" y="164" text-anchor="end" font-size="12" fill="var(--muted)">60</text>
+        <text x="92" y="210" text-anchor="end" font-size="12" fill="var(--muted)">0</text>
+        <!-- 水平参考线 -->
+        <line x1="100" y1="32" x2="665" y2="32" stroke="var(--line)" stroke-width="0.5" stroke-dasharray="4,4"/>
+        <line x1="100" y1="78" x2="665" y2="78" stroke="var(--line)" stroke-width="0.5" stroke-dasharray="4,4"/>
+        <line x1="100" y1="124" x2="665" y2="124" stroke="var(--line)" stroke-width="0.5" stroke-dasharray="4,4"/>
+        <line x1="100" y1="170" x2="665" y2="170" stroke="var(--line)" stroke-width="0.5" stroke-dasharray="4,4"/>
+        <line x1="100" y1="216" x2="665" y2="216" stroke="var(--line)" stroke-width="0.5" stroke-dasharray="4,4"/>
+        <!-- 价格阶梯: 35→18$折合约130→160→240 -->
+        <polyline points="100,205 200,205 200,148 320,148 320,118 440,118 440,48 580,48 580,35 660,35"
+          fill="none" stroke="var(--red)" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"/>
+        <polygon points="100,205 200,205 200,148 320,148 320,118 440,118 440,48 580,48 580,35 660,35 660,216 100,216"
+          fill="rgba(242,58,46,0.06)"/>
+
+        <circle cx="100" cy="205" r="6" fill="var(--red)"/>
+        <text x="100" y="227" text-anchor="middle" font-size="13" font-weight="900" fill="var(--red)">35</text>
+        <text x="100" y="242" text-anchor="middle" font-size="10" fill="var(--muted)">2025基准</text>
+
+        <circle cx="200" cy="148" r="6" fill="var(--red)"/>
+        <text x="200" y="138" text-anchor="middle" font-size="12" font-weight="900" fill="var(--red)">~130</text>
+        <text x="200" y="164" text-anchor="middle" font-size="10" fill="var(--muted)">2026.03 康宁-Meta长协<br>$18/芯公里→约¥130</text>
+
+        <circle cx="320" cy="118" r="6" fill="var(--red)"/>
+        <text x="320" y="108" text-anchor="middle" font-size="12" font-weight="900" fill="var(--red)">~150</text>
+        <text x="320" y="134" text-anchor="middle" font-size="10" fill="var(--muted)">2026.05 通鼎公告<br>A2专项扩产</text>
+
+        <circle cx="440" cy="48" r="6" fill="var(--red)"/>
+        <text x="440" y="38" text-anchor="middle" font-size="12" font-weight="900" fill="var(--red)">160</text>
+        <text x="440" y="64" text-anchor="middle" font-size="10" fill="var(--muted)">2026.06 A2光棒</text>
+
+        <circle cx="660" cy="35" r="7" fill="var(--red)"/>
+        <text x="660" y="25" text-anchor="middle" font-size="14" font-weight="900" fill="var(--red)">240+</text>
+        <text x="660" y="55" text-anchor="middle" font-size="10" fill="var(--muted)">2026.06 G.657.A2光纤</text>
+
+        <text x="320" y="175" font-size="11" fill="rgba(242,58,46,0.7)" font-weight="700">↗ 5个月从35→240元，涨幅585%</text>
+      </svg>
+    </div>
+
+    <!-- 全品种涨幅表 -->
+    <div class="section-title blue" style="margin-top:10px;">▎ 光纤全品种涨幅一览</div>
+    <table class="price-table">
+      <thead><tr><th>品类</th><th>涨价前</th><th>当前价</th><th>涨幅</th><th>备注</th></tr></thead>
+      <tbody>
+        <tr>
+          <td style="font-weight:900;color:var(--gold);">G.657.A2 光纤</td>
+          <td>35元/芯公里</td>
+          <td class="av">240元/芯公里</td>
+          <td class="cv">+585%</td>
+          <td style="font-size:12px;color:#555;">数据中心机柜互联专用</td>
+        </tr>
+        <tr>
+          <td style="font-weight:900;color:var(--gold);">A2 光棒</td>
+          <td>22-30元</td>
+          <td class="av">160元</td>
+          <td class="cv">+550%</td>
+          <td style="font-size:12px;color:#555;">日本设备交期至2028</td>
+        </tr>
+        <tr>
+          <td>G.652D 散纤</td>
+          <td>18-22元/芯公里</td>
+          <td class="pv">90-110元/芯公里</td>
+          <td class="cv">+400%</td>
+          <td style="font-size:12px;color:#555;">普通单模光纤</td>
+        </tr>
+        <tr>
+          <td>北美长协价</td>
+          <td>$12/芯公里</td>
+          <td class="pv">$18/芯公里</td>
+          <td class="cv">+50%</td>
+          <td style="font-size:12px;color:#555;">长飞×Meta 4000-5000万芯公里</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- 涨价传导时间线 -->
+    <div class="section-title red" style="margin-top:10px;">▎ 涨价传导时间线（2026年关键事件）</div>
+    <svg viewBox="0 0 680 100" style="width:100%;margin-bottom:12px;">
+      <!-- 基线 -->
+      <line x1="30" y1="55" x2="660" y2="55" stroke="var(--line)" stroke-width="1.5"/>
+      <!-- 事件点+标注 -->
+      <!-- 3月 -->
+      <circle cx="50" cy="52" r="5" fill="var(--blue)"/>
+      <line x1="50" y1="52" x2="50" y2="26" stroke="var(--blue)" stroke-width="0.8"/>
+      <text x="50" y="22" text-anchor="middle" font-size="9.5" font-weight="700" fill="var(--blue)">康宁-Meta长协</text>
+      <text x="50" y="74" text-anchor="middle" font-size="8" fill="var(--muted)">3月</text>
+
+      <!-- 5月 -->
+      <circle cx="210" cy="52" r="5" fill="var(--gold)"/>
+      <line x1="210" y1="52" x2="210" y2="36" stroke="var(--gold)" stroke-width="0.8"/>
+      <text x="210" y="32" text-anchor="middle" font-size="9.5" font-weight="700" fill="var(--gold)">通鼎A2扩产公告</text>
+      <text x="210" y="74" text-anchor="middle" font-size="8" fill="var(--muted)">5月</text>
+
+      <!-- 6月7日 -->
+      <circle cx="370" cy="52" r="5" fill="var(--red)"/>
+      <line x1="370" y1="52" x2="370" y2="22" stroke="var(--red)" stroke-width="0.8"/>
+      <text x="370" y="18" text-anchor="middle" font-size="9.5" font-weight="700" fill="var(--red)">中天CSP中标15.18亿</text>
+      <text x="370" y="74" text-anchor="middle" font-size="8" fill="var(--muted)">6月7日</text>
+
+      <!-- 6月8日 -->
+      <circle cx="510" cy="52" r="5" fill="var(--red)"/>
+      <line x1="510" y1="52" x2="510" y2="26" stroke="var(--red)" stroke-width="0.8"/>
+      <text x="510" y="22" text-anchor="middle" font-size="9.5" font-weight="700" fill="var(--red)">康宁-亚马逊数十亿$</text>
+      <text x="510" y="74" text-anchor="middle" font-size="8" fill="var(--muted)">6月8日</text>
+
+      <!-- 6月9日 -->
+      <circle cx="630" cy="52" r="5" fill="var(--red)"/>
+      <line x1="630" y1="52" x2="630" y2="32" stroke="var(--red)" stroke-width="0.8"/>
+      <text x="630" y="28" text-anchor="middle" font-size="9.5" font-weight="700" fill="var(--red)">藤仓全美云商下单</text>
+      <text x="630" y="74" text-anchor="middle" font-size="8" fill="var(--muted)">6月9日</text>
+
+      <!-- 箭头 -->
+      <polygon points="660,55 652,50 652,60" fill="var(--red)"/>
+      <text x="370" y="92" text-anchor="middle" font-size="9" fill="var(--muted)">▲ 3天3个重磅催化——藤仓确认客户接受涨价</text>
+    </svg>
+
+    <div class="next-hint">👉 04/06 · 为什么涨这么多？</div>
+    <div class="foot">
+      <span class="brand">公众号：欧派呦呦鹿鸣</span>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════════
+     第 04 张：为什么涨
+     ════════════════════════════════════════════════════════ -->
+<div class="card" id="card4">
+  <div class="wm"><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span></div>
+  <div class="body">
+    <div class="nav-bar">
+      <span>供需分析</span>
+      <span class="page-num">04 / 06</span>
+      <span class="cat-tag">核心矛盾</span>
+    </div>
+
+    <div class="section-title red">▎ 为什么涨：需求双引擎 撞上 供给18个月真空</div>
+
+    <!-- 双栏 -->
+    <div class="two-col">
+      <!-- 左：需求 -->
+      <div>
+        <div style="font-size:15px;font-weight:900;color:var(--blue);margin-bottom:8px;text-align:center;">🚀 需求双引擎</div>
+        <div class="demand-item">
+          <b>① AI数据中心：从连接人到连接GPU</b><br>
+          万卡GPU集群需 <span class="data-hl blue" style="color:var(--blue);">10-50万芯公里</span> 光纤；<br>
+          2026年AI数据中心资本开支 <span class="data-hl blue" style="color:var(--blue);">$6900亿</span>；<br>
+          AI占光纤需求 <span class="data-hl blue" style="color:var(--blue);">12%→27%</span>
+        </div>
+        <div class="demand-item">
+          <b>② FTTH千兆入户：美国狂建</b><br>
+          2025年新覆盖 <span class="data-hl blue" style="color:var(--blue);">1180万户</span>（创纪录）；<br>
+          累计覆盖 <span class="data-hl blue" style="color:var(--blue);">9830万户</span>（超60%家庭）
+        </div>
+      </div>
+      <!-- 右：供给 -->
+      <div>
+        <div style="font-size:15px;font-weight:900;color:var(--red);margin-bottom:8px;text-align:center;">🛡️ 供给18个月真空</div>
+        <!-- 扩产周期链 SVG -->
+        <svg viewBox="0 0 330 140" style="width:100%;margin-bottom:6px;">
+          <rect x="0" y="0" width="330" height="140" rx="3" fill="#fff"/>
+          <rect x="5" y="5" width="65" height="40" rx="3" fill="var(--bg-red)" stroke="var(--red)" stroke-width="1.2"/>
+          <text x="37" y="23" text-anchor="middle" font-size="8" font-weight="700" fill="var(--red)">环保审批</text>
+          <text x="37" y="37" text-anchor="middle" font-size="7" fill="var(--muted)">2-4月</text>
+          <text x="73" y="27" font-size="12" fill="var(--line)">→</text>
+          <rect x="82" y="5" width="80" height="40" rx="3" fill="var(--bg-red)" stroke="var(--red)" stroke-width="1.8"/>
+          <text x="122" y="21" text-anchor="middle" font-size="8" font-weight="900" fill="var(--red)">设备交付 ★</text>
+          <text x="122" y="35" text-anchor="middle" font-size="7" fill="var(--red)">6-8月·关键瓶颈</text>
+          <text x="165" y="27" font-size="12" fill="var(--line)">→</text>
+          <rect x="174" y="5" width="65" height="40" rx="3" fill="var(--bg-blue)" stroke="var(--blue)" stroke-width="1.2"/>
+          <text x="206" y="23" text-anchor="middle" font-size="8" font-weight="700" fill="var(--blue)">厂房建设</text>
+          <text x="206" y="37" text-anchor="middle" font-size="7" fill="var(--muted)">6-8月</text>
+          <text x="242" y="27" font-size="12" fill="var(--line)">→</text>
+          <rect x="251" y="5" width="72" height="40" rx="3" fill="var(--bg-gray)" stroke="var(--muted)" stroke-width="1.2"/>
+          <text x="287" y="21" text-anchor="middle" font-size="7.5" font-weight="700" fill="#444">安装+爬坡</text>
+          <text x="287" y="35" text-anchor="middle" font-size="7" fill="var(--muted)">5-9月</text>
+          <text x="165" y="65" text-anchor="middle" font-size="11" font-weight="900" fill="var(--red)">▼ 合计 18-24 个月 ▼</text>
+          <!-- 三重约束 -->
+          <rect x="5" y="78" width="322" height="56" rx="3" fill="var(--bg-red)" stroke="var(--red)" stroke-width="1"/>
+          <text x="10" y="94" font-size="8" fill="var(--red)" font-weight="700">• 光棒产能利用率超95% → 几乎满产</text>
+          <text x="10" y="108" font-size="8" fill="var(--red)" font-weight="700">• 核心设备来自日本，交期排至2028</text>
+          <text x="10" y="122" font-size="8" fill="var(--red)" font-weight="700">• A2全球稳定量产不超过10家企业</text>
+        </svg>
+      </div>
+    </div>
+
+    <!-- 核心缺口数字 -->
+    <div class="gap-banner">
+      <div class="gap-row">
+        <div>
+          <div class="gap-num">1.8亿</div>
+          <div class="gap-label">全球光纤供需缺口<br>（芯公里·缺口率22.5%）</div>
+        </div>
+        <div>
+          <div class="gap-num" style="font-size:20px;">7.60亿 vs 7.25亿</div>
+          <div class="gap-label">2026需求 vs 供给<br>（-4.61%）</div>
+        </div>
+        <div>
+          <div class="gap-num" style="font-size:20px;">8.89亿 vs 8.07亿</div>
+          <div class="gap-label">2027需求 vs 供给<br>（-9.24%·缺口扩大）</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 中国厂商出海 -->
+    <div style="background:#fff;border:2px solid var(--blue);padding:14px 16px;margin-bottom:12px;">
+      <div style="font-size:13.5px;font-weight:900;color:var(--blue);margin-bottom:10px;">▸ 中国厂商出海：全球供不应求下的中国红利</div>
+      <div class="demand-item" style="margin-bottom:7px;">
+        <b>长飞光纤 × Meta</b> — <span class="data-hl blue" style="color:var(--blue);">4000-5000万芯公里</span>长协，<br>
+        <span class="data-hl blue" style="color:var(--blue);">$18/芯公里</span>（溢价65%于原北美散纤价）
+      </div>
+      <div class="demand-item" style="margin-bottom:7px;">
+        <b>亨通光电 × 北美算力企业</b> — 出口份额持续提升，<br>
+        A2/G.654.E高端产品发力
+      </div>
+      <div class="demand-item" style="margin-bottom:0;">
+        <b>藤仓（Fujikura） × 全美云商</b> — <span class="data-hl">客户已接受涨价</span><br>
+        <span style="font-size:11.5px;color:var(--muted);">2026年6月9日确认，全美云商客户全部下单并接受涨价</span>
+      </div>
+    </div>
+
+    <div class="next-hint">👉 05/06 · 这轮涨价多久能缓解？</div>
+    <div class="foot">
+      <span class="brand">公众号：欧派呦呦鹿鸣</span>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════════
+     第 05 张：多久缓解
+     ════════════════════════════════════════════════════════ -->
+<div class="card" id="card5">
+  <div class="wm"><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span></div>
+  <div class="body">
+    <div class="nav-bar">
+      <span>扩产周期</span>
+      <span class="page-num">05 / 06</span>
+      <span class="cat-tag">时间判断</span>
+    </div>
+
+    <div class="section-title red">▎ 多久缓解：扩产能追得上需求吗？</div>
+
+    <!-- 供需缺口演化时间轴 -->
+    <div style="background:#fff;border:1.5px solid var(--line);padding:14px 16px;margin-bottom:14px;">
+      <div style="font-size:13px;font-weight:900;color:var(--blue);margin-bottom:10px;text-align:center;">
+        光纤供需缺口演化时间轴 —— 2027年底前 <span style="color:var(--red);font-size:15px;">18个月确定性红利窗口</span>
+      </div>
+      <svg viewBox="0 0 680 130" style="width:100%;">
+        <!-- 阶段背景 -->
+        <rect x="0" y="0" width="220" height="130" fill="rgba(242,58,46,0.05)" rx="3"/>
+        <text x="110" y="14" text-anchor="middle" font-size="8.5" fill="var(--red)" font-weight="700">阶段① 缺口扩大期</text>
+
+        <rect x="220" y="0" width="230" height="130" fill="rgba(196,139,13,0.04)" rx="3"/>
+        <text x="335" y="14" text-anchor="middle" font-size="8.5" fill="var(--gold)" font-weight="700">阶段② 产能释放预期</text>
+
+        <rect x="450" y="0" width="230" height="130" fill="rgba(7,27,92,0.02)" rx="3"/>
+        <text x="565" y="14" text-anchor="middle" font-size="8.5" fill="var(--blue)" font-weight="700">阶段③ 再平衡 / 踩踏风险</text>
+
+        <!-- 主线 -->
+        <line x1="30" y1="70" x2="660" y2="70" stroke="var(--line)" stroke-width="1"/>
+        <!-- 缺口曲线：先扩大后缩小 -->
+        <polyline points="30,65 110,55 180,48 250,42 330,38 420,35 490,38 560,45 630,62"
+          fill="none" stroke="var(--red)" stroke-width="2.5" stroke-linecap="round"/>
+        <text x="330" y="30" text-anchor="middle" font-size="9" fill="var(--red)" font-weight="700">缺口最大</text>
+
+        <!-- 时间刻度 -->
+        <line x1="30" y1="67" x2="30" y2="73" stroke="var(--muted)" stroke-width="0.8"/>
+        <text x="30" y="88" text-anchor="middle" font-size="8.5" fill="var(--muted)">2026Q1-Q2</text>
+
+        <line x1="160" y1="67" x2="160" y2="73" stroke="var(--muted)" stroke-width="0.8"/>
+        <text x="160" y="88" text-anchor="middle" font-size="8.5" fill="var(--muted)">2026H2</text>
+
+        <line x1="330" y1="67" x2="330" y2="73" stroke="var(--muted)" stroke-width="0.8"/>
+        <text x="330" y="88" text-anchor="middle" font-size="8.5" fill="var(--muted)">2027H1</text>
+
+        <line x1="500" y1="67" x2="500" y2="73" stroke="var(--muted)" stroke-width="0.8"/>
+        <text x="500" y="88" text-anchor="middle" font-size="8.5" fill="var(--muted)">2027H2</text>
+
+        <line x1="630" y1="67" x2="630" y2="73" stroke="var(--muted)" stroke-width="0.8"/>
+        <text x="630" y="88" text-anchor="middle" font-size="8.5" fill="var(--muted)">2028+</text>
+
+        <!-- 关键事件 -->
+        <circle cx="110" cy="48" r="4" fill="var(--red)"/>
+        <text x="110" y="42" text-anchor="middle" font-size="7.5" fill="var(--red)" font-weight="700">长飞Q1+226%<br/>藤仓确认涨价</text>
+
+        <circle cx="250" cy="42" r="4" fill="var(--red)"/>
+        <text x="250" y="35" text-anchor="middle" font-size="7.5" fill="var(--red)" font-weight="700">康宁-亚马逊<br/>数十亿美元</text>
+
+        <circle cx="420" cy="35" r="4" fill="var(--gold)"/>
+        <text x="420" y="28" text-anchor="middle" font-size="7.5" fill="var(--gold)" font-weight="700">亨通内蒙古基地<br/>康宁北卡扩产</text>
+
+        <circle cx="580" cy="50" r="4" fill="var(--blue)"/>
+        <text x="580" y="43" text-anchor="middle" font-size="7.5" fill="var(--blue)" font-weight="700">通鼎600t+远东1800t<br/>+亨通新产能释放</text>
+
+        <!-- 核心标注 -->
+        <text x="160" y="112" text-anchor="middle" font-size="11" font-weight="900" fill="var(--red)">
+          ← 18个月确定性红利窗口 →
+        </text>
+        <text x="565" y="115" text-anchor="middle" font-size="8.5" font-weight="700" fill="var(--red)">⚠ 产能踩踏风险</text>
+      </svg>
+    </div>
+
+    <!-- 主要产能项目 -->
+    <div style="font-size:13px;font-weight:900;color:var(--blue);margin-bottom:8px;">▸ 新增产能释放节奏</div>
+    <div style="background:#fff;border:1.5px solid var(--line);font-size:12.5px;margin-bottom:14px;">
+      <div style="display:grid;grid-template-columns:auto 1fr;border-bottom:1px solid var(--line);">
+        <div style="padding:7px 10px;background:rgba(7,27,92,0.04);font-weight:900;color:var(--muted);font-size:11px;border-right:1px solid var(--line);">时间</div>
+        <div style="padding:7px 10px;background:rgba(7,27,92,0.04);font-weight:900;color:var(--muted);font-size:11px;">项目与产能</div>
+      </div>
+      <div style="display:grid;grid-template-columns:auto 1fr;border-bottom:1px solid var(--line);">
+        <div style="padding:7px 10px;border-right:1px solid var(--line);font-weight:700;color:var(--red);white-space:nowrap;">2026Q1-Q2</div>
+        <div style="padding:7px 10px;">长飞Q1净利+226%，康宁-亚马逊数十亿$，藤仓确认全美云商客户下单</div>
+      </div>
+      <div style="display:grid;grid-template-columns:auto 1fr;border-bottom:1px solid var(--line);">
+        <div style="padding:7px 10px;border-right:1px solid var(--line);font-weight:700;color:var(--gold);white-space:nowrap;">2027</div>
+        <div style="padding:7px 10px;">亨通内蒙古基地、康宁北卡扩产；最早年末或有新增产能释放</div>
+      </div>
+      <div style="display:grid;grid-template-columns:auto 1fr;">
+        <div style="padding:7px 10px;border-right:1px solid var(--line);font-weight:700;color:var(--blue);white-space:nowrap;">2027末-2028</div>
+        <div style="padding:7px 10px;">通鼎600t + 远东1800t + 亨通新产能集中释放 → 供需再平衡</div>
+      </div>
+    </div>
+
+    <!-- 关键判断 -->
+    <div class="highlight-box" style="border-color:var(--gold);">
+      <div class="hl-title" style="color:var(--gold);">▸ 缓解节奏关键判断</div>
+      <div class="hl-body">
+        <span class="data-hl gold" style="font-size:14px;">2027年底前：18个月确定性红利窗口</span><br>
+        光棒自给率 &gt;90% 的企业（长飞/亨通/中天）全额享受涨价红利。<br><br>
+        <span class="data-hl">⚠️ 2028年风险</span><br>
+        通鼎+远东+其他跟进 → <b style="color:var(--red);">可能产能踩踏</b>，重现2018年过剩。
+      </div>
+    </div>
+
+    <div class="next-hint">👉 06/06 · 利润分配与投资标的</div>
+    <div class="foot">
+      <span class="brand">公众号：欧派呦呦鹿鸣</span>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════════
+     第 06 张：利润分配 · 收束
+     ════════════════════════════════════════════════════════ -->
+<div class="card" id="card6">
+  <div class="wm"><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span></div>
+  <div class="body">
+    <div class="nav-bar">
+      <span>利润分配</span>
+      <span class="page-num">06 / 06</span>
+      <span class="cat-tag">投资参考</span>
+    </div>
+
+    <div class="section-title blue">▎ 利润分配：涨价蛋糕怎么分？</div>
+
+    <!-- 倒金字塔利润结构 -->
+    <svg viewBox="0 0 680 320" style="width:100%;margin-bottom:14px;">
+      <defs>
+        <linearGradient id="fg1" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#c48b0d" stop-opacity="0.18"/>
+          <stop offset="100%" stop-color="#c48b0d" stop-opacity="0.02"/>
+        </linearGradient>
+        <linearGradient id="fg2" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#071b5c" stop-opacity="0.2"/>
+          <stop offset="100%" stop-color="#071b5c" stop-opacity="0.03"/>
+        </linearGradient>
+        <linearGradient id="fg3" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#f23a2e" stop-opacity="0.12"/>
+          <stop offset="100%" stop-color="#f23a2e" stop-opacity="0.02"/>
+        </linearGradient>
+        <linearGradient id="fg4" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#f23a2e" stop-opacity="0.1"/>
+          <stop offset="100%" stop-color="#f23a2e" stop-opacity="0.01"/>
+        </linearGradient>
+      </defs>
+
+      <!-- 第1层：上游四大原料 ★★★ -->
+      <polygon points="100,8 440,8 465,68 75,68" fill="url(#fg1)" stroke="var(--gold)" stroke-width="1.5"/>
+      <text x="16" y="36" text-anchor="start" font-size="16" fill="var(--gold)">💰</text>
+      <text x="270" y="36" text-anchor="middle" font-size="13" font-weight="900" fill="var(--gold)">① 上游四大原料 ★★★ 涨价传导弹性最大</text>
+      <text x="270" y="56" text-anchor="middle" font-size="11" fill="#444">毛利率16-51% · 9N SiCl₄三孚+275% / GeCl₄云南锗业+200% / 石英套+200% / 对位芳纶+418%</text>
+
+      <!-- 第2层：光棒 ★★★ -->
+      <polygon points="55,76 485,76 500,136 40,136" fill="url(#fg2)" stroke="var(--blue)" stroke-width="2"/>
+      <text x="18" y="103" text-anchor="start" font-size="18" fill="var(--red)">🔥</text>
+      <text x="270" y="98" text-anchor="middle" font-size="14" font-weight="900" fill="var(--blue)">② 光棒制造 ★★★ 占产业链70%利润</text>
+      <text x="270" y="116" text-anchor="middle" font-size="11" fill="#444">毛利率50-70% · 长飞/亨通/中天 · 有棒=吃肉，无棒=挨饿</text>
+      <text x="270" y="131" text-anchor="middle" font-size="10" fill="var(--red)" font-weight="700">三家企业光棒自给率均>90%，集中享受全链涨价</text>
+
+      <!-- 第3层：光纤拉丝 -->
+      <polygon points="30,144 510,144 522,192 18,192" fill="url(#fg3)" stroke="var(--red)" stroke-width="1.5"/>
+      <text x="270" y="167" text-anchor="middle" font-size="13" font-weight="900" fill="var(--red)">③ 光纤拉丝 ★★</text>
+      <text x="270" y="185" text-anchor="middle" font-size="11" fill="#444">毛利率20-30% · 拉丝效率决定利润，有棒者更有优势</text>
+
+      <!-- 第4层：光缆成缆 -->
+      <polygon points="10,200 530,200 540,256 0,256" fill="url(#fg4)" stroke="var(--red)" stroke-width="1.5"/>
+      <text x="7" y="232" text-anchor="start" font-size="16" fill="var(--red)">⚠️</text>
+      <text x="270" y="223" text-anchor="middle" font-size="13" font-weight="900" fill="var(--red)">④ 光缆成缆 ★ · 中小厂利润率仅3-5%</text>
+      <text x="270" y="241" text-anchor="middle" font-size="11" fill="#444">毛利率10-15% · 无光棒自给的中小厂沦为代工，利润率仅3-5%</text>
+
+      <!-- 底部说明 -->
+      <text x="270" y="278" text-anchor="middle" font-size="10" fill="var(--muted)">▲ 光棒是整条产业链的利润核心，掌握光棒=掌握定价权 ▲</text>
+    </svg>
+
+    <!-- 核心标的速览 -->
+    <div style="font-size:13px;font-weight:900;color:var(--blue);margin-bottom:8px;">▸ 核心标的速览</div>
+    <div class="target-grid">
+      <div class="target-card">
+        <div class="target-head">
+          <span style="font-size:15px;">①</span>
+          <span class="target-name">长飞光纤</span>
+          <span class="target-cat">全球光棒之王</span>
+        </div>
+        <div class="target-body">
+          光棒自给率 &gt;95%，A股光纤第一。<br>
+          <span style="color:var(--red);font-weight:900;">Q1净利 +226%</span>，Meta 4000-5000万芯公里长协。
+          <div class="target-tags">
+            <span class="target-tag pos">自给>95%</span>
+            <span class="target-tag pos">Q1+226%</span>
+          </div>
+        </div>
+      </div>
+      <div class="target-card">
+        <div class="target-head">
+          <span style="font-size:15px;">②</span>
+          <span class="target-name">亨通光电</span>
+          <span class="target-cat">光棒+海缆双驱动</span>
+        </div>
+        <div class="target-body">
+          光棒自给率 &gt;90%，北美出口份额持续提升。<br>
+          <span style="color:var(--red);font-weight:900;">A2/G.654.E高端产品发力</span>
+          <div class="target-tags">
+            <span class="target-tag pos">自给>90%</span>
+            <span class="target-tag gold">北美出口</span>
+          </div>
+        </div>
+      </div>
+      <div class="target-card">
+        <div class="target-head">
+          <span style="font-size:15px;">③</span>
+          <span class="target-name">中天科技</span>
+          <span class="target-cat">CSP份额第一</span>
+        </div>
+        <div class="target-body">
+          <span style="color:var(--red);font-weight:900;">CSP 15.18亿中标</span>，国内市场份额 &gt;50%。<br>
+          光棒自给，全链垂直整合。
+          <div class="target-tags">
+            <span class="target-tag pos">CSP 15.18亿</span>
+            <span class="target-tag pos">份额>50%</span>
+          </div>
+        </div>
+      </div>
+      <div class="target-card">
+        <div class="target-head">
+          <span style="font-size:15px;">④</span>
+          <span class="target-name">三孚股份</span>
+          <span class="target-cat">9N SiCl₄唯一外供</span>
+        </div>
+        <div class="target-body">
+          国内唯一<br><span style="color:var(--gold);font-weight:900;">外供9N高纯四氯化硅</span>企业。<br>
+          股价 <span style="color:var(--red);font-weight:900;">+275%</span>
+          <div class="target-tags">
+            <span class="target-tag gold">唯一外供</span>
+            <span class="target-tag pos">+275%</span>
+          </div>
+        </div>
+      </div>
+      <div class="target-card">
+        <div class="target-head">
+          <span style="font-size:15px;">⑤</span>
+          <span class="target-name">云南锗业</span>
+          <span class="target-cat">GeCl₄寡头</span>
+        </div>
+        <div class="target-body">
+          四氯化锗国内市占率 <span style="color:var(--gold);font-weight:900;">40%+</span>，<br>
+          光棒关键掺杂剂供应商。<br>
+          股价 <span style="color:var(--red);font-weight:900;">+200%</span>
+          <div class="target-tags">
+            <span class="target-tag gold">市占40%+</span>
+            <span class="target-tag pos">+200%</span>
+          </div>
+        </div>
+      </div>
+      <div class="target-card">
+        <div class="target-head">
+          <span style="font-size:15px;">⑥</span>
+          <span class="target-name">通鼎互联</span>
+          <span class="target-cat">A2专项扩产先锋</span>
+        </div>
+        <div class="target-body">
+          行业首个<br><span style="color:var(--gold);font-weight:900;">A2光纤专项扩产</span>（2026.05公告）。<br>
+          600t光棒产能规划中。
+          <div class="target-tags">
+            <span class="target-tag gold">A2专项</span>
+            <span class="target-tag pos">600t规划</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 受损方警示 -->
+    <div class="risk-grid">
+      <div class="risk-item">
+        <b>⚠️ 中小光缆厂受损</b>
+        无光棒自给能力，代工利润率仅3-5%。光棒涨价→光缆成本飙升→利润归零。
+      </div>
+      <div class="risk-item">
+        <b>⚠️ 2028产能踩踏风险</b>
+        通鼎+远东+其他跟进扩产，若AI需求节奏放缓，重现2018年供给过剩困境。
+      </div>
+    </div>
+
+    <!-- 收束大字 -->
+    <div class="closing-bar">
+      A2光纤涨价550%不是周期性波动，<br>
+      是AI重构光通信需求的结构性信号。<br>
+      AI数据中心需要的不是普通光纤，而是能绕指柔的A2——<br>
+      全球不超过10家企业能稳定量产。<br>
+      2027年底前18个月确定性红利，<br>
+      2028年产能踩踏是悬在头顶的达摩克利斯之剑。
+    </div>
+
+    <div class="foot">
+      <span class="brand">公众号：欧派呦呦鹿鸣</span>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
