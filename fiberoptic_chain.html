@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>光纤产业链拆解：AI算力驱动下的涨价链条</title>
+  <style>
+    :root {
+      --paper: #f8f8f5;
+      --ink: #050505;
+      --muted: #666;
+      --line: #bdbdbd;
+      --blue: #071b5c;
+      --red: #f23a2e;
+      --green: #37a833;
+      --amber: #b85c00;
+      --soft-blue: #e9f0ff;
+      --soft-red: #fff0ee;
+      --soft-gray: #f3f3f1;
+      --amber-soft: #fff7ee;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: #deded8;
+      color: var(--ink);
+      font-family: "Songti SC", "Noto Serif CJK SC", "SimSun", "Times New Roman", serif;
+    }
+
+    .page {
+      position: relative;
+      width: 1024px;
+      min-height: 1536px;
+      margin: 0 auto;
+      padding: 26px 28px 32px;
+      background:
+        radial-gradient(circle at 50% 18%, rgba(255,255,255,0.92), rgba(248,248,245,0.96) 48%, rgba(226,226,218,0.45) 100%),
+        linear-gradient(90deg, rgba(0,0,0,0.018) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(0,0,0,0.014) 1px, transparent 1px),
+        var(--paper);
+      background-size: auto, 18px 18px, 18px 18px, auto;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.22);
+    }
+
+    .page::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background-image: repeating-linear-gradient(
+        -25deg,
+        transparent 0, transparent 138px,
+        rgba(120,120,120,0.07) 139px, rgba(120,120,120,0.07) 141px,
+        transparent 142px, transparent 220px
+      );
+      opacity: 0.45;
+      z-index: 1;
+    }
+
+    .watermarks {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      opacity: 0.09;
+      color: #777;
+      font-size: 22px;
+      font-weight: 700;
+      transform: rotate(-25deg);
+    }
+
+    .watermarks span { position: absolute; white-space: nowrap; }
+
+    .content { position: relative; z-index: 3; }
+
+    .topline {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 13px;
+      color: #555;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .topline .dot {
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: #999;
+      display: inline-block;
+    }
+
+    h1 {
+      margin: 16px 0 6px;
+      text-align: center;
+      font-size: 40px;
+      line-height: 1.12;
+      font-weight: 900;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 16px;
+      color: #444;
+      margin-bottom: 16px;
+      line-height: 1.55;
+    }
+
+    .main-rule { height: 2px; background: #000; margin: 0 0 14px; }
+
+    .conclusion-bar {
+      background: var(--blue);
+      color: #fff;
+      padding: 11px 18px;
+      font-size: 15px;
+      line-height: 1.6;
+      margin-bottom: 14px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .conclusion-bar .label {
+      white-space: nowrap;
+      font-weight: 900;
+      font-size: 13px;
+      background: rgba(255,255,255,0.18);
+      padding: 2px 8px;
+      border-radius: 3px;
+      margin-top: 1px;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 900;
+      margin: 14px 0 8px;
+      padding-left: 10px;
+      border-left: 4px solid var(--blue);
+      line-height: 1.2;
+      color: var(--ink);
+    }
+
+    .section-title.red   { border-left-color: var(--red); }
+    .section-title.amber { border-left-color: var(--amber); }
+    .section-title.green { border-left-color: var(--green); }
+
+    .chain-flow {
+      display: flex;
+      align-items: stretch;
+      margin: 0 0 14px;
+      background: #fff;
+      border: 1.5px solid var(--line);
+    }
+
+    .chain-node {
+      flex: 1;
+      text-align: center;
+      padding: 9px 6px;
+      border-right: 1px solid var(--line);
+      font-size: 13.5px;
+      font-weight: 700;
+      line-height: 1.4;
+      color: var(--ink);
+    }
+
+    .chain-node:last-child { border-right: none; }
+
+    .chain-node.highlight-blue {
+      background: var(--soft-blue);
+      color: var(--blue);
+    }
+
+    .chain-node.highlight-red {
+      background: var(--soft-red);
+      color: var(--red);
+    }
+
+    .chain-node.highlight-amber {
+      background: var(--amber-soft);
+      color: var(--amber);
+    }
+
+    .chain-node sub {
+      display: block;
+      font-size: 11px;
+      font-weight: 400;
+      color: #666;
+      margin-top: 2px;
+    }
+
+    .chain-arrow {
+      display: flex;
+      align-items: center;
+      padding: 0 2px;
+      font-size: 18px;
+      color: #bbb;
+      flex-shrink: 0;
+    }
+
+    .logic-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .logic-card {
+      position: relative;
+      border: 2px solid var(--blue);
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    .logic-card.amber { border-color: var(--amber); color: var(--amber); }
+    .logic-card.red   { border-color: var(--red);   color: var(--red); }
+    .logic-card       { color: var(--blue); }
+
+    .logic-card::before, .logic-card::after {
+      content: "";
+      position: absolute;
+      width: 20px; height: 20px;
+      background: var(--paper);
+      z-index: 2;
+    }
+
+    .logic-card::before {
+      top: -2px; left: -2px;
+      border-right: 2px solid currentColor;
+      border-bottom: 2px solid currentColor;
+      border-bottom-right-radius: 12px;
+    }
+
+    .logic-card::after {
+      right: -2px; bottom: -2px;
+      border-left: 2px solid currentColor;
+      border-top: 2px solid currentColor;
+      border-top-left-radius: 12px;
+    }
+
+    .logic-head {
+      padding: 9px 12px 7px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logic-icon { font-size: 22px; line-height: 1; }
+
+    .logic-head-text strong {
+      display: block;
+      font-size: 14.5px;
+      font-weight: 900;
+      color: currentColor;
+    }
+
+    .logic-head-text small { font-size: 12px; color: #555; }
+
+    .logic-body {
+      padding: 9px 12px 10px;
+      font-size: 13.5px;
+      line-height: 1.55;
+      color: #111;
+    }
+
+    .logic-keydata {
+      margin-top: 7px;
+      padding: 6px 9px;
+      background: rgba(0,0,0,0.03);
+      border-left: 3px solid currentColor;
+      font-size: 12.5px;
+      line-height: 1.5;
+      color: #222;
+    }
+
+    .logic-keydata .src {
+      font-size: 11px;
+      color: #888;
+      margin-top: 4px;
+      font-style: italic;
+    }
+
+    .flywheel-box {
+      background: #fff;
+      border: 1.5px solid var(--line);
+      padding: 10px 16px 12px;
+      margin-bottom: 14px;
+    }
+
+    .flywheel-title {
+      font-size: 13px;
+      font-weight: 900;
+      color: var(--amber);
+      margin-bottom: 8px;
+    }
+
+    .flywheel {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: nowrap;
+    }
+
+    .fw-node {
+      background: #fff;
+      border: 1.5px solid var(--blue);
+      color: var(--blue);
+      padding: 7px 10px;
+      font-size: 12.5px;
+      font-weight: 900;
+      text-align: center;
+      min-width: 98px;
+      line-height: 1.35;
+    }
+
+    .fw-node.red   { border-color: var(--red);   color: var(--red); }
+    .fw-node.amber { border-color: var(--amber);  color: var(--amber); }
+    .fw-node.green { border-color: var(--green);  color: var(--green); }
+    .fw-node.gray  { border-color: #666;           color: #333; }
+
+    .fw-arrow { font-size: 18px; color: #bbb; padding: 0 3px; flex-shrink: 0; }
+
+    .flywheel-note {
+      font-size: 12px;
+      color: #777;
+      text-align: center;
+      margin-top: 6px;
+      font-style: italic;
+    }
+
+    .price-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border: 1.5px solid var(--line);
+      margin-bottom: 14px;
+      font-size: 13.5px;
+    }
+
+    .price-table th,
+    .price-table td {
+      border: 1px solid var(--line);
+      padding: 7px 10px;
+      vertical-align: middle;
+      line-height: 1.35;
+    }
+
+    .price-table thead tr { background: rgba(7,27,92,0.05); }
+
+    .price-table th { font-weight: 900; font-size: 13px; }
+
+    .price-table .price-val {
+      font-weight: 900;
+      color: var(--red);
+      font-size: 15px;
+    }
+
+    .price-table .change-val {
+      font-weight: 700;
+      color: var(--red);
+    }
+
+    .price-table .src-note {
+      font-size: 11.5px;
+      color: #888;
+      font-style: italic;
+    }
+
+    .status-tag {
+      display: inline-block;
+      padding: 1px 7px;
+      font-size: 12px;
+      font-weight: 700;
+      border-radius: 3px;
+    }
+
+    .status-tag.tight  { background: #ffeaea; color: var(--red); }
+    .status-tag.scarce { background: var(--amber-soft); color: var(--amber); }
+
+    .target-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .target-card {
+      border: 1.5px solid var(--line);
+      background: #fff;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    }
+
+    .target-head {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 10px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(0,0,0,0.02);
+    }
+
+    .target-badge { font-size: 16px; line-height: 1; }
+
+    .target-name {
+      font-size: 15px;
+      font-weight: 900;
+      color: var(--blue);
+    }
+
+    .target-cat {
+      font-size: 11.5px;
+      color: #666;
+      margin-left: auto;
+    }
+
+    .target-body {
+      padding: 7px 10px 9px;
+      font-size: 13px;
+      line-height: 1.55;
+      color: #222;
+    }
+
+    .target-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 6px;
+    }
+
+    .target-tag {
+      font-size: 11.5px;
+      padding: 1px 7px;
+      border-radius: 2px;
+      font-weight: 700;
+    }
+
+    .target-tag.pos   { background: var(--soft-blue); color: var(--blue); }
+    .target-tag.risk  { background: var(--soft-red);  color: var(--red); }
+    .target-tag.amber { background: var(--amber-soft); color: var(--amber); }
+
+    .risk-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .risk-item {
+      background: var(--soft-red);
+      border-left: 3px solid var(--red);
+      padding: 7px 10px;
+      font-size: 13px;
+      line-height: 1.4;
+      color: #222;
+    }
+
+    .risk-item b {
+      color: var(--red);
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .footnote {
+      margin-top: 14px;
+      padding-top: 8px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #888;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="page">
+
+  <div class="watermarks">
+    <span style="top:110px;left:60px">光纤产业链研究</span>
+    <span style="top:380px;left:290px">光纤产业链研究</span>
+    <span style="top:640px;left:70px">光纤产业链研究</span>
+    <span style="top:900px;left:350px">光纤产业链研究</span>
+  </div>
+
+  <div class="content">
+
+    <div class="topline">
+      <span>产业链研究</span>
+      <span class="dot"></span>
+      <span>2026</span>
+      <span class="dot"></span>
+      <span>AI 算力材料</span>
+      <span class="dot"></span>
+      <span>光纤 / 光棒</span>
+    </div>
+
+    <h1>光纤产业链拆解<br>AI算力驱动下的涨价链条</h1>
+
+    <div class="subtitle">
+      AI数据中心+FTTH双轮驱动，光棒扩产18个月真空期<br>
+      全球缺口1.8亿芯公里，光棒占产业链70%利润
+    </div>
+
+    <div class="main-rule"></div>
+
+    <div class="conclusion-bar">
+      <span class="label">核心结论</span>
+      <span>
+        A2光棒22→160元/芯公里（+550%），G.657.A2光纤35→240元（+585%）。
+        核心驱动：AI数据中心+FTTH双轮需求，光棒扩产周期18-24个月，设备交期至2028年。有棒=吃肉，无棒=挨饿。
+      </span>
+    </div>
+
+    <!-- 产业链路径 -->
+    <div class="section-title">▎ 产业链路径</div>
+
+    <div class="chain-flow">
+      <div class="chain-node highlight-amber">
+        上游原料
+        <sub>四氯化硅/锗/石英<br>芳纶/涂料</sub>
+      </div>
+      <div class="chain-arrow">→</div>
+      <div class="chain-node highlight-red">
+        光棒制造 ⚡
+        <sub>A2预制棒核心环节<br>占产业链70%利润</sub>
+      </div>
+      <div class="chain-arrow">→</div>
+      <div class="chain-node highlight-blue">
+        光纤拉丝
+        <sub>毛利率20-30%<br>长飞/亨通/中天</sub>
+      </div>
+      <div class="chain-arrow">→</div>
+      <div class="chain-node">
+        光缆成缆
+        <sub>毛利率10-15%<br>大量中小厂商</sub>
+      </div>
+      <div class="chain-arrow">→</div>
+      <div class="chain-node highlight-red">
+        AI数据中心 / FTTH
+        <sub>超大规模CSP<br>千兆入户建设</sub>
+      </div>
+    </div>
+
+    <!-- 三大逻辑 -->
+    <div class="section-title">▎ 三大涨价逻辑</div>
+
+    <div class="logic-grid">
+
+      <div class="logic-card">
+        <div class="logic-head">
+          <div class="logic-icon">⏳</div>
+          <div class="logic-head-text">
+            <strong>逻辑一：18个月扩产真空</strong>
+            <small>物理瓶颈不可压缩</small>
+          </div>
+        </div>
+        <div class="logic-body">
+          环保审批→设备采购→厂房基建→调试验证，<span style="font-weight:900;color:var(--blue)">完整扩产周期18-24个月</span>。光棒产能利用率已超95%，新产能最早2027年底落地。
+          <div class="logic-keydata">
+            📌 光棒沉积设备主要来自日本，交期排至<b>2028下半年</b><br>
+            📌 A2全球稳定量产企业<b>不超过10家</b><br>
+            📌 2026年宣布新增产能，最早<b>2027年末</b>才能落地<br>
+            📌 2027年全球缺口率约<b>9.24%</b>
+          
+          </div>
+        </div>
+      </div>
+
+      <div class="logic-card amber">
+        <div class="logic-head">
+          <div class="logic-icon">⚡</div>
+          <div class="logic-head-text">
+            <strong>逻辑二：A2独立叙事</strong>
+            <small>比普通光棒多涨150%</small>
+          </div>
+        </div>
+        <div class="logic-body">
+          A2(G.657)抗弯曲光棒是AI数据中心刚需，但技术要求远超普通G.652<span style="font-weight:900;color:var(--amber)">——弯曲半径7.5mm vs 30mm、拉丝速度低10-15%、良率低5-10pp</span>。
+          <div class="logic-keydata">
+            📌 A2光棒 <b>22-30→160元</b>（+550%），普通棒<b>涨约220%</b><br>
+            📌 G.657.A2光纤 <b>35→240+元</b>（+585%）<br>
+            📌 CSP集采单芯净利超<b>120元</b>（中天中标15.18亿）<br>
+            📌 A2不是"子集涨价"而是独立供需失衡故事
+          
+          </div>
+        </div>
+      </div>
+
+      <div class="logic-card red">
+        <div class="logic-head">
+          <div class="logic-icon">🚀</div>
+          <div class="logic-head-text">
+            <strong>逻辑三：AI+FTTH双轮驱动</strong>
+            <small>需求从运营商转向数据中心</small>
+          </div>
+        </div>
+        <div class="logic-body">
+          AI数据中心光纤占比从12%→27%——行业驱动逻辑质变。<span style="font-weight:900;color:var(--red)">万卡GPU集群光纤用量10-50万芯公里，加美国千兆入户覆盖超60%家庭</span>。
+          <div class="logic-keydata">
+            📌 全球光纤缺口<b>1.8亿芯公里</b>，缺口率22.5%<br>
+            📌 2027年AI数据中心占比<b>27.49%</b>（质变信号）<br>
+            📌 康宁-Meta签4000-5000万芯公里长协（单价<b>+50%</b>）<br>
+            📌 CSP国内需求约5000万芯公里（同比<b>翻10倍</b>）
+          
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 涨价机制流图 -->
+    <div class="flywheel-box">
+      <div class="flywheel-title">▶ 涨价传导机制</div>
+      <div class="flywheel">
+        <div class="fw-node red">AI数据中心<br>需求爆发↑</div>
+        <div class="fw-arrow">→</div>
+        <div class="fw-node amber">A2光棒产能<br>严重不足</div>
+        <div class="fw-arrow">→</div>
+        <div class="fw-node gray">转产普通棒<br>A2扩产受限</div>
+        <div class="fw-arrow">→</div>
+        <div class="fw-node red">A2光棒<br>+550%暴涨</div>
+        <div class="fw-arrow">→</div>
+        <div class="fw-node amber">A2光纤<br>+585%传导</div>
+        <div class="fw-arrow">→</div>
+        <div class="fw-node green">光棒利润<br>集中放大</div>
+      </div>
+      <div class="flywheel-note">设备交期至2028年→2027年底前无新增A2产能→18个月确定性红利窗口</div>
+    </div>
+
+    <!-- 价格追踪 -->
+    <div class="section-title red">▎ 各环节价格参考（截至2026年6月）</div>
+
+    <table class="price-table">
+      <thead>
+        <tr>
+          <th style="width:18%">品类</th>
+          <th style="width:22%">年初价格 → 当前价格</th>
+          <th style="width:14%">涨幅</th>
+          <th style="width:20%">供需状态</th>
+          <th style="width:26%">驱动因素</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>A2类光棒</b></td>
+          <td class="price-val">22-30 → 160 元/芯公里</td>
+          <td class="change-val">+550%</td>
+          <td><span class="status-tag scarce">供给刚性</span></td>
+          <td class="src-note">AI刚需，全球≤10家量产</td>
+        </tr>
+        <tr>
+          <td><b>G.657.A2光纤</b></td>
+          <td class="price-val">~35 → 240+ 元/芯公里</td>
+          <td class="change-val">+585%</td>
+          <td><span class="status-tag tight">严重偏紧</span></td>
+          <td class="src-note">抗弯曲光纤刚需，CSP需求翻10倍</td>
+        </tr>
+        <tr>
+          <td><b>G.652.D散纤</b></td>
+          <td class="price-val">~20 → 94 元/芯公里</td>
+          <td class="change-val">+400%</td>
+          <td><span class="status-tag tight">偏紧</span></td>
+          <td class="src-note">运营商集采+出口拉动</td>
+        </tr>
+        <tr>
+          <td><b>北美长协价</b></td>
+          <td class="price-val">11-12 → 18 美元/芯公里</td>
+          <td class="change-val">+50%+</td>
+          <td><span class="status-tag scarce">长协锁量</span></td>
+          <td class="src-note">康宁-亚马逊/康宁-Meta长协</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- 核心关注公司 -->
+    <div class="section-title">▎ 核心关注公司（光棒四龙头）</div>
+
+    <div class="target-section">
+
+      <div class="target-card">
+        <div class="target-head">
+          <div class="target-badge">👑</div>
+          <div class="target-name">长飞光纤</div>
+          <div class="target-cat">光棒自给>95%</div>
+        </div>
+        <div class="target-body">
+          全球光纤龙头，PCVD+VAD+OVD全技术路线覆盖，与Meta签4000-5000万芯公里长协，海外订单排至2028年。Q1净利+226%。
+          <div class="target-tags">
+            <span class="target-tag pos">定位：绝对龙头</span>
+            <span class="target-tag pos">受益点：全链涨价</span>
+            <span class="target-tag amber">美股对标：康宁</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="target-card">
+        <div class="target-head">
+          <div class="target-badge">👑</div>
+          <div class="target-name">亨通光电</div>
+          <div class="target-cat">光棒自给>90%</div>
+        </div>
+        <div class="target-body">
+          特种A2光纤批量供货北美算力企业，海外收入超40%。内蒙古绿色光棒基地已开工，Q1净利+98.5%。G.657量产能力领先。
+          <div class="target-tags">
+            <span class="target-tag pos">定位：北美出海</span>
+            <span class="target-tag pos">受益点：A2弹性</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="target-card">
+        <div class="target-head">
+          <div class="target-badge">👑</div>
+          <div class="target-name">中天科技</div>
+          <div class="target-cat">光棒自给>90%</div>
+        </div>
+        <div class="target-body">
+          中标国内某互联网企业FY27集采15.18亿元（含税），份额>50%，单芯净利>120元。A2市占率30-40%，CSP集采份额领跑。
+          <div class="target-tags">
+            <span class="target-tag pos">定位：CSP集采冠军</span>
+            <span class="target-tag pos">受益点：份额+利润双升</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 上游原料 -->
+    <div style="font-size:12.5px;color:#666;margin-bottom:6px;padding-left:2px">▸ 上游核心原料（涨价传导最强环节）</div>
+    <div class="target-section">
+
+      <div class="target-card">
+        <div class="target-head">
+          <div class="target-badge">💎</div>
+          <div class="target-name">三孚股份</div>
+          <div class="target-cat">9N四氯化硅</div>
+        </div>
+        <div class="target-body">
+          国内唯一对外供货的9N级高纯四氯化硅龙头。1吨光棒耗3吨四氯化硅，价格1.2万→4.5万/吨（+275%），海外三巨头自用停外销。
+          <div class="target-tags">
+            <span class="target-tag pos">定位：国内唯一</span>
+            <span class="target-tag pos">受益点：量价齐升</span>
+            <span class="target-tag amber">风险：下游验证进度</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="target-card">
+        <div class="target-head">
+          <div class="target-badge">💎</div>
+          <div class="target-name">云南锗业</div>
+          <div class="target-cat">6N四氯化锗</div>
+        </div>
+        <div class="target-body">
+          G.654.E光纤必用掺杂剂，提高折射率降低损耗。国内市占40%+，春节前已涨1-2倍。中国出口管制致海外断粮。
+          <div class="target-tags">
+            <span class="target-tag pos">定位：战略稀缺</span>
+            <span class="target-tag pos">受益点：出口管制红利</span>
+            <span class="target-tag risk">风险：管制政策变化</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="target-card">
+        <div class="target-head">
+          <div class="target-badge">💎</div>
+          <div class="target-name">石英股份</div>
+          <div class="target-cat">高纯石英套管</div>
+        </div>
+        <div class="target-body">
+          光纤光棒包层套管国内市占80%，价格3.2万→9万+/吨（+200%）。尤尼明/TQC垄断高端矿源，国产替代唯一标的。
+          <div class="target-tags">
+            <span class="target-tag pos">定位：进口替代</span>
+            <span class="target-tag pos">受益点：价差收窄</span>
+            <span class="target-tag risk">风险：矿源品质</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 风险提示 -->
+    <div class="section-title red">▎ 风险提示</div>
+    <div class="risk-grid">
+      <div class="risk-item">
+        <b>① 2028年产能踩踏</b>
+        2028年产能集中释放，A2溢价或从550%收窄至200-300%。
+      </div>
+      <div class="risk-item">
+        <b>② CPO共封装替代</b>
+        CPO共封装减少光纤需求，技术成熟后或冲击用量。
+      </div>
+      <div class="risk-item">
+        <b>③ 运营商集采压价</b>
+        长协锁价压制现货弹性；电信集采价远低于散纤价。
+      </div>
+    </div>
+
+    <div class="footnote">
+      <span>来源：产业链调研/公司公告</span>
+      <span>光纤产业链研究 · 2026</span>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>
