@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>电子布·AI算力链涨价信息图谱</title>
+<style>
+/* ============================================================
+   报纸质感信息图 · CSS 框架
+   ============================================================ */
+:root {
+  --paper: #f8f8f5;
+  --ink: #050505;
+  --muted: #666;
+  --line: #bdbdbd;
+  --blue: #071b5c;
+  --red: #f23a2e;
+  --green: #37a833;
+  --amber: #b85c00;
+  --soft-blue: #e9f0ff;
+  --soft-red: #fff0ee;
+  --soft-gray: #f3f3f1;
+  --amber-soft: #fff7ee;
+  --orange: #cc5500;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: #deded8; color: var(--ink); font-family: "Songti SC","Noto Serif CJK SC","SimSun","Times New Roman",serif; }
+.page { position: relative; margin: 0 auto; padding: 28px 30px 34px; background: radial-gradient(circle at 50% 18%, rgba(255,255,255,0.92), rgba(248,248,245,0.96) 48%, rgba(226,226,218,0.45) 100%), linear-gradient(90deg, rgba(0,0,0,0.018) 1px, transparent 1px), linear-gradient(0deg, rgba(0,0,0,0.014) 1px, transparent 1px), var(--paper); background-size: auto, 18px 18px, 18px 18px, auto; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.22); }
+.page.portrait { width: 1024px; }
+.page::before { content: ""; position: absolute; inset: 0; pointer-events: none; background-image: repeating-linear-gradient(-25deg, transparent 0, transparent 138px, rgba(120,120,120,0.07) 139px, rgba(120,120,120,0.07) 141px, transparent 142px, transparent 220px); opacity: 0.45; z-index: 1; }
+.watermarks { position: absolute; inset: 0; z-index: 2; pointer-events: none; opacity: 0.08; color: #666; font-size: 22px; font-weight: 700; transform: rotate(-25deg); }
+.watermarks span { position: absolute; white-space: nowrap; }
+.content { position: relative; z-index: 3; }
+.topline { display: flex; align-items: center; gap: 14px; font-size: 13px; color: #555; letter-spacing: 0.5px; text-transform: uppercase; }
+.topline .dot { width: 4px; height: 4px; border-radius: 50%; background: #999; display: inline-block; }
+.topline .tag-pill { display: inline-block; padding: 1px 8px; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; border: 1px solid #aaa; }
+h1 { margin: 16px 0 6px; text-align: center; font-size: 40px; line-height: 1.12; font-weight: 900; }
+.subtitle { text-align: center; font-size: 16px; color: #444; margin-bottom: 16px; line-height: 1.55; }
+.main-rule { height: 2px; background: #000; margin: 0 0 14px; }
+.section-title { font-size: 16px; font-weight: 900; margin: 14px 0 8px; padding-left: 10px; border-left: 4px solid var(--blue); line-height: 1.2; color: var(--ink); }
+.section-title.red { border-left-color: var(--red); }
+.section-title.amber { border-left-color: var(--amber); }
+.section-title.green { border-left-color: var(--green); }
+.section-title.blue { border-left-color: var(--blue); }
+.triple-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+.corner-card { position: relative; border: 2px solid var(--line); background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.corner-card.blue { border-color: var(--blue); color: var(--blue); }
+.corner-card.orange { border-color: var(--orange); color: var(--orange); }
+.corner-card.red { border-color: var(--red); color: var(--red); }
+.corner-card.amber { border-color: var(--amber); color: var(--amber); }
+.corner-card::before, .corner-card::after { content: ""; position: absolute; width: 20px; height: 20px; background: var(--paper); z-index: 2; }
+.corner-card::before { top: -2px; left: -2px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; border-bottom-right-radius: 12px; }
+.corner-card::after { right: -2px; bottom: -2px; border-left: 2px solid currentColor; border-top: 2px solid currentColor; border-top-left-radius: 12px; }
+.conclusion-bar { background: var(--blue); color: #fff; padding: 11px 18px; font-size: 15px; line-height: 1.6; margin-bottom: 14px; display: flex; gap: 12px; align-items: flex-start; }
+.conclusion-bar .label { white-space: nowrap; font-weight: 900; font-size: 13px; background: rgba(255,255,255,0.18); padding: 2px 8px; border-radius: 3px; margin-top: 1px; }
+.chain-flow { display: flex; align-items: stretch; margin: 0 0 14px; background: #fff; border: 1.5px solid var(--line); }
+.chain-node { flex: 1; text-align: center; padding: 8px 5px; border-right: 1px solid var(--line); font-size: 13px; font-weight: 700; line-height: 1.4; color: var(--ink); }
+.chain-node:last-child { border-right: none; }
+.chain-node.highlight-blue { background: var(--soft-blue); color: var(--blue); }
+.chain-node.highlight-red { background: var(--soft-red); color: var(--red); }
+.chain-node.highlight-amber { background: var(--amber-soft); color: var(--amber); }
+.chain-node sub { display: block; font-size: 10.5px; font-weight: 400; color: #666; margin-top: 2px; }
+.chain-arrow { display: flex; align-items: center; padding: 0 1px; font-size: 18px; color: #bbb; flex-shrink: 0; }
+.price-table { width: 100%; border-collapse: collapse; background: #fff; border: 1.5px solid var(--line); margin-bottom: 14px; font-size: 13.5px; }
+.price-table th, .price-table td { border: 1px solid var(--line); padding: 7px 10px; vertical-align: middle; line-height: 1.35; }
+.price-table thead tr { background: rgba(7,27,92,0.05); }
+.price-table th { font-weight: 900; font-size: 13px; }
+.price-table .price-val { font-weight: 900; color: var(--red); font-size: 15px; }
+.price-table .change-val { font-weight: 700; color: var(--red); }
+.status-tag { display: inline-block; padding: 1px 7px; font-size: 12px; font-weight: 700; border-radius: 3px; }
+.status-tag.tight { background: #ffeaea; color: var(--red); }
+.status-tag.scarce { background: var(--amber-soft); color: var(--amber); }
+.target-section { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+.target-card { border: 1.5px solid var(--line); background: #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.04); }
+.target-head { display: flex; align-items: center; gap: 6px; padding: 6px 9px; border-bottom: 1px solid var(--line); background: rgba(0,0,0,0.02); }
+.target-badge { font-size: 14px; line-height: 1; }
+.target-name { font-size: 14px; font-weight: 900; color: var(--blue); }
+.target-cat { font-size: 10.5px; color: #666; margin-left: auto; }
+.target-body { padding: 6px 9px 8px; font-size: 12.5px; line-height: 1.5; color: #222; }
+.target-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 5px; }
+.target-tag { font-size: 11px; padding: 1px 6px; border-radius: 2px; font-weight: 700; }
+.target-tag.pos { background: var(--soft-blue); color: var(--blue); }
+.target-tag.risk { background: var(--soft-red); color: var(--red); }
+.target-tag.amber { background: var(--amber-soft); color: var(--amber); }
+.flywheel-box { background: #fff; border: 1.5px solid var(--line); padding: 10px 16px 12px; margin-bottom: 14px; }
+.flywheel-title { font-size: 13px; font-weight: 900; color: var(--amber); margin-bottom: 8px; }
+.flywheel { display: flex; align-items: center; justify-content: center; flex-wrap: nowrap; }
+.fw-node { background: #fff; border: 1.5px solid var(--blue); color: var(--blue); padding: 7px 10px; font-size: 12.5px; font-weight: 900; text-align: center; min-width: 90px; line-height: 1.35; }
+.fw-node.red { border-color: var(--red); color: var(--red); }
+.fw-node.amber { border-color: var(--amber); color: var(--amber); }
+.fw-node.green { border-color: var(--green); color: var(--green); }
+.fw-node.gray { border-color: #666; color: #333; }
+.fw-arrow { font-size: 18px; color: #bbb; padding: 0 3px; flex-shrink: 0; }
+.timeline-box { background: #fff; border: 1.5px solid var(--line); padding: 10px 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.03); margin-bottom: 14px; }
+.tl-labels { display: flex; justify-content: space-between; font-size: 9px; color: var(--muted); margin-bottom: 3px; padding: 0 2px; }
+.tl-svg { width: 100%; }
+.tl-legend { display: flex; gap: 14px; margin-top: 4px; justify-content: center; }
+.tl-legend-item { font-size: 10px; display: flex; align-items: center; gap: 4px; }
+.tl-legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+.summary-bar { margin-top: 6px; text-align: center; font-size: 11px; font-weight: 700; color: var(--blue); padding: 5px; background: var(--soft-blue); border: 1px solid rgba(7,27,92,0.15); }
+.footnote { margin-top: 14px; padding-top: 8px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; font-size: 12px; color: #888; }
+.risk-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+.risk-item { background: var(--soft-red); border-left: 3px solid var(--red); padding: 7px 10px; font-size: 13px; line-height: 1.4; color: #222; }
+.risk-item b { color: var(--red); display: block; margin-bottom: 2px; }
+
+/* ─── 自定义组件 ─── */
+.big-num { font-size: 34px; font-weight: 900; line-height: 1; }
+.big-num.red { color: var(--red); }
+.big-num.blue { color: var(--blue); }
+.big-num.amber { color: var(--amber); }
+.data-highlight { background: rgba(242,58,46,0.08); padding: 1px 4px; font-weight: 700; color: var(--red); border-radius: 2px; }
+.data-highlight.amber { background: rgba(184,92,0,0.08); color: var(--amber); }
+.data-highlight.blue { background: rgba(7,27,92,0.06); color: var(--blue); }
+.tagline-bar { background: #fff; border: 2px solid var(--red); padding: 12px 20px; text-align: center; font-size: 20px; font-weight: 900; color: var(--red); margin-bottom: 14px; letter-spacing: 1px; }
+.oneliner-box { background: var(--soft-blue); border-left: 4px solid var(--blue); padding: 9px 14px; font-size: 14px; line-height: 1.55; color: var(--blue); font-weight: 700; margin-bottom: 14px; }
+.demand-stack { display: flex; flex-direction: column; gap: 6px; }
+.demand-item { background: #fff; border: 1.5px solid var(--orange); border-left: 5px solid var(--orange); padding: 8px 12px; font-size: 13px; line-height: 1.5; color: #222; }
+.demand-item b { color: var(--orange); }
+.supply-item { background: #fff; border: 1.5px solid var(--red); border-left: 5px solid var(--red); padding: 8px 12px; font-size: 13px; line-height: 1.5; color: #222; }
+.supply-item b { color: var(--red); }
+.gap-banner { background: linear-gradient(90deg, var(--soft-red) 0%, #ffe8e5 50%, var(--soft-red) 100%); border: 2px solid var(--red); padding: 12px 18px; text-align: center; margin: 10px 0; }
+.gap-banner .gap-row { display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap; }
+.gap-banner .gap-item { text-align: center; padding: 4px 8px; }
+.gap-banner .gap-num { font-size: 28px; font-weight: 900; color: var(--red); line-height: 1.1; }
+.gap-banner .gap-label { font-size: 12px; color: #555; margin-top: 3px; }
+.extrude-flow { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 4px; padding: 10px 6px; background: #fff; border: 1.5px solid var(--line); margin-bottom: 14px; }
+.extrude-node { border: 1.5px solid var(--amber); padding: 6px 10px; font-size: 12px; font-weight: 700; color: var(--amber); background: var(--amber-soft); text-align: center; max-width: 140px; line-height: 1.35; }
+.extrude-arrow { font-size: 16px; color: var(--amber); }
+.highlight-box { background: #fff; border: 2px solid var(--red); padding: 12px 16px; margin-bottom: 14px; }
+.highlight-box.amber { border-color: var(--amber); }
+.highlight-box.green { border-color: var(--green); }
+.highlight-box .hl-title { font-size: 14px; font-weight: 900; margin-bottom: 6px; color: var(--red); }
+.highlight-box.amber .hl-title { color: var(--amber); }
+.highlight-box.green .hl-title { color: var(--green); }
+.highlight-box .hl-body { font-size: 13px; line-height: 1.55; color: #222; }
+.closing-bar { background: var(--blue); color: #fff; padding: 14px 20px; text-align: center; font-size: 16px; font-weight: 900; line-height: 1.5; margin-top: 10px; }
+.watermark{position:absolute;top:-50%;left:-50%;width:200%;height:200%;pointer-events:none;z-index:100;opacity:0.05;transform:rotate(-20deg);display:flex;flex-wrap:wrap;align-content:center;justify-content:center;gap:100px 140px}
+.watermark span{font-size:30px;color:#333;font-weight:500;white-space:nowrap;letter-spacing:4px}
+</style>
+</head>
+<body>
+<div class="page portrait">
+
+  <!-- 品牌水印 -->
+  <div class="watermark"><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span><span>公众号：欧派呦呦鹿鸣</span></div>
+
+  <!-- 水印 -->
+  <div class="watermarks">
+    <span style="top:100px;left:50px">电子布 涨价图谱</span>
+    <span style="top:420px;left:280px">电子布 涨价图谱</span>
+    <span style="top:740px;left:60px">电子布 涨价图谱</span>
+    <span style="top:1060px;left:320px">电子布 涨价图谱</span>
+    <span style="top:1380px;left:80px">电子布 涨价图谱</span>
+    <span style="top:1700px;left:300px">电子布 涨价图谱</span>
+  </div>
+
+  <div class="content">
+
+    <!-- ═══════════════ 第一层：标题区 ═══════════════ -->
+    <div class="topline">
+      <span>涨价信息图谱</span>
+      <span class="dot"></span>
+      <span>2026年6月</span>
+      <span class="dot"></span>
+      <span>AI算力材料</span>
+      <span class="dot"></span>
+      <span class="tag-pill">电子布</span>
+    </div>
+
+    <h1>电子布——AI芯片的隐形骨骼</h1>
+
+    <div class="subtitle">
+      覆铜板核心骨架基材，PCB的"钢筋" &nbsp;|&nbsp;
+      <span style="color:var(--red);font-weight:900;">7628普通布 0.7→7.5元/米（10倍级）</span>
+      &nbsp;|&nbsp; <span style="color:var(--red);">AI特种布 160→230元/米</span><br>
+      核心矛盾：<span style="font-weight:900;">日本丰田织机全球垄断，交期排至2028下半年</span>
+    </div>
+
+    <div class="main-rule"></div>
+
+    <div class="tagline-bar">
+      AI算力涨价三巨头 · 最硬逻辑品种之一
+    </div>
+
+    <!-- ═══════════════ 第二层：30秒入门 ═══════════════ -->
+    <div class="section-title blue">▎ 30秒入门：电子布到底是什么？</div>
+
+    <!-- 流程 -->
+    <div class="chain-flow">
+      <div class="chain-node highlight-blue">玻璃熔融<sub>1600℃熔炼<br>高纯度配方</sub></div>
+      <div class="chain-arrow">→</div>
+      <div class="chain-node">拉丝成纤<sub>微米级纤维<br>直径4-9μm</sub></div>
+      <div class="chain-arrow">→</div>
+      <div class="chain-node highlight-amber">织成玻纤布<sub>丰田织机<br>★瓶颈环节</sub></div>
+      <div class="chain-arrow">→</div>
+      <div class="chain-node">浸树脂<sub>贴铜箔</sub></div>
+      <div class="chain-arrow">→</div>
+      <div class="chain-node">制成CCL<sub>覆铜板</sub></div>
+      <div class="chain-arrow">→</div>
+      <div class="chain-node">叠层压合<sub>24-40层</sub></div>
+      <div class="chain-arrow">→</div>
+      <div class="chain-node highlight-red">AI服务器PCB<sub>终端需求</sub></div>
+    </div>
+
+    <!-- 三列认知卡片 -->
+    <div class="triple-grid">
+      <div class="corner-card blue" style="padding: 10px 12px;">
+        <div style="font-size:18px; margin-bottom:4px;">🧵</div>
+        <div style="font-size:14px;font-weight:900;color:var(--blue);margin-bottom:5px;">不是普通布</div>
+        <div style="font-size:13px;line-height:1.55;color:#111;">
+          普通玻纤纱 <span class="data-highlight">100-200元/公斤</span><br>
+          电子布 <span class="data-highlight" style="color:var(--red);font-weight:900;">7.5元/米</span>（7628）<br>
+          微米级精度，单丝直径仅为头发的 <b>1/10</b>
+        </div>
+      </div>
+      <div class="corner-card orange" style="padding: 10px 12px;">
+        <div style="font-size:18px; margin-bottom:4px;">📈</div>
+        <div style="font-size:14px;font-weight:900;color:var(--orange);margin-bottom:5px;">用量暴增</div>
+        <div style="font-size:13px;line-height:1.55;color:#111;">
+          AI服务器PCB <span class="data-highlight" style="color:var(--orange);">24-40层</span><br>
+          传统服务器仅 <span style="color:#666;">12-16层</span><br>
+          单机耗布量 <span class="data-highlight">×5-7倍</span>
+        </div>
+      </div>
+      <div class="corner-card red" style="padding: 10px 12px;">
+        <div style="font-size:18px; margin-bottom:4px;">⚡</div>
+        <div style="font-size:14px;font-weight:900;color:var(--red);margin-bottom:5px;">高端挤占低端</div>
+        <div style="font-size:13px;line-height:1.55;color:#111;">
+          AI低介电布毛利率 <span class="data-highlight">55-73%</span><br>
+          普通布毛利率仅 <span style="color:#666;">15-20%</span><br>
+          厂商纷纷转产 → <b style="color:var(--red);">普通布被挤出</b>
+        </div>
+      </div>
+    </div>
+
+    <div class="oneliner-box" style="margin-top:10px;">
+      一块AI芯片需要24-40层PCB，每一层都铺一张电子布——芯片算力越强，吃的布越多。
+    </div>
+
+    <!-- ═══════════════ 第三层：涨了多少 ═══════════════ -->
+    <div class="section-title red">▎ 涨了多少：从地板价到天价的价格爬升</div>
+
+    <div style="display:grid;grid-template-columns:1fr 360px;gap:10px;margin-bottom:14px;">
+      <!-- 左：价格爬升阶梯 -->
+      <div class="corner-card red" style="padding:12px 14px;">
+        <div style="font-size:13px;font-weight:900;color:var(--red);margin-bottom:8px;">7628普通电子布价格爬升阶梯（元/米）</div>
+        <svg viewBox="0 0 600 260" style="width:100%;">
+          <!-- 背景网格 -->
+          <defs><pattern id="g3" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0L0 0 0 20" fill="none" stroke="rgba(0,0,0,0.04)" stroke-width="0.5"/></pattern></defs>
+          <rect width="600" height="260" fill="url(#g3)"/>
+          <!-- Y轴 -->
+          <line x1="90" y1="20" x2="90" y2="240" stroke="var(--muted)" stroke-width="1"/>
+          <!-- Y轴标签 -->
+          <text x="84" y="26" text-anchor="end" font-size="11" fill="var(--muted)">8</text>
+          <text x="84" y="66" text-anchor="end" font-size="11" fill="var(--muted)">6</text>
+          <text x="84" y="106" text-anchor="end" font-size="11" fill="var(--muted)">4</text>
+          <text x="84" y="146" text-anchor="end" font-size="11" fill="var(--muted)">2</text>
+          <text x="84" y="186" text-anchor="end" font-size="11" fill="var(--muted)">0</text>
+          <!-- 水平参考线 -->
+          <line x1="90" y1="40" x2="590" y2="40" stroke="var(--line)" stroke-width="0.5" stroke-dasharray="4,4"/>
+          <line x1="90" y1="80" x2="590" y2="80" stroke="var(--line)" stroke-width="0.5" stroke-dasharray="4,4"/>
+          <line x1="90" y1="120" x2="590" y2="120" stroke="var(--line)" stroke-width="0.5" stroke-dasharray="4,4"/>
+          <line x1="90" y1="160" x2="590" y2="160" stroke="var(--line)" stroke-width="0.5" stroke-dasharray="4,4"/>
+          <line x1="90" y1="200" x2="590" y2="200" stroke="var(--line)" stroke-width="0.5" stroke-dasharray="4,4"/>
+          <!-- 阶梯价格曲线 -->
+          <!-- 0.7 → 3.74 → 6.2 → 7.0 → 7.4 (avg) -->
+          <polyline points="90,185 190,185 190,123 315,123 315,82 440,82 440,70 540,70 540,62 580,62"
+            fill="none" stroke="var(--red)" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+          <!-- 价格标注 -->
+          <circle cx="90" cy="185" r="5" fill="var(--red)"/>
+          <text x="90" y="204" text-anchor="middle" font-size="12" font-weight="900" fill="var(--red)">0.7</text>
+          <text x="68" y="214" text-anchor="middle" font-size="9" fill="var(--muted)">2025.10</text>
+
+          <circle cx="190" cy="123" r="5" fill="var(--red)"/>
+          <text x="190" y="114" text-anchor="middle" font-size="12" font-weight="900" fill="var(--red)">3.74</text>
+          <text x="190" y="140" text-anchor="middle" font-size="9" fill="var(--muted)">2026.01</text>
+
+          <circle cx="315" cy="82" r="5" fill="var(--red)"/>
+          <text x="315" y="73" text-anchor="middle" font-size="12" font-weight="900" fill="var(--red)">6.2-6.5</text>
+          <text x="315" y="100" text-anchor="middle" font-size="9" fill="var(--muted)">2026.04</text>
+
+          <circle cx="440" cy="70" r="5" fill="var(--red)"/>
+          <text x="440" y="60" text-anchor="middle" font-size="12" font-weight="900" fill="var(--red)">7.0+</text>
+          <text x="440" y="90" text-anchor="middle" font-size="9" fill="var(--muted)">2026.05</text>
+
+          <circle cx="580" cy="62" r="6" fill="var(--red)"/>
+          <text x="580" y="52" text-anchor="middle" font-size="13" font-weight="900" fill="var(--red)">7.3-7.5</text>
+          <text x="580" y="78" text-anchor="middle" font-size="9" fill="var(--muted)">2026.06</text>
+
+          <!-- 趋势箭头 -->
+          <text x="380" y="154" fill="var(--red)" font-size="11" font-weight="700">↗ 一月一调模式确立，单次涨0.2-0.5元/米</text>
+        </svg>
+      </div>
+
+      <!-- 右：AI特种布价格表 -->
+      <div class="corner-card blue" style="padding:10px 12px;">
+        <div style="font-size:13px;font-weight:900;color:var(--blue);margin-bottom:8px;">AI特种布价格表</div>
+        <table class="price-table" style="margin-bottom:8px;">
+          <thead><tr><th>品类</th><th>价格</th><th>毛利率</th></tr></thead>
+          <tbody>
+            <tr><td>二代Low-Dk</td><td class="price-val">160元/米</td><td style="font-weight:700;color:var(--green);">翻倍</td></tr>
+            <tr><td>Q布</td><td class="price-val">230元/米</td><td style="font-weight:700;color:var(--green);">60%+</td></tr>
+            <tr><td>T布</td><td class="price-val" style="font-size:17px;">260元/米</td><td style="font-weight:900;color:var(--green);">净利率70%+</td></tr>
+          </tbody>
+        </table>
+        <div style="font-size:12px;color:var(--muted);line-height:1.5;padding:6px;background:var(--soft-blue);border-radius:3px;">
+          <b style="color:var(--blue);">涨价频率变化：</b><br>
+          季度调价（2025年）→<br>
+          <span style="color:var(--red);font-weight:900;font-size:14px;">月度调价（2026年）</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ 第四层：为什么涨 ═══════════════ -->
+    <div class="section-title red">▎ 为什么涨：需求火箭撞上供给铁壁</div>
+
+    <!-- 左右双栏 -->
+    <div class="two-col">
+      <!-- 左：需求 -->
+      <div>
+        <div style="font-size:14px;font-weight:900;color:var(--orange);margin-bottom:6px;text-align:center;">🚀 需求火箭</div>
+        <div class="demand-stack">
+          <div class="demand-item">
+            <b>① AI服务器PCB层数 ×3→耗布量×5-7倍</b><br>
+            传统服务器12-16层 → AI GPU服务器需要24-40层PCB，每层均需电子布作为骨架增强。
+          </div>
+          <div class="demand-item">
+            <b>② Rubin平台PCB价值量暴涨233%</b><br>
+            <span class="data-highlight">$3.5万 → $11.7万</span>，单台AI服务器PCB及配套材料价值量暴增，电子布是PCB的"钢筋"。
+          </div>
+          <div class="demand-item">
+            <b>③ 三大领域同步复苏</b><br>
+            消费电子换机周期 + 通信5.5G基站 + 汽车智能化，多领域同时拉动上游电子布需求。
+          </div>
+        </div>
+      </div>
+      <!-- 右：供给 -->
+      <div>
+        <div style="font-size:14px;font-weight:900;color:var(--red);margin-bottom:6px;text-align:center;">🛡️ 供给铁壁</div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div class="supply-item">
+            <b>① 日本丰田织机全球垄断</b><br>
+            年产能仅 ~<span class="data-highlight">2000台</span>，高端电子布织造非丰田织机不可，国产精度不足。
+          </div>
+          <div class="supply-item">
+            <b>② 单台交期18-24个月</b><br>
+            新订单排至 <span class="data-highlight">2028下半年</span>，从下单到到货需等约两年。
+          </div>
+          <div class="supply-item">
+            <b>③ 国产织机精度不够</b><br>
+            仅能用于中低端布，AI服务器所需的极薄布（Low-Dk/Q/T系列）非丰田织机不可。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 核心缺口数字 -->
+    <div class="gap-banner">
+      <div class="gap-row">
+        <div class="gap-item">
+          <div class="gap-num">1周+</div>
+          <div class="gap-label">全行业库存<br><span style="color:#888;">（去年10月前2个月+）</span></div>
+        </div>
+        <div class="gap-item">
+          <div class="gap-num">800-900<span style="font-size:14px;">万米/月</span></div>
+          <div class="gap-label">月度供给缺口</div>
+        </div>
+        <div class="gap-item">
+          <div class="gap-num">7-10<span style="font-size:14px;">→</span>15-25<span style="font-size:14px;">天</span></div>
+          <div class="gap-label">交货周期翻倍</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 高端挤占低端机制 -->
+    <div style="font-size:13px;font-weight:900;color:var(--amber);margin-bottom:6px;">▸ 高端挤占低端传导机制</div>
+    <div class="extrude-flow">
+      <div class="extrude-node">AI特种布<br>需求爆发</div>
+      <span class="extrude-arrow">→</span>
+      <div class="extrude-node">同一台丰田织机<br>转产高端布</div>
+      <span class="extrude-arrow">→</span>
+      <div class="extrude-node" style="font-size:11px;max-width:160px;">每产1000万米高端布<br>= 挤占数千万米普通布产能</div>
+      <span class="extrude-arrow">→</span>
+      <div class="extrude-node" style="border-color:var(--red);color:var(--red);background:var(--soft-red);">普通布供给<br>被动收缩</div>
+      <span class="extrude-arrow">→</span>
+      <div class="extrude-node" style="border-color:var(--red);color:var(--red);background:var(--soft-red);font-size:14px;">全链涨价</div>
+    </div>
+
+    <!-- ═══════════════ 第五层：多久缓解 ═══════════════ -->
+    <div class="section-title amber">▎ 多久缓解：扩产能追得上需求吗？</div>
+
+    <!-- 扩产周期链 -->
+    <div style="background:#fff;border:1.5px solid var(--line);padding:12px 16px;margin-bottom:10px;">
+      <div style="font-size:13px;font-weight:900;color:var(--amber);margin-bottom:10px;text-align:center;">电子布扩产全周期 = 24-36个月</div>
+      <svg viewBox="0 0 960 100" style="width:100%;">
+        <!-- 流程条 -->
+        <rect x="0" y="30" width="160" height="40" rx="4" fill="var(--amber-soft)" stroke="var(--amber)" stroke-width="1.5"/>
+        <text x="80" y="48" text-anchor="middle" font-size="11" font-weight="700" fill="var(--amber)">环保审批</text>
+        <text x="80" y="64" text-anchor="middle" font-size="9" fill="var(--muted)">2-4月</text>
+
+        <text x="175" y="52" text-anchor="middle" font-size="18" fill="var(--line)">→</text>
+
+        <rect x="190" y="30" width="165" height="40" rx="4" fill="#fff0f0" stroke="var(--red)" stroke-width="2"/>
+        <text x="272" y="48" text-anchor="middle" font-size="11" font-weight="900" fill="var(--red)">设备交付（关键瓶颈）</text>
+        <text x="272" y="64" text-anchor="middle" font-size="9" fill="var(--muted)">18-24月</text>
+
+        <text x="370" y="52" text-anchor="middle" font-size="18" fill="var(--line)">→</text>
+
+        <rect x="385" y="30" width="140" height="40" rx="4" fill="#f0f5ff" stroke="var(--blue)" stroke-width="1.5"/>
+        <text x="455" y="48" text-anchor="middle" font-size="11" font-weight="700" fill="var(--blue)">厂房建设</text>
+        <text x="455" y="64" text-anchor="middle" font-size="9" fill="var(--muted)">6-8月</text>
+
+        <text x="540" y="52" text-anchor="middle" font-size="18" fill="var(--line)">→</text>
+
+        <rect x="555" y="30" width="140" height="40" rx="4" fill="var(--soft-gray)" stroke="var(--muted)" stroke-width="1.5"/>
+        <text x="625" y="48" text-anchor="middle" font-size="11" font-weight="700" fill="#444">安装调试</text>
+        <text x="625" y="64" text-anchor="middle" font-size="9" fill="var(--muted)">2-3月</text>
+
+        <text x="710" y="52" text-anchor="middle" font-size="18" fill="var(--line)">→</text>
+
+        <rect x="725" y="30" width="150" height="40" rx="4" fill="var(--soft-blue)" stroke="var(--blue)" stroke-width="1.5"/>
+        <text x="800" y="48" text-anchor="middle" font-size="11" font-weight="700" fill="var(--blue)">良率爬坡</text>
+        <text x="800" y="64" text-anchor="middle" font-size="9" fill="var(--muted)">3-6月</text>
+
+        <!-- = 符号 -->
+        <text x="905" y="52" text-anchor="middle" font-size="16" font-weight="900" fill="var(--amber)">=</text>
+      </svg>
+    </div>
+
+    <!-- 时间轴 -->
+    <div class="timeline-box">
+      <div class="tl-labels">
+        <span>2026 Q1-Q2</span><span>2026 H2</span><span>2027 H1</span><span>2027 H2</span><span>2028+</span>
+      </div>
+      <svg class="tl-svg" viewBox="0 0 960 70">
+        <!-- 缺口区背景 -->
+        <rect x="0" y="0" width="580" height="70" fill="rgba(242,58,46,0.04)" rx="3"/>
+        <text x="290" y="14" text-anchor="middle" fill="rgba(242,58,46,0.22)" font-size="8" font-weight="700">缺口贯穿区</text>
+        <rect x="580" y="0" width="170" height="70" fill="rgba(184,92,0,0.04)" rx="3"/>
+        <text x="665" y="14" text-anchor="middle" fill="rgba(184,92,0,0.22)" font-size="8" font-weight="700">缺口收窄</text>
+        <rect x="750" y="0" width="210" height="70" fill="rgba(7,27,92,0.03)" rx="3"/>
+
+        <!-- 基线 -->
+        <line x1="60" y1="40" x2="920" y2="40" stroke="var(--line)" stroke-width="1"/>
+        <!-- 刻度 -->
+        <line x1="60" y1="36" x2="60" y2="44" stroke="var(--muted)" stroke-width="0.6"/>
+        <line x1="180" y1="36" x2="180" y2="44" stroke="var(--muted)" stroke-width="0.6"/>
+        <line x1="390" y1="36" x2="390" y2="44" stroke="var(--muted)" stroke-width="0.6"/>
+        <line x1="640" y1="36" x2="640" y2="44" stroke="var(--muted)" stroke-width="0.6"/>
+        <line x1="860" y1="36" x2="860" y2="44" stroke="var(--muted)" stroke-width="0.6"/>
+
+        <!-- 普通布缺口曲线 -->
+        <polyline points="60,38 180,36 390,30 530,25 640,20 860,15"
+          fill="none" stroke="var(--red)" stroke-width="2.5" stroke-linecap="round"/>
+        <text x="60" y="55" text-anchor="middle" font-size="8" fill="var(--red)" font-weight="700">最大</text>
+
+        <!-- AI特种布缺口曲线 -->
+        <polyline points="60,42 180,40 390,38 530,36 640,34 860,30"
+          fill="none" stroke="var(--blue)" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="6,3"/>
+        <text x="860" y="25" text-anchor="middle" font-size="8" fill="var(--blue)" font-weight="700">仍有缺口</text>
+
+        <!-- 关键节点 -->
+        <circle cx="390" cy="30" r="4" fill="var(--red)"/>
+        <text x="390" y="24" text-anchor="middle" font-size="7.5" fill="var(--red)" font-weight="700">H2集中释放</text>
+        <circle cx="640" cy="20" r="4" fill="var(--amber)"/>
+        <text x="640" y="14" text-anchor="middle" font-size="7.5" fill="var(--amber)" font-weight="700">普通布缺口收窄</text>
+
+        <!-- 事件标注 -->
+        <text x="120" y="55" text-anchor="middle" font-size="7" fill="var(--muted)">巨石淮安5万吨+国际复材8.5万吨</text>
+        <text x="270" y="55" text-anchor="middle" font-size="7" fill="var(--muted)">中材科技3500万米特种布</text>
+        <text x="510" y="55" text-anchor="middle" font-size="7" fill="var(--muted)">巨石二期+建滔清远+宏和黄石</text>
+        <text x="760" y="55" text-anchor="middle" font-size="7" fill="var(--muted)">新进入者全面落地</text>
+      </svg>
+      <div class="tl-legend">
+        <div class="tl-legend-item"><div class="tl-legend-dot" style="background:var(--red);"></div>普通布缺口</div>
+        <div class="tl-legend-item"><div class="tl-legend-dot" style="background:var(--blue);"></div>AI特种布缺口</div>
+      </div>
+    </div>
+
+    <!-- 关键结论框 -->
+    <div class="highlight-box amber">
+      <div class="hl-title" style="color:var(--amber);">▸ 缓解节奏关键判断</div>
+      <div class="hl-body">
+        <span class="data-highlight amber">2026全年缺口贯穿</span>，普通布供给紧张无解；
+        <span class="data-highlight amber">2027Q2普通布缺口开始收窄</span>；
+        <span class="data-highlight">2027H2新产能集中释放，普通布或面临过剩风险</span>；
+        但 <b style="color:var(--blue);">AI特种布（Low-Dk/Q/T）缺口更持久</b>——因为特种布技术壁垒远高于普通布，扩产需要更长时间。
+      </div>
+    </div>
+
+    <!-- ═══════════════ 第六层：利润分配 ═══════════════ -->
+    <div class="section-title green">▎ 利润分配：涨价蛋糕怎么分？</div>
+
+    <!-- 倒金字塔 -->
+    <div style="margin-bottom:14px;">
+      <svg viewBox="0 0 960 340" style="width:100%;">
+        <defs>
+          <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="var(--green)" stop-opacity="0.15"/>
+            <stop offset="100%" stop-color="var(--green)" stop-opacity="0.02"/>
+          </linearGradient>
+          <linearGradient id="g2" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="var(--blue)" stop-opacity="0.12"/>
+            <stop offset="100%" stop-color="var(--blue)" stop-opacity="0.02"/>
+          </linearGradient>
+          <linearGradient id="g3" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="var(--amber)" stop-opacity="0.12"/>
+            <stop offset="100%" stop-color="var(--amber)" stop-opacity="0.02"/>
+          </linearGradient>
+          <linearGradient id="g4" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="var(--red)" stop-opacity="0.1"/>
+            <stop offset="100%" stop-color="var(--red)" stop-opacity="0.01"/>
+          </linearGradient>
+        </defs>
+
+        <!-- 第1层：电子纱（最宽） -->
+        <polygon points="100,15 470,15 500,70 70,70" fill="url(#g1)" stroke="var(--green)" stroke-width="1.5"/>
+        <text x="285" y="38" text-anchor="middle" font-size="13" font-weight="900" fill="var(--green)">① 电子纱</text>
+        <text x="285" y="58" text-anchor="middle" font-size="11" fill="#444">毛利率 20-30% | 中国巨石 / 国际复材 / 光远新材</text>
+
+        <!-- 第2层：电子布（★利润弹性最大） -->
+        <polygon points="55,80 515,80 525,135 45,135" fill="url(#g2)" stroke="var(--blue)" stroke-width="2"/>
+        <text x="285" y="100" text-anchor="middle" font-size="14" font-weight="900" fill="var(--blue)">② 电子布 ★★★ 利润弹性最大</text>
+        <text x="285" y="118" text-anchor="middle" font-size="11" fill="#444">毛利率 55-73% | 宏和科技 / 中国巨石 / 中材科技</text>
+        <!-- 星标 -->
+        <text x="35" y="100" text-anchor="middle" font-size="18" fill="var(--red)">💰</text>
+
+        <!-- 第3层：CCL -->
+        <polygon points="40,145 530,145 540,195 30,195" fill="url(#g3)" stroke="var(--amber)" stroke-width="1.5"/>
+        <text x="285" y="165" text-anchor="middle" font-size="13" font-weight="900" fill="var(--amber)">③ CCL 覆铜板 ★★ 利润率扩大</text>
+        <text x="285" y="183" text-anchor="middle" font-size="11" fill="#444">超额传导：布涨4块→板涨20块 | 生益科技 / 建滔 / 南亚新材</text>
+
+        <!-- 第4层：PCB（最窄，受损） -->
+        <polygon points="20,205 550,205 555,255 15,255" fill="url(#g4)" stroke="var(--red)" stroke-width="1.5"/>
+        <text x="285" y="225" text-anchor="middle" font-size="13" font-weight="900" fill="var(--red)">④ PCB ⚠️ 仅头部受益，中小厂濒临亏损</text>
+        <text x="285" y="243" text-anchor="middle" font-size="11" fill="#444">成本传导 60-80%，20-40%自行消化</text>
+        <text x="12" y="238" text-anchor="middle" font-size="18" fill="var(--red)">⚠️</text>
+
+        <!-- 右侧标注：传导比例 -->
+        <line x1="560" y1="107" x2="680" y2="90" stroke="var(--line)" stroke-width="0.8"/>
+        <text x="690" y="88" font-size="11" fill="var(--muted)">原材料成本</text>
+        <text x="690" y="102" font-size="11" fill="var(--muted)">驱动涨价</text>
+
+        <line x1="540" y1="170" x2="680" y2="155" stroke="var(--line)" stroke-width="0.8"/>
+        <text x="690" y="153" font-size="11" fill="var(--muted)">超额传导模式</text>
+        <text x="690" y="167" font-size="11" fill="var(--muted)">利润放大</text>
+
+        <line x1="550" y1="230" x2="680" y2="235" stroke="var(--line)" stroke-width="0.8"/>
+        <text x="690" y="233" font-size="11" fill="var(--muted)">被动传导</text>
+        <text x="690" y="247" font-size="11" fill="var(--muted)">部分消化</text>
+
+        <!-- 传导箭头 -->
+        <text x="285" y="275" text-anchor="middle" font-size="10" fill="var(--muted)">▲ 自上而下的涨价传导链：上游涨价能力越往下游越弱 ▲</text>
+      </svg>
+    </div>
+
+    <!-- 核心标的速览 -->
+    <div style="font-size:13px;font-weight:900;color:var(--blue);margin-bottom:6px;">▸ 核心标的速览</div>
+    <div class="target-section">
+      <div class="target-card">
+        <div class="target-head">
+          <span class="target-badge">①</span>
+          <span class="target-name">宏和科技</span>
+          <span class="target-cat">极薄布龙头</span>
+        </div>
+        <div class="target-body">
+          极薄电子布全球第一，AI特种布核心供应商，直接受益于高端布涨价。<br>
+          <span style="color:var(--green);font-weight:900;">Q1 +401%</span>
+        </div>
+        <div class="target-tags">
+          <span class="target-tag pos">利润弹性最大</span>
+          <span class="target-tag pos">毛利55-73%</span>
+        </div>
+      </div>
+      <div class="target-card">
+        <div class="target-head">
+          <span class="target-badge">②</span>
+          <span class="target-name">中国巨石</span>
+          <span class="target-cat">全球最大</span>
+        </div>
+        <div class="target-body">
+          全球电子布市占率23%，纱-布全链布局，淮安二期即将投产。<br>
+          <span style="color:var(--green);font-weight:900;">Q1 +70%</span>
+        </div>
+        <div class="target-tags">
+          <span class="target-tag pos">全链龙头</span>
+          <span class="target-tag pos">产能释放</span>
+        </div>
+      </div>
+      <div class="target-card">
+        <div class="target-head">
+          <span class="target-badge">③</span>
+          <span class="target-name">中材科技</span>
+          <span class="target-cat">低介电全覆盖</span>
+        </div>
+        <div class="target-body">
+          Low-Dk/Q/T全品类布局，3500万米特种布H2投产，产能释放催化剂。
+        </div>
+        <div class="target-tags">
+          <span class="target-tag pos">全品类覆盖</span>
+          <span class="target-tag amber">H2投产</span>
+        </div>
+      </div>
+      <div class="target-card">
+        <div class="target-head">
+          <span class="target-badge">④</span>
+          <span class="target-name">生益科技</span>
+          <span class="target-cat">CCL第一</span>
+        </div>
+        <div class="target-body">
+          国内覆铜板龙头，电子布涨价→CCL超额传导，利润率扩大。<br>
+          <span style="color:var(--green);font-weight:900;">Q1 +105%</span>
+        </div>
+        <div class="target-tags">
+          <span class="target-tag pos">超额传导</span>
+          <span class="target-tag pos">利润率扩大</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 受损方警示 -->
+    <div class="risk-grid">
+      <div class="risk-item">
+        <b>⚠️ 中小PCB厂受损</b>
+        成本迫近 420元/张，部分已拒接低价订单，行业洗牌加速。涨价利好集中在电子布-CCL环节，下游PCB分化严重。
+      </div>
+      <div class="risk-item">
+        <b>⚠️ 新产能过剩风险</b>
+        2027H2普通布产能集中释放，若需求增速放缓，普通布价格可能从高点回落。AI特种布壁垒更高，但长期也存在替代技术风险。
+      </div>
+    </div>
+
+    <!-- ═══════════════ 底部收束 ═══════════════ -->
+    <div class="closing-bar">
+      电子布涨价不是周期涨价，是结构性供需重构。<br>
+      市场盯着GPU，但AI硬件最大的利润增量，藏在PCB上游一片不起眼的玻璃布里。
+    </div>
+
+    <div class="footnote">
+      <span>公众号：欧派呦呦鹿鸣 整理制作 · 数据来源：IMA知识库「产业链研究」/ 2026年6月9日</span>
+      <span>本图仅供产业研究参考，不构成投资建议</span>
+    </div>
+
+  </div><!-- .content -->
+</div><!-- .page -->
+</body>
+</html>
