@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>电子布产业链拆解：AI算力驱动下的涨价链条</title>
+  <style>
+    :root {
+      --paper: #f8f8f5;
+      --ink: #050505;
+      --muted: #666;
+      --line: #bdbdbd;
+      --blue: #071b5c;
+      --red: #f23a2e;
+      --green: #37a833;
+      --amber: #b85c00;
+      --soft-blue: #e9f0ff;
+      --soft-red: #fff0ee;
+      --soft-gray: #f3f3f1;
+      --amber-soft: #fff7ee;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: #deded8;
+      color: var(--ink);
+      font-family: "Songti SC", "Noto Serif CJK SC", "SimSun", "Times New Roman", serif;
+    }
+
+    .page {
+      position: relative;
+      width: 1024px;
+      min-height: 1536px;
+      margin: 0 auto;
+      padding: 26px 28px 32px;
+      background:
+        radial-gradient(circle at 50% 18%, rgba(255,255,255,0.92), rgba(248,248,245,0.96) 48%, rgba(226,226,218,0.45) 100%),
+        linear-gradient(90deg, rgba(0,0,0,0.018) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(0,0,0,0.014) 1px, transparent 1px),
+        var(--paper);
+      background-size: auto, 18px 18px, 18px 18px, auto;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.22);
+    }
+
+    .page::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background-image: repeating-linear-gradient(
+        -25deg,
+        transparent 0, transparent 138px,
+        rgba(120,120,120,0.07) 139px, rgba(120,120,120,0.07) 141px,
+        transparent 142px, transparent 220px
+      );
+      opacity: 0.45;
+      z-index: 1;
+    }
+
+    .watermarks {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      opacity: 0.09;
+      color: #777;
+      font-size: 22px;
+      font-weight: 700;
+      transform: rotate(-25deg);
+    }
+
+    .watermarks span { position: absolute; white-space: nowrap; }
+
+    .content { position: relative; z-index: 3; }
+
+    /* ─── 顶部标识 ─── */
+    .topline {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 13px;
+      color: #555;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .topline .dot {
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: #999;
+      display: inline-block;
+    }
+
+    /* ─── 主标题区 ─── */
+    h1 {
+      margin: 16px 0 6px;
+      text-align: center;
+      font-size: 40px;
+      line-height: 1.12;
+      font-weight: 900;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 16px;
+      color: #444;
+      margin-bottom: 16px;
+      line-height: 1.55;
+    }
+
+    .main-rule { height: 2px; background: #000; margin: 0 0 14px; }
+
+    /* ─── 一句话结论栏 ─── */
+    .conclusion-bar {
+      background: var(--blue);
+      color: #fff;
+      padding: 11px 18px;
+      font-size: 15px;
+      line-height: 1.6;
+      margin-bottom: 14px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .conclusion-bar .label {
+      white-space: nowrap;
+      font-weight: 900;
+      font-size: 13px;
+      background: rgba(255,255,255,0.18);
+      padding: 2px 8px;
+      border-radius: 3px;
+      margin-top: 1px;
+    }
+
+    /* ─── 板块标题 ─── */
+    .section-title {
+      font-size: 16px;
+      font-weight: 900;
+      margin: 14px 0 8px;
+      padding-left: 10px;
+      border-left: 4px solid var(--blue);
+      line-height: 1.2;
+      color: var(--ink);
+    }
+
+    .section-title.red   { border-left-color: var(--red); }
+    .section-title.amber { border-left-color: var(--amber); }
+    .section-title.green { border-left-color: var(--green); }
+
+    /* ─── 产业链路径（单行横向）─── */
+    .chain-flow {
+      display: flex;
+      align-items: stretch;
+      margin: 0 0 14px;
+      background: #fff;
+      border: 1.5px solid var(--line);
+    }
+
+    .chain-node {
+      flex: 1;
+      text-align: center;
+      padding: 9px 6px;
+      border-right: 1px solid var(--line);
+      font-size: 13.5px;
+      font-weight: 700;
+      line-height: 1.4;
+      color: var(--ink);
+    }
+
+    .chain-node:last-child { border-right: none; }
+
+    .chain-node.highlight-blue {
+      background: var(--soft-blue);
+      color: var(--blue);
+    }
+
+    .chain-node.highlight-red {
+      background: var(--soft-red);
+      color: var(--red);
+    }
+
+    .chain-node.highlight-amber {
+      background: var(--amber-soft);
+      color: var(--amber);
+    }
+
+    .chain-node sub {
+      display: block;
+      font-size: 11px;
+      font-weight: 400;
+      color: #666;
+      margin-top: 2px;
+    }
+
+    .chain-arrow {
+      display: flex;
+      align-items: center;
+      padding: 0 2px;
+      font-size: 18px;
+      color: #bbb;
+      flex-shrink: 0;
+    }
+
+    /* ─── 三大逻辑卡片 ─── */
+    .logic-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .logic-card {
+      position: relative;
+      border: 2px solid var(--blue);
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    .logic-card.amber { border-color: var(--amber); color: var(--amber); }
+    .logic-card.red   { border-color: var(--red);   color: var(--red); }
+    .logic-card       { color: var(--blue); }
+
+    .logic-card::before, .logic-card::after {
+      content: "";
+      position: absolute;
+      width: 20px; height: 20px;
+      background: var(--paper);
+      z-index: 2;
+    }
+
+    .logic-card::before {
+      top: -2px; left: -2px;
+      border-right: 2px solid currentColor;
+      border-bottom: 2px solid currentColor;
+      border-bottom-right-radius: 12px;
+    }
+
+    .logic-card::after {
+      right: -2px; bottom: -2px;
+      border-left: 2px solid currentColor;
+      border-top: 2px solid currentColor;
+      border-top-left-radius: 12px;
+    }
+
+    .logic-head {
+      padding: 9px 12px 7px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logic-icon { font-size: 22px; line-height: 1; }
+
+    .logic-head-text strong {
+      display: block;
+      font-size: 14.5px;
+      font-weight: 900;
+      color: currentColor;
+    }
+
+    .logic-head-text small { font-size: 12px; color: #555; }
+
+    .logic-body {
+      padding: 9px 12px 10px;
+      font-size: 13.5px;
+      line-height: 1.55;
+      color: #111;
+    }
+
+    .logic-keydata {
+      margin-top: 7px;
+      padding: 6px 9px;
+      background: rgba(0,0,0,0.03);
+      border-left: 3px solid currentColor;
+      font-size: 12.5px;
+      line-height: 1.5;
+      color: #222;
+    }
+
+    .logic-keydata .src {
+      font-size: 11px;
+      color: #888;
+      margin-top: 4px;
+      font-style: italic;
+    }
+
+    /* ─── 涨价机制流图 ─── */
+    .flywheel-box {
+      background: #fff;
+      border: 1.5px solid var(--line);
+      padding: 10px 16px 12px;
+      margin-bottom: 14px;
+    }
+
+    .flywheel-title {
+      font-size: 13px;
+      font-weight: 900;
+      color: var(--amber);
+      margin-bottom: 8px;
+    }
+
+    .flywheel {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: nowrap;
+    }
+
+    .fw-node {
+      background: #fff;
+      border: 1.5px solid var(--blue);
+      color: var(--blue);
+      padding: 7px 10px;
+      font-size: 12.5px;
+      font-weight: 900;
+      text-align: center;
+      min-width: 98px;
+      line-height: 1.35;
+    }
+
+    .fw-node.red   { border-color: var(--red);   color: var(--red); }
+    .fw-node.amber { border-color: var(--amber);  color: var(--amber); }
+    .fw-node.green { border-color: var(--green);  color: var(--green); }
+    .fw-node.gray  { border-color: #666;           color: #333; }
+
+    .fw-arrow { font-size: 18px; color: #bbb; padding: 0 3px; flex-shrink: 0; }
+
+    .flywheel-note {
+      font-size: 12px;
+      color: #777;
+      text-align: center;
+      margin-top: 6px;
+      font-style: italic;
+    }
+
+    /* ─── 价格追踪表格 ─── */
+    .price-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border: 1.5px solid var(--line);
+      margin-bottom: 14px;
+      font-size: 13.5px;
+    }
+
+    .price-table th,
+    .price-table td {
+      border: 1px solid var(--line);
+      padding: 7px 10px;
+      vertical-align: middle;
+      line-height: 1.35;
+    }
+
+    .price-table thead tr { background: rgba(7,27,92,0.05); }
+
+    .price-table th { font-weight: 900; font-size: 13px; }
+
+    .price-table .price-val {
+      font-weight: 900;
+      color: var(--red);
+      font-size: 15px;
+    }
+
+    .price-table .change-val {
+      font-weight: 700;
+      color: var(--red);
+    }
+
+    .price-table .src-note {
+      font-size: 11.5px;
+      color: #888;
+      font-style: italic;
+    }
+
+    .status-tag {
+      display: inline-block;
+      padding: 1px 7px;
+      font-size: 12px;
+      font-weight: 700;
+      border-radius: 3px;
+    }
+
+    .status-tag.tight  { background: #ffeaea; color: var(--red); }
+    .status-tag.scarce { background: var(--amber-soft); color: var(--amber); }
+    .status-tag.verify { background: #f0f0f0; color: #555; }
+
+    /* ─── 标的矩阵（核心3+弹性3）─── */
+    .target-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .target-card {
+      border: 1.5px solid var(--line);
+      background: #fff;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    }
+
+    .target-head {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 10px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(0,0,0,0.02);
+    }
+
+    .target-badge { font-size: 16px; line-height: 1; }
+
+    .target-name {
+      font-size: 15px;
+      font-weight: 900;
+      color: var(--blue);
+    }
+
+    .target-cat {
+      font-size: 11.5px;
+      color: #666;
+      margin-left: auto;
+    }
+
+    .target-body {
+      padding: 7px 10px 9px;
+      font-size: 13px;
+      line-height: 1.55;
+      color: #222;
+    }
+
+    .target-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 6px;
+    }
+
+    .target-tag {
+      font-size: 11.5px;
+      padding: 1px 7px;
+      border-radius: 2px;
+      font-weight: 700;
+    }
+
+    .target-tag.pos   { background: var(--soft-blue); color: var(--blue); }
+    .target-tag.risk  { background: var(--soft-red);  color: var(--red); }
+    .target-tag.amber { background: var(--amber-soft); color: var(--amber); }
+
+    /* ─── 风险提示 ─── */
+    .risk-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .risk-item {
+      background: var(--soft-red);
+      border-left: 3px solid var(--red);
+      padding: 7px 10px;
+      font-size: 13px;
+      line-height: 1.4;
+      color: #222;
+    }
+
+    .risk-item b {
+      color: var(--red);
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    /* ─── 底部注释 ─── */
+    .footnote {
+      margin-top: 14px;
+      padding-top: 8px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #888;
+    }
+
+    /* ─── 两栏布局 ─── */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- 水印 -->
+  <div class="watermarks">
+    <span style="top:110px;left:60px">电子布产业链研究</span>
+    <span style="top:380px;left:290px">电子布产业链研究</span>
+    <span style="top:640px;left:70px">电子布产业链研究</span>
+    <span style="top:900px;left:350px">电子布产业链研究</span>
+  </div>
+
+  <div class="content">
+
+    <!-- 顶部标识 -->
+    <div class="topline">
+      <span>产业链研究</span>
+      <span class="dot"></span>
+      <span>2026</span>
+      <span class="dot"></span>
+      <span>AI 算力材料</span>
+      <span class="dot"></span>
+      <span>电子级玻璃纤维布</span>
+    </div>
+
+    <!-- 主标题 -->
+    <h1>电子布产业链拆解<br>AI算力驱动下的涨价链条</h1>
+
+    <div class="subtitle">
+      AI服务器高层数/高速PCB推升高端电子布需求<br>
+      织布机供给刚性 + 特种布转产，全品类涨价周期
+    </div>
+
+    <div class="main-rule"></div>
+
+    <!-- 一句话结论 -->
+    <div class="conclusion-bar">
+      <span class="label">核心结论</span>
+      <span>
+        AI服务器高层数/高速PCB推升高端电子布需求，
+        织布机供给刚性叠加特种布转产，全品类进入景气涨价周期。
+      </span>
+    </div>
+
+    <!-- ══ 产业链路径 ══ -->
+    <div class="section-title">▎ 产业链路径</div>
+
+    <div class="chain-flow">
+      <div class="chain-node highlight-blue">
+        电子纱
+        <sub>玻纤拉丝<br>原料端</sub>
+      </div>
+      <div class="chain-arrow">→</div>
+      <div class="chain-node highlight-blue">
+        电子布
+        <sub>织布机环节<br>核心瓶颈所在</sub>
+      </div>
+      <div class="chain-arrow">→</div>
+      <div class="chain-node">
+        CCL 覆铜板
+        <sub>生益/建滔<br>南亚/松下</sub>
+      </div>
+      <div class="chain-arrow">→</div>
+      <div class="chain-node">
+        PCB 印制电路板
+        <sub>深南/沪电<br>TTM/景旺</sub>
+      </div>
+      <div class="chain-arrow">→</div>
+      <div class="chain-node highlight-red">
+        AI服务器/高速通信<br>
+        <sub>英伟达GB300 / Rubin<br>Google TPU 8t/8i</sub>
+      </div>
+    </div>
+
+    <!-- ══ 三大逻辑 ══ -->
+    <div class="section-title">▎ 三大涨价逻辑</div>
+
+    <div class="logic-grid">
+
+      <!-- 逻辑一：蓝色 -->
+      <div class="logic-card">
+        <div class="logic-head">
+          <div class="logic-icon">⚙️</div>
+          <div class="logic-head-text">
+            <strong>逻辑一：织布机瓶颈</strong>
+            <small>扩产慢、交期长</small>
+          </div>
+        </div>
+        <div class="logic-body">
+          高端电子布生产对高精度喷气织机要求高，<span style="font-weight:900;color:var(--blue)">日系设备占比较高，国产替代仍需验证</span>。
+          <div class="logic-keydata">
+            📌 年产能约 <b>1800–2000台</b><br>
+            📌 新设备交付周期较长，据称已排至<b>2028–2030年</b><br>
+            📌 特种布扩产会挤占普通7628布产能<br>
+            📌 中材/建滔等企业据报各订购约<b>400台</b>
+          
+          </div>
+        </div>
+      </div>
+
+      <!-- 逻辑二：橙色 -->
+      <div class="logic-card amber">
+        <div class="logic-head">
+          <div class="logic-icon">🔄</div>
+          <div class="logic-head-text">
+            <strong>逻辑二：转产飞轮</strong>
+            <small>高端布利润更高</small>
+          </div>
+        </div>
+        <div class="logic-body">
+          企业倾向将织机资源转向Low-DK/Low-CTE/Q布等高端品类，<span style="font-weight:900;color:var(--amber)">普通7628布边际供给减少，价格形成支撑</span>。
+          <div class="logic-keydata">
+            📌 AI薄布生产效率约为普通布的 <b>1/3–1/4</b><br>
+            📌 普通7628库存据报从约25天降至<b>1周以内</b><br>
+            📌 普通布涨价又进一步改善全品类盈利<br>
+            📌 CCL厂库存亦见紧张，月度调价模式形成
+          
+          </div>
+        </div>
+      </div>
+
+      <!-- 逻辑三：红色 -->
+      <div class="logic-card red">
+        <div class="logic-head">
+          <div class="logic-icon">🚀</div>
+          <div class="logic-head-text">
+            <strong>逻辑三：AI材料升级</strong>
+            <small>PCB材料等级提升</small>
+          </div>
+        </div>
+        <div class="logic-body">
+          AI服务器高层数/高速PCB<span style="font-weight:900;color:var(--red)">提升低介电、低热膨胀、低损耗电子布需求</span>，Q布/石英布仍处早期放量阶段。
+          <div class="logic-keydata">
+            📌 AI电子布需求预估：2026年约<b>1亿米</b>，2027年约<b>3–4亿米</b><br>
+            📌 2027年市场空间测算：<b>350–400亿元</b><br>
+            📌 下一代AI平台或推动Q布/石英纤维材料渗透提升<br>
+            📌 从普通E布→Low-DK→Low-CTE→Q布，升级路径清晰
+          
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 涨价机制流图 -->
+    <div class="flywheel-box">
+      <div class="flywheel-title">▶ 涨价传导机制</div>
+      <div class="flywheel">
+        <div class="fw-node red">AI需求<br>提升↑</div>
+        <div class="fw-arrow">→</div>
+        <div class="fw-node amber">特种布转产<br>织机资源占用</div>
+        <div class="fw-arrow">→</div>
+        <div class="fw-node gray">普通布<br>供给减少</div>
+        <div class="fw-arrow">→</div>
+        <div class="fw-node red">库存下降<br>普通布涨价</div>
+        <div class="fw-arrow">→</div>
+        <div class="fw-node green">全品类<br>价格支撑↑</div>
+        <div class="fw-arrow">→</div>
+        <div class="fw-node amber">更多织机<br>转向特种布</div>
+      </div>
+      <div class="flywheel-note">上述逻辑链条已有一定验证，持续性取决于AI需求强度与设备交付节奏</div>
+    </div>
+
+    <!-- ══ 价格追踪 ══ -->
+    <div class="section-title red">▎ 各品类价格参考（截至2026年5月末）</div>
+
+    <table class="price-table">
+      <thead>
+        <tr>
+          <th style="width:20%">品类</th>
+          <th style="width:18%">当前报价区间</th>
+          <th style="width:14%">年初以来涨幅</th>
+          <th style="width:20%">供需状态</th>
+          <th style="width:28%">验证口径与说明</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>普通 7628 布</b></td>
+          <td class="price-val">约 6.6–8 元/米</td>
+          <td class="change-val">+50–65%（估）</td>
+          <td><span class="status-tag tight">库存偏紧</span></td>
+          <td class="src-note">涨价已获公开报道确认</td>
+        </tr>
+        <tr>
+          <td><b>薄布 2116/1080</b></td>
+          <td class="price-val">约 8–9 元/米</td>
+          <td class="change-val">+60–70%（估）</td>
+          <td><span class="status-tag tight">偏紧</span></td>
+          <td class="src-note">产业调研口径，规格差异影响较大</td>
+        </tr>
+        <tr>
+          <td><b>Low-DK 二代 / T布</b></td>
+          <td class="price-val">约 170–180 元/米</td>
+          <td class="change-val">+100%+（估）</td>
+          <td><span class="status-tag scarce">供给稀缺</span></td>
+          <td class="src-note">品类规格差异大，价格跨度宽</td>
+        </tr>
+        <tr>
+          <td><b>石英 Q 布</b></td>
+          <td class="price-val" style="font-size:13px">数百元/米（报价分散）</td>
+          <td class="change-val">—</td>
+          <td><span class="status-tag scarce">认证周期长</span></td>
+          <td class="src-note">供应稀缺，认证周期长，价格取决于出货节奏</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- ══ 核心关注公司 ══ -->
+    <div class="section-title">▎ 核心关注公司（按产业链环节划分）</div>
+
+    <!-- 核心3家 -->
+    <div style="font-size:12.5px;color:#666;margin-bottom:6px;padding-left:2px">▸ 规模/普通布弹性方向</div>
+    <div class="target-section">
+
+      <div class="target-card">
+        <div class="target-head">
+          <div class="target-badge">🏭</div>
+          <div class="target-name">中国巨石</div>
+          <div class="target-cat">普通布弹性 / 规模龙头</div>
+        </div>
+        <div class="target-body">
+          全球规模领先的玻纤企业，产品涵盖电子级玻纤，是普通7628布主要供应商之一。
+          <div class="target-tags">
+            <span class="target-tag pos">定位：规模弹性</span>
+            <span class="target-tag pos">受益点：7628涨价</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="target-card">
+        <div class="target-head">
+          <div class="target-badge">🏭</div>
+          <div class="target-name">宏和科技</div>
+          <div class="target-cat">高端薄布 / Low-CTE</div>
+        </div>
+        <div class="target-body">
+          专注高端特种电子布，极薄布领域有一定技术积累，Low-CTE布方向有布局。
+          <div class="target-tags">
+            <span class="target-tag pos">定位：高端特种布</span>
+            <span class="target-tag pos">受益点：薄布量价</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="target-card">
+        <div class="target-head">
+          <div class="target-badge">🏭</div>
+          <div class="target-name">中材科技</div>
+          <div class="target-cat">产品线全面 / 扩产弹性</div>
+        </div>
+        <div class="target-body">
+          产品线覆盖普通布至高端特种布多个品类，拟通过定增扩产，是受益面最广的关注方向之一。
+          <div class="target-tags">
+            <span class="target-tag pos">定位：全品类</span>
+            <span class="target-tag pos">受益点：全线受益</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 弹性3家 -->
+    <div style="font-size:12.5px;color:#666;margin-bottom:6px;padding-left:2px">▸ 高端特种布弹性方向（确定性相对较低，需持续跟踪验证）</div>
+    <div class="target-section">
+
+      <div class="target-card">
+        <div class="target-head">
+          <div class="target-badge">💎</div>
+          <div class="target-name">菲利华</div>
+          <div class="target-cat">Q布 / 石英纤维</div>
+        </div>
+        <div class="target-body">
+          石英纤维材料企业，Q布方向有布局，供应稀缺、认证周期较长。
+          <div class="target-tags">
+            <span class="target-tag pos">定位：Q布/石英</span>
+            <span class="target-tag pos">受益点：Q布量产</span>
+            <span class="target-tag risk">风险：认证周期长</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="target-card">
+        <div class="target-head">
+          <div class="target-badge">💎</div>
+          <div class="target-name">国际复材</div>
+          <div class="target-cat">Low-DK二代布</div>
+        </div>
+        <div class="target-body">
+          Low-DK二代布方向有卡位，与生益科技等CCL龙头有合作，出货量据报在增长中。
+          <div class="target-tags">
+            <span class="target-tag pos">定位：二代低介电</span>
+            <span class="target-tag pos">受益点：出货放量</span>
+            <span class="target-tag risk">风险：客户集中</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="target-card">
+        <div class="target-head">
+          <div class="target-badge">💎</div>
+          <div class="target-name">聚杰微纤</div>
+          <div class="target-cat">Q布新进入者</div>
+        </div>
+        <div class="target-body">
+          通过收购布局Q布，尚处早期验证阶段，弹性空间来自产品量产与客户认证进度。
+          <div class="target-tags">
+            <span class="target-tag pos">定位：Q布新进入</span>
+            <span class="target-tag pos">受益点：认证放量</span>
+            <span class="target-tag risk">风险：进度不确定</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 石英股份补充 -->
+    <div style="background:#fff;border:1.5px solid var(--line);border-left:3px solid var(--amber);padding:8px 12px;margin-bottom:14px;font-size:13px;line-height:1.5;">
+      <b style="color:var(--amber)">石英股份</b>　——　石英纤维原料端，Q布/特种布上游供应链关键标的。
+    </div>
+
+    <!-- ══ 风险提示 ══ -->
+    <div class="section-title red">▎ 风险提示</div>
+    <div class="risk-grid">
+      <div class="risk-item">
+        <b>① AI需求不及预期</b>
+        AI算力投资或服务器出货放缓，影响高端电子布需求节奏。
+      </div>
+      <div class="risk-item">
+        <b>② 涨价传导不畅</b>
+        CCL/PCB厂涨价承受能力有限，涨价节奏或放缓。
+      </div>
+      <div class="risk-item">
+        <b>③ 织布机供给超预期</b>
+        国产替代突破或丰田扩产超预期，缓解供给刚性。
+      </div>
+    </div>
+
+    <!-- 底部 -->
+    <div class="footnote">
+      <span>来源：产业链调研 / 券商研报</span>
+      <span>电子布产业链研究 · 2026</span>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /page -->
+
+</body>
+</html>
