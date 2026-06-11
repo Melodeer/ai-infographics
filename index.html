@@ -231,6 +231,104 @@ body {
 .item-card.wf6  .card-header { border-left: 4px solid var(--red); }
 .item-card.misc .card-header { border-left: 4px solid var(--green); }
 
+/* 密码门 */
+.gate-overlay {
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 30%, rgba(200,195,180,0.35) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 70%, rgba(180,175,160,0.25) 0%, transparent 55%),
+    #d4d0c4;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.gate-card {
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  padding: 36px 32px;
+  max-width: 380px;
+  width: 90%;
+  text-align: center;
+  position: relative;
+  background-image:
+    linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+.gate-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    -45deg,
+    transparent 0px, transparent 28px,
+    rgba(0,0,0,0.012) 28px, rgba(0,0,0,0.012) 29px
+  );
+  pointer-events: none;
+}
+.gate-icon {
+  font-size: 40px;
+  margin-bottom: 12px;
+}
+.gate-title {
+  font-size: 20px;
+  font-weight: 900;
+  color: var(--ink);
+  letter-spacing: 3px;
+  margin-bottom: 6px;
+}
+.gate-sub {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 20px;
+  letter-spacing: 1px;
+}
+.gate-rule {
+  height: 2px;
+  background: var(--ink);
+  margin-bottom: 20px;
+}
+.gate-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  background: #fff;
+  font-family: inherit;
+  font-size: 15px;
+  text-align: center;
+  letter-spacing: 3px;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.15s;
+}
+.gate-input:focus { border-color: var(--ink); }
+.gate-input::placeholder { color: #bbb; letter-spacing: 1px; }
+.gate-btn {
+  width: 100%;
+  margin-top: 12px;
+  padding: 10px;
+  background: var(--ink);
+  color: var(--paper);
+  border: none;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 3px;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.gate-btn:hover { opacity: 0.85; }
+.gate-error {
+  color: var(--red);
+  font-size: 12px;
+  margin-top: 10px;
+  min-height: 18px;
+  letter-spacing: 1px;
+}
+.gate-hidden { display: none !important; }
+
 /* 页脚 */
 .page-foot {
   margin-top: 48px;
@@ -244,6 +342,20 @@ body {
 </style>
 </head>
 <body>
+<!-- 密码门 -->
+<div class="gate-overlay" id="gate">
+  <div class="gate-card">
+    <div class="gate-icon">&#128274;</div>
+    <div class="gate-title">制品导航总览</div>
+    <div class="gate-sub">请输入访问密码</div>
+    <div class="gate-rule"></div>
+    <input type="password" class="gate-input" id="gate-pwd" placeholder="······" maxlength="20" autofocus>
+    <button class="gate-btn" id="gate-submit">验证</button>
+    <div class="gate-error" id="gate-err"></div>
+  </div>
+</div>
+
+<div id="main-content" style="display:none">
 <div class="page">
 
   <!-- 报头 -->
@@ -471,5 +583,43 @@ body {
   </div>
 
 </div>
+</div><!-- /main-content -->
+
+<script>
+(async function(){
+  var HASH = 'c881265551edc9f9461630bc9c2e5f198e75c68126ff66315152ad88ade4a3be';
+  if (sessionStorage.getItem('_gate') === 'ok') {
+    document.getElementById('gate').classList.add('gate-hidden');
+    document.getElementById('main-content').style.display = '';
+    return;
+  }
+  document.getElementById('main-content').style.display = 'none';
+  document.getElementById('gate').classList.remove('gate-hidden');
+
+  async function sha256(msg) {
+    var buf = new TextEncoder().encode(msg);
+    var hash = await crypto.subtle.digest('SHA-256', buf);
+    return Array.from(new Uint8Array(hash)).map(function(b){ return b.toString(16).padStart(2,'0'); }).join('');
+  }
+
+  document.getElementById('gate-submit').onclick = async function(){
+    var p = document.getElementById('gate-pwd').value.trim();
+    if (!p) { document.getElementById('gate-err').textContent = '请输入密码'; return; }
+    if (await sha256(p) === HASH) {
+      sessionStorage.setItem('_gate', 'ok');
+      document.getElementById('gate').classList.add('gate-hidden');
+      document.getElementById('main-content').style.display = '';
+    } else {
+      document.getElementById('gate-err').textContent = '密码错误，请重试';
+      document.getElementById('gate-pwd').value = '';
+      document.getElementById('gate-pwd').focus();
+    }
+  };
+
+  document.getElementById('gate-pwd').onkeydown = function(e){
+    if (e.key === 'Enter') document.getElementById('gate-submit').click();
+  };
+})();
+</script>
 </body>
 </html>
