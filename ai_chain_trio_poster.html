@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI算力链涨价三巨头 · 信息图谱</title>
+  <style>
+    :root {
+      --paper: #f8f8f5;
+      --ink: #050505;
+      --muted: #666;
+      --line: #bdbdbd;
+      --blue: #071b5c;
+      --red: #f23a2e;
+      --green: #37a833;
+      --amber: #b85c00;
+      --soft-blue: #e9f0ff;
+      --soft-red: #fff0ee;
+      --soft-gray: #f3f3f1;
+      --amber-soft: #fff7ee;
+
+      /* accent for data highlights */
+      --cyan: #0077aa;
+      --orange: #cc5500;
+      --crimson: #b71c1c;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: #deded8;
+      color: var(--ink);
+      font-family: "Songti SC", "Noto Serif CJK SC", "SimSun", "Times New Roman", serif;
+    }
+
+    .page {
+      position: relative;
+      width: 1280px;
+      min-height: 720px;
+      margin: 0 auto;
+      padding: 20px 26px 24px;
+      background:
+        radial-gradient(circle at 50% 20%, rgba(255,255,255,0.92), rgba(248,248,245,0.96) 48%, rgba(226,226,218,0.45) 100%),
+        linear-gradient(90deg, rgba(0,0,0,0.016) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(0,0,0,0.012) 1px, transparent 1px),
+        var(--paper);
+      background-size: auto, 18px 18px, 18px 18px, auto;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.22);
+    }
+
+    /* diagonal watermark stripes */
+    .page::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background-image: repeating-linear-gradient(
+        -25deg,
+        transparent 0, transparent 138px,
+        rgba(120,120,120,0.07) 139px, rgba(120,120,120,0.07) 141px,
+        transparent 142px, transparent 220px
+      );
+      opacity: 0.45;
+      z-index: 1;
+    }
+
+    .watermarks {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      opacity: 0.08;
+      color: #666;
+      font-size: 20px;
+      font-weight: 700;
+      transform: rotate(-25deg);
+    }
+
+    .watermarks span { position: absolute; white-space: nowrap; }
+
+    .content { position: relative; z-index: 3; }
+
+    /* ─── 顶部标识 ─── */
+    .topline {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 12px;
+      color: #555;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .topline .dot {
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: #999;
+      display: inline-block;
+    }
+
+    .topline .tag-pill {
+      display: inline-block;
+      padding: 1px 8px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      border: 1px solid #aaa;
+    }
+
+    /* ─── 主标题 ─── */
+    h1 {
+      margin: 6px 0 4px;
+      text-align: center;
+      font-size: 34px;
+      line-height: 1.15;
+      font-weight: 900;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 14px;
+      color: #444;
+      margin-bottom: 10px;
+      line-height: 1.5;
+    }
+
+    .main-rule { height: 2px; background: #000; margin: 0 0 10px; }
+
+    /* ─── 板块标题 ─── */
+    .section-title {
+      font-size: 14px;
+      font-weight: 900;
+      margin: 10px 0 6px;
+      padding-left: 8px;
+      border-left: 4px solid var(--blue);
+      line-height: 1.2;
+      color: var(--ink);
+    }
+
+    .section-title.red   { border-left-color: var(--red); }
+    .section-title.amber { border-left-color: var(--amber); }
+    .section-title.green { border-left-color: var(--green); }
+
+    /* ─── 三栏网格 ─── */
+    .triple-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+    }
+
+    /* ═══════════ 装饰切角卡片（从原模板继承）═══════════ */
+    .corner-card {
+      position: relative;
+      border: 2px solid var(--line);
+      background: #fff;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+    .corner-card.blue   { border-color: var(--blue); }
+    .corner-card.orange { border-color: var(--orange); }
+    .corner-card.red    { border-color: var(--red); }
+
+    .corner-card::before, .corner-card::after {
+      content: "";
+      position: absolute;
+      width: 16px; height: 16px;
+      background: var(--paper);
+      z-index: 2;
+    }
+    .corner-card::before {
+      top: -2px; left: -2px;
+      border-right: 2px solid currentColor;
+      border-bottom: 2px solid currentColor;
+      border-bottom-right-radius: 10px;
+    }
+    .corner-card::after {
+      right: -2px; bottom: -2px;
+      border-left: 2px solid currentColor;
+      border-top: 2px solid currentColor;
+      border-top-left-radius: 10px;
+    }
+    .corner-card.blue::before, .corner-card.blue::after,
+    .corner-card.blue { color: var(--blue); }
+    .corner-card.orange::before, .corner-card.orange::after,
+    .corner-card.orange { color: var(--orange); }
+    .corner-card.red::before, .corner-card.red::after,
+    .corner-card.red { color: var(--red); }
+
+    /* ═══════════ BAND 1: 品种身份证 ═══════════ */
+    .id-card { padding: 9px 12px; }
+    .id-card .tag-line {
+      font-size: 10px; letter-spacing: 2px; font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .id-card.blue .tag-line   { color: var(--blue); }
+    .id-card.orange .tag-line { color: var(--orange); }
+    .id-card.red .tag-line    { color: var(--red); }
+
+    .id-card h3 {
+      font-size: 15px; font-weight: 900; margin-bottom: 3px;
+    }
+    .id-card.blue h3   { color: var(--blue); }
+    .id-card.orange h3 { color: var(--orange); }
+    .id-card.red h3    { color: var(--red); }
+
+    .id-card .def {
+      font-size: 10.5px; color: #555; line-height: 1.4; margin-bottom: 6px;
+    }
+    .id-card .price-row {
+      display: flex; align-items: baseline; gap: 6px; margin-bottom: 2px;
+    }
+    .id-card .price-label { font-size: 9px; color: var(--muted); }
+    .id-card .price-val {
+      font-size: 24px; font-weight: 900;
+    }
+    .id-card.blue .price-val   { color: var(--blue); }
+    .id-card.orange .price-val { color: var(--orange); }
+    .id-card.red .price-val    { color: var(--red); }
+    .id-card .price-note { font-size: 9px; color: var(--muted); }
+
+    .id-card .meta-row {
+      display: flex; justify-content: space-between; margin-top: 6px;
+      padding-top: 6px; border-top: 1px solid var(--line);
+    }
+    .id-card .meta-item { text-align: center; }
+    .id-card .meta-item .meta-label { font-size: 8px; color: var(--muted); }
+    .id-card .meta-item .meta-val   {
+      font-size: 11px; font-weight: 700; color: var(--ink);
+    }
+    .star-rating { color: #d4a017; font-size: 11px; letter-spacing: 1px; }
+
+    /* ═══════════ BAND 2: 30秒科普 ═══════════ */
+    .sci-card {
+      padding: 9px 10px; display: flex; gap: 10px; align-items: flex-start;
+    }
+    .sci-icon {
+      width: 60px; height: 60px; flex-shrink: 0;
+      background: var(--soft-gray); border: 1px solid var(--line);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .sci-text h4 { font-size: 12px; font-weight: 900; margin-bottom: 3px; }
+    .sci-text.blue h4   { color: var(--blue); }
+    .sci-text.orange h4 { color: var(--orange); }
+    .sci-text.red h4    { color: var(--red); }
+    .sci-text p { font-size: 9.5px; color: #444; line-height: 1.5; }
+
+    /* ═══════════ BAND 3: 供需断裂 ═══════════ */
+    .gap-card {
+      padding: 8px 10px;
+    }
+    .gap-card h4 {
+      font-size: 11px; font-weight: 900; margin-bottom: 5px;
+    }
+    .gap-card.blue h4   { color: var(--blue); }
+    .gap-card.orange h4 { color: var(--orange); }
+    .gap-card.red h4    { color: var(--red); }
+    .gap-chart { height: 45px; margin-bottom: 4px; }
+    .gap-number {
+      font-size: 18px; font-weight: 900; text-align: center; margin: 2px 0;
+    }
+    .gap-number.blue   { color: var(--blue); }
+    .gap-number.orange { color: var(--orange); }
+    .gap-number.red    { color: var(--red); }
+    .gap-desc { font-size: 9px; color: var(--muted); text-align: center; }
+
+    /* ═══════════ BAND 4: 缓解时间轴 ═══════════ */
+    .timeline-box {
+      background: #fff;
+      border: 1.5px solid var(--line);
+      padding: 10px 14px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+    }
+    .tl-labels {
+      display: flex; justify-content: space-between;
+      font-size: 8px; color: var(--muted); margin-bottom: 3px; padding: 0 2px;
+    }
+    .tl-svg { width: 100%; height: 40px; }
+    .tl-legend {
+      display: flex; gap: 14px; margin-top: 4px; justify-content: center;
+    }
+    .tl-legend-item { font-size: 9px; display: flex; align-items: center; gap: 4px; }
+    .tl-legend-dot { width: 7px; height: 7px; border-radius: 50%; }
+
+    /* ═══════════ BAND 5: 利润地图 ═══════════ */
+    .profit-card { padding: 8px 10px; }
+    .profit-card h4 {
+      font-size: 11px; font-weight: 900; margin-bottom: 5px;
+    }
+    .profit-card.blue h4   { color: var(--blue); }
+    .profit-card.orange h4 { color: var(--orange); }
+    .profit-card.red h4    { color: var(--red); }
+
+    .pyramid { display: flex; flex-direction: column; gap: 2px; }
+    .pyr-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 2px 8px; font-size: 9.5px;
+    }
+    .pyr-row.tier1 {
+      background: rgba(0,0,0,0.04);
+      border-left: 3px solid var(--green);
+    }
+    .pyr-row.tier2 {
+      background: rgba(0,0,0,0.02);
+      border-left: 3px solid var(--amber);
+    }
+    .pyr-row.tier3 { background: rgba(0,0,0,0.01); }
+    .pyr-row .seg { color: var(--ink); }
+    .pyr-row .margin { font-weight: 700; font-size: 10px; color: var(--red); }
+
+    .ticker-list {
+      margin-top: 5px; font-size: 9.5px; color: #444; line-height: 1.6;
+    }
+    .ticker-list b { color: var(--blue); }
+
+    .summary-bar {
+      margin-top: 6px; text-align: center;
+      font-size: 11px; font-weight: 700; color: var(--blue);
+      padding: 5px; background: var(--soft-blue);
+      border: 1px solid rgba(7,27,92,0.15);
+    }
+
+    /* ─── 底部注释 ─── */
+    .footnote {
+      margin-top: 8px; padding-top: 6px;
+      border-top: 1px solid var(--line);
+      display: flex; justify-content: space-between;
+      font-size: 11px; color: #888;
+    }
+  </style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ═══ 对角线水印 ═══ -->
+  <div class="watermarks">
+    <span style="top:60px;left:40px">AI算力链涨价三巨头</span>
+    <span style="top:220px;left:360px">AI算力链涨价三巨头</span>
+    <span style="top:420px;left:120px">AI算力链涨价三巨头</span>
+    <span style="top:560px;left:500px">AI算力链涨价三巨头</span>
+  </div>
+
+  <div class="content">
+
+    <!-- ═══ 顶部标识 ═══ -->
+    <div class="topline">
+      <span>信息图谱</span>
+      <span class="dot"></span>
+      <span>2026</span>
+      <span class="dot"></span>
+      <span>AI 算力材料</span>
+      <span class="dot"></span>
+      <span class="tag-pill">涨价三巨头</span>
+    </div>
+
+    <!-- ═══ 主标题 ═══ -->
+    <h1>AI 算力链涨价三巨头</h1>
+    <div class="subtitle">
+      电子布 · 光纤 · 六氟化钨 —— 零基础快速了解知识、背景、瓶颈与机会
+    </div>
+    <div class="main-rule"></div>
+
+    <!-- ═══════════ BAND 1: 三品种身份证 ═══════════ -->
+    <div class="section-title">▎ 品种身份证</div>
+    <div class="triple-grid">
+      <!-- 电子布 -->
+      <div class="corner-card blue id-card">
+        <div class="tag-line">AI HARDWARE CHAIN ①</div>
+        <h3>电子布</h3>
+        <div class="def">PCB核心增强材料，AI服务器高层数板刚需，织布机供给刚性</div>
+        <div class="price-row">
+          <span class="price-label">区间涨幅</span>
+          <span class="price-val">+30~50%</span>
+        </div>
+        <div class="price-note">高端布价格：13~18元/米（2026Q2）</div>
+        <div class="meta-row">
+          <div class="meta-item">
+            <div class="meta-label">紧缺星级</div>
+            <div class="meta-val"><span class="star-rating">★★★★★</span></div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">缓解时间</div>
+            <div class="meta-val">2027H2</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">月缺口</div>
+            <div class="meta-val" style="color:var(--blue);">4000万米</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 光纤 -->
+      <div class="corner-card orange id-card">
+        <div class="tag-line">AI HARDWARE CHAIN ②</div>
+        <h3>光纤</h3>
+        <div class="def">数据中心GPU集群互联基础，A2光棒技术垄断，扩产周期18个月</div>
+        <div class="price-row">
+          <span class="price-label">光棒涨幅</span>
+          <span class="price-val">+550%</span>
+        </div>
+        <div class="price-note">普缆→A2特种光棒，价值跃迁</div>
+        <div class="meta-row">
+          <div class="meta-item">
+            <div class="meta-label">紧缺星级</div>
+            <div class="meta-val"><span class="star-rating">★★★★★</span></div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">缓解时间</div>
+            <div class="meta-val">2027H2</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">全球缺口</div>
+            <div class="meta-val" style="color:var(--orange);">1.8亿芯公里</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 六氟化钨 -->
+      <div class="corner-card red id-card">
+        <div class="tag-line">AI HARDWARE CHAIN ③</div>
+        <h3>六氟化钨 WF₆</h3>
+        <div class="def">半导体钨沉积核心气体，3D NAND/HBM/GAA三重需求叠加，日本产能永久退出</div>
+        <div class="price-row">
+          <span class="price-label">年内涨幅</span>
+          <span class="price-val">+85%</span>
+        </div>
+        <div class="price-note">日本2200吨/年产 · 7月1日永久停产</div>
+        <div class="meta-row">
+          <div class="meta-item">
+            <div class="meta-label">紧缺星级</div>
+            <div class="meta-val"><span class="star-rating">★★★★☆</span></div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">缓解时间</div>
+            <div class="meta-val">2028+</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">年缺口</div>
+            <div class="meta-val" style="color:var(--red);">3000~4000吨</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ BAND 2: 30秒科普 ═══════════ -->
+    <div class="section-title">▎ 30秒科普</div>
+    <div class="triple-grid">
+      <!-- 电子布科普 -->
+      <div class="corner-card blue sci-card">
+        <div class="sci-icon">
+          <svg width="56" height="56" viewBox="0 0 56 56">
+            <rect x="6" y="24" width="44" height="8" rx="1" fill="none" stroke="var(--blue)" stroke-width="0.8"/>
+            <rect x="6" y="25" width="44" height="2" fill="var(--blue)" opacity="0.15"/>
+            <rect x="6" y="31" width="44" height="2" fill="var(--blue)" opacity="0.15"/>
+            <line x1="8" y1="28" x2="48" y2="28" stroke="var(--blue)" stroke-width="0.4" opacity="0.5"/>
+            <line x1="8" y1="30" x2="48" y2="30" stroke="var(--blue)" stroke-width="0.4" opacity="0.3"/>
+            <line x1="10" y1="25" x2="10" y2="33" stroke="var(--blue)" stroke-width="0.4" opacity="0.4"/>
+            <line x1="18" y1="25" x2="18" y2="33" stroke="var(--blue)" stroke-width="0.4" opacity="0.3"/>
+            <line x1="26" y1="25" x2="26" y2="33" stroke="var(--blue)" stroke-width="0.4" opacity="0.4"/>
+            <line x1="34" y1="25" x2="34" y2="33" stroke="var(--blue)" stroke-width="0.4" opacity="0.3"/>
+            <line x1="42" y1="25" x2="42" y2="33" stroke="var(--blue)" stroke-width="0.4" opacity="0.4"/>
+            <text x="28" y="19" text-anchor="middle" fill="var(--blue)" font-size="6" font-weight="700">玻璃纤维网格</text>
+            <text x="28" y="45" text-anchor="middle" fill="var(--red)" font-size="5.5">PCB骨架 → 高层板 → 高端布</text>
+          </svg>
+        </div>
+        <div class="sci-text blue">
+          <h4>电子布是什么？</h4>
+          <p>电子布是PCB的"骨架"，由极细玻璃纤维编织，浸胶后压合成绝缘层。AI服务器用高层数板，对布的厚度、平整度要求极高，普通布无法替代。</p>
+        </div>
+      </div>
+
+      <!-- 光纤科普 -->
+      <div class="corner-card orange sci-card">
+        <div class="sci-icon">
+          <svg width="56" height="56" viewBox="0 0 56 56">
+            <rect x="4" y="18" width="12" height="9" rx="2" fill="none" stroke="var(--orange)" stroke-width="1"/>
+            <text x="10" y="24" text-anchor="middle" fill="var(--orange)" font-size="5.5" font-weight="700">GPU</text>
+            <rect x="20" y="18" width="12" height="9" rx="2" fill="none" stroke="var(--orange)" stroke-width="1"/>
+            <text x="26" y="24" text-anchor="middle" fill="var(--orange)" font-size="5.5" font-weight="700">GPU</text>
+            <rect x="36" y="18" width="12" height="9" rx="2" fill="none" stroke="var(--orange)" stroke-width="1"/>
+            <text x="42" y="24" text-anchor="middle" fill="var(--orange)" font-size="5.5" font-weight="700">GPU</text>
+            <path d="M16 22 Q28 14 32 22" fill="none" stroke="var(--orange)" stroke-width="1" stroke-dasharray="2,1"/>
+            <path d="M16 22 Q28 30 44 22" fill="none" stroke="var(--orange)" stroke-width="1" stroke-dasharray="2,1"/>
+            <rect x="12" y="36" width="30" height="10" rx="2" fill="none" stroke="var(--orange)" stroke-width="0.8"/>
+            <text x="27" y="42" text-anchor="middle" fill="var(--orange)" font-size="5.5" font-weight="700">A2 光棒技术</text>
+            <text x="27" y="48" text-anchor="middle" fill="var(--amber)" font-size="5">美日垄断</text>
+          </svg>
+        </div>
+        <div class="sci-text orange">
+          <h4>光纤是什么？</h4>
+          <p>光纤是数据中心GPU集群互联的"血管"。AI训练需要海量参数同步，A2特种光纤支持400G/800G高速传输，但光棒技术被美日垄断，扩产极慢。</p>
+        </div>
+      </div>
+
+      <!-- 六氟化钨科普 -->
+      <div class="corner-card red sci-card">
+        <div class="sci-icon">
+          <svg width="56" height="56" viewBox="0 0 56 56">
+            <ellipse cx="28" cy="30" rx="20" ry="8" fill="none" stroke="var(--red)" stroke-width="0.8" opacity="0.5"/>
+            <ellipse cx="28" cy="28" rx="20" ry="8" fill="none" stroke="var(--red)" stroke-width="1"/>
+            <text x="28" y="16" text-anchor="middle" fill="var(--red)" font-size="5.5">WF₆ 气体</text>
+            <path d="M28 19 L28 24" stroke="var(--red)" stroke-width="1"/>
+            <rect x="20" y="29" width="3" height="5" fill="var(--red)" opacity="0.3"/>
+            <rect x="26" y="29" width="3" height="5" fill="var(--red)" opacity="0.4"/>
+            <rect x="32" y="29" width="3" height="5" fill="var(--red)" opacity="0.4"/>
+            <text x="28" y="44" text-anchor="middle" fill="var(--red)" font-size="5">气体 → 钨 → 晶体管</text>
+          </svg>
+        </div>
+        <div class="sci-text red">
+          <h4>六氟化钨是什么？</h4>
+          <p>WF₆是半导体CVD钨沉积的核心气体，填充芯片接触孔。3D NAND层数堆叠、HBM高带宽存储、GAA新架构三重需求叠加，气体消耗量指数级增长。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ BAND 3: 供需断裂 ═══════════ -->
+    <div class="section-title red">▎ 供需断裂点</div>
+    <div class="triple-grid">
+      <!-- 电子布 -->
+      <div class="corner-card blue gap-card">
+        <h4>⚡ 电子布 · 供需断裂</h4>
+        <svg class="gap-chart" viewBox="0 0 260 45">
+          <line x1="20" y1="38" x2="240" y2="38" stroke="var(--muted)" stroke-width="0.8"/>
+          <line x1="20" y1="38" x2="20" y2="8" stroke="var(--muted)" stroke-width="0.8"/>
+          <path d="M20 37 Q80 34 140 22 T240 6" fill="none" stroke="var(--blue)" stroke-width="2"/>
+          <path d="M20 35 L220 37" fill="none" stroke="#999" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <path d="M140,22 L140,36 L240,6 L240,37 Z" fill="rgba(204,0,0,0.08)"/>
+          <text x="200" y="16" fill="var(--red)" font-size="12">⚡</text>
+          <text x="20" y="44" fill="var(--muted)" font-size="6">2024</text>
+          <text x="225" y="44" fill="var(--muted)" font-size="6">2027</text>
+        </svg>
+        <div class="gap-number blue">4000万米<span style="font-size:10px;color:var(--muted);">/月</span></div>
+        <div class="gap-desc">高端电子布月供给缺口，相当于12条产线满产仍不足</div>
+      </div>
+
+      <!-- 光纤 -->
+      <div class="corner-card orange gap-card">
+        <h4>⚡ 光纤 · 供需断裂</h4>
+        <svg class="gap-chart" viewBox="0 0 260 45">
+          <line x1="20" y1="38" x2="240" y2="38" stroke="var(--muted)" stroke-width="0.8"/>
+          <line x1="20" y1="38" x2="20" y2="8" stroke="var(--muted)" stroke-width="0.8"/>
+          <path d="M20 37 Q100 30 170 16 T240 4" fill="none" stroke="var(--orange)" stroke-width="2"/>
+          <path d="M20 36 L220 38" fill="none" stroke="#999" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <path d="M170,16 L170,37 L240,4 L240,38 Z" fill="rgba(204,0,0,0.08)"/>
+          <text x="205" y="12" fill="var(--red)" font-size="12">⚡</text>
+          <text x="20" y="44" fill="var(--muted)" font-size="6">2024</text>
+          <text x="225" y="44" fill="var(--muted)" font-size="6">2027</text>
+        </svg>
+        <div class="gap-number orange">1.8亿<span style="font-size:10px;color:var(--muted);">芯公里</span></div>
+        <div class="gap-desc">2026年全球光纤缺口，A2光棒扩产真空18个月</div>
+      </div>
+
+      <!-- 六氟化钨 -->
+      <div class="corner-card red gap-card">
+        <h4>⚡ WF₆ · 供需断裂</h4>
+        <svg class="gap-chart" viewBox="0 0 260 45">
+          <line x1="20" y1="38" x2="240" y2="38" stroke="var(--muted)" stroke-width="0.8"/>
+          <line x1="20" y1="38" x2="20" y2="8" stroke="var(--muted)" stroke-width="0.8"/>
+          <path d="M20 37 Q90 32 150 18 T240 2" fill="none" stroke="var(--red)" stroke-width="2"/>
+          <path d="M20 36 L110 36 L110 40 L240 40" fill="none" stroke="#999" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <line x1="110" y1="2" x2="110" y2="43" stroke="var(--red)" stroke-width="0.8" stroke-dasharray="3,2"/>
+          <text x="108" y="6" text-anchor="end" fill="var(--red)" font-size="6">7/1 日本停产</text>
+          <path d="M150,18 L150,39 L240,2 L240,40 Z" fill="rgba(204,0,0,0.08)"/>
+          <text x="195" y="12" fill="var(--red)" font-size="12">⚡</text>
+          <text x="20" y="44" fill="var(--muted)" font-size="6">2024</text>
+          <text x="225" y="44" fill="var(--muted)" font-size="6">2028</text>
+        </svg>
+        <div class="gap-number red">3000~4000<span style="font-size:10px;color:var(--muted);">吨/年</span></div>
+        <div class="gap-desc">日本永久停产减供2200吨，全球消费约8000吨/年</div>
+      </div>
+    </div>
+
+    <!-- ═══════════ BAND 4: 缓解时间轴 ═══════════ -->
+    <div class="section-title amber">▎ 缓解时间轴</div>
+    <div class="timeline-box">
+      <div class="tl-labels">
+        <span>2026 Q3</span><span>2026 Q4</span><span>2027 H1</span><span>2027 H2</span><span>2028+</span>
+      </div>
+      <svg class="tl-svg" viewBox="0 0 960 40">
+        <!-- persistent gap zone background -->
+        <rect x="0" y="0" width="740" height="40" fill="rgba(242,58,46,0.05)" rx="2"/>
+        <rect x="740" y="0" width="220" height="40" fill="rgba(7,27,92,0.03)" rx="2"/>
+        <text x="370" y="14" text-anchor="middle" fill="rgba(242,58,46,0.3)" font-size="8" font-weight="700">缺口持续区</text>
+
+        <!-- base timeline -->
+        <line x1="80" y1="34" x2="880" y2="34" stroke="var(--line)" stroke-width="1"/>
+
+        <!-- quarter ticks -->
+        <line x1="80"  y1="30" x2="80"  y2="38" stroke="var(--muted)" stroke-width="0.6"/>
+        <line x1="260" y1="30" x2="260" y2="38" stroke="var(--muted)" stroke-width="0.6"/>
+        <line x1="440" y1="30" x2="440" y2="38" stroke="var(--muted)" stroke-width="0.6"/>
+        <line x1="620" y1="30" x2="620" y2="38" stroke="var(--muted)" stroke-width="0.6"/>
+        <line x1="800" y1="30" x2="800" y2="38" stroke="var(--muted)" stroke-width="0.6"/>
+
+        <!-- 电子布 line -->
+        <polyline points="80,32 260,29 440,24 620,18 800,16 880,15"
+                  fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="620" cy="18" r="3.5" fill="var(--blue)"/>
+        <text x="620" y="12" text-anchor="middle" fill="var(--blue)" font-size="7.5" font-weight="700">新产线释放</text>
+
+        <!-- 光纤 line -->
+        <polyline points="80,33 260,30 440,25 620,19 800,17 880,16"
+                  fill="none" stroke="var(--orange)" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="620" cy="19" r="3.5" fill="var(--orange)"/>
+        <text x="620" y="27" text-anchor="middle" fill="var(--orange)" font-size="7.5" font-weight="700">光棒扩产释放</text>
+
+        <!-- WF6 line -->
+        <polyline points="80,33 260,31 440,27 620,22 800,18 880,14"
+                  fill="none" stroke="var(--red)" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="800" cy="18" r="3.5" fill="var(--red)"/>
+        <text x="800" y="12" text-anchor="middle" fill="var(--red)" font-size="7.5" font-weight="700">中国产能补位</text>
+      </svg>
+      <div class="tl-legend">
+        <div class="tl-legend-item"><div class="tl-legend-dot" style="background:var(--blue);"></div>电子布</div>
+        <div class="tl-legend-item"><div class="tl-legend-dot" style="background:var(--orange);"></div>光纤</div>
+        <div class="tl-legend-item"><div class="tl-legend-dot" style="background:var(--red);"></div>六氟化钨</div>
+      </div>
+    </div>
+
+    <!-- ═══════════ BAND 5: 产业链利润地图 ═══════════ -->
+    <div class="section-title green">▎ 产业链利润地图</div>
+    <div class="triple-grid">
+      <!-- 电子布 -->
+      <div class="corner-card blue profit-card">
+        <h4>电子布产业链</h4>
+        <div class="pyramid">
+          <div class="pyr-row tier1">
+            <span class="seg">高端电子布（超低损耗）</span>
+            <span class="margin">毛利率 35~45%</span>
+          </div>
+          <div class="pyr-row tier2">
+            <span class="seg">普通电子布</span>
+            <span class="margin">毛利率 15~20%</span>
+          </div>
+          <div class="pyr-row tier3">
+            <span class="seg">玻璃纤维原丝</span>
+            <span class="margin">毛利率 8~12%</span>
+          </div>
+        </div>
+        <div class="ticker-list">
+          核心标的：<b>宏和科技</b> · <b>国际复材</b> · <b>泰山玻纤</b>
+        </div>
+      </div>
+
+      <!-- 光纤 -->
+      <div class="corner-card orange profit-card">
+        <h4>光纤产业链</h4>
+        <div class="pyramid">
+          <div class="pyr-row tier1">
+            <span class="seg">A2光棒（特种预制棒）</span>
+            <span class="margin">毛利率 50~60%</span>
+          </div>
+          <div class="pyr-row tier2">
+            <span class="seg">光纤拉丝</span>
+            <span class="margin">毛利率 20~25%</span>
+          </div>
+          <div class="pyr-row tier3">
+            <span class="seg">普通光缆</span>
+            <span class="margin">毛利率 8~12%</span>
+          </div>
+        </div>
+        <div class="ticker-list">
+          核心标的：<b>亨通光电</b> · <b>中天科技</b> · <b>长飞光纤</b>
+        </div>
+      </div>
+
+      <!-- 六氟化钨 -->
+      <div class="corner-card red profit-card">
+        <h4>六氟化钨产业链</h4>
+        <div class="pyramid">
+          <div class="pyr-row tier1">
+            <span class="seg">WF₆电子特气（高纯）</span>
+            <span class="margin">毛利率 45~55%</span>
+          </div>
+          <div class="pyr-row tier2">
+            <span class="seg">钨金属冶炼</span>
+            <span class="margin">毛利率 18~22%</span>
+          </div>
+          <div class="pyr-row tier3">
+            <span class="seg">钨矿采选</span>
+            <span class="margin">毛利率 10~15%</span>
+          </div>
+        </div>
+        <div class="ticker-list">
+          核心标的：<b>多氟多</b> · <b>雅克科技</b> · <b>中船特气</b>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ 总结 ═══ -->
+    <div class="summary-bar">
+      ★ 三大品种共同逻辑：需求指数级增长  vs  供给线性释放 —— 持续性涨价周期
+    </div>
+
+    <!-- ═══ 底部注释 ═══ -->
+    <div class="footnote">
+      <span>整理来源：产业链研究知识库 / 2026年6月</span>
+      <span>本图仅供产业研究参考，不构成投资建议</span>
+    </div>
+
+  </div><!-- /.content -->
+</div><!-- /.page -->
+
+</body>
+</html>
