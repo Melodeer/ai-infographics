@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>六氟化钨产业链拆解：AI算力驱动下的涨价链条</title>
+  <style>
+    :root {
+      --paper: #f8f8f5;
+      --ink: #050505;
+      --muted: #666;
+      --line: #bdbdbd;
+      --blue: #071b5c;
+      --red: #f23a2e;
+      --green: #37a833;
+      --amber: #b85c00;
+      --soft-blue: #e9f0ff;
+      --soft-red: #fff0ee;
+      --soft-gray: #f3f3f1;
+      --amber-soft: #fff7ee;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: #deded8;
+      color: var(--ink);
+      font-family: "Songti SC", "Noto Serif CJK SC", "SimSun", "Times New Roman", serif;
+    }
+
+    .page {
+      position: relative;
+      width: 1024px;
+      min-height: 1536px;
+      margin: 0 auto;
+      padding: 26px 28px 32px;
+      background:
+        radial-gradient(circle at 50% 18%, rgba(255,255,255,0.92), rgba(248,248,245,0.96) 48%, rgba(226,226,218,0.45) 100%),
+        linear-gradient(90deg, rgba(0,0,0,0.018) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(0,0,0,0.014) 1px, transparent 1px),
+        var(--paper);
+      background-size: auto, 18px 18px, 18px 18px, auto;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.22);
+    }
+
+    .page::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background-image: repeating-linear-gradient(
+        -25deg,
+        transparent 0, transparent 138px,
+        rgba(120,120,120,0.07) 139px, rgba(120,120,120,0.07) 141px,
+        transparent 142px, transparent 220px
+      );
+      opacity: 0.45;
+      z-index: 1;
+    }
+
+    .watermarks {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      opacity: 0.09;
+      color: #777;
+      font-size: 22px;
+      font-weight: 700;
+      transform: rotate(-25deg);
+    }
+
+    .watermarks span { position: absolute; white-space: nowrap; }
+
+    .content { position: relative; z-index: 3; }
+
+    .topline {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 13px;
+      color: #555;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .topline .dot {
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: #999;
+      display: inline-block;
+    }
+
+    h1 {
+      margin: 16px 0 6px;
+      text-align: center;
+      font-size: 38px;
+      line-height: 1.12;
+      font-weight: 900;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 16px;
+      color: #444;
+      margin-bottom: 16px;
+      line-height: 1.55;
+    }
+
+    .main-rule { height: 2px; background: #000; margin: 0 0 14px; }
+
+    .conclusion-bar {
+      background: var(--blue);
+      color: #fff;
+      padding: 11px 18px;
+      font-size: 15px;
+      line-height: 1.6;
+      margin-bottom: 14px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .conclusion-bar .label {
+      white-space: nowrap;
+      font-weight: 900;
+      font-size: 13px;
+      background: rgba(255,255,255,0.18);
+      padding: 2px 8px;
+      border-radius: 3px;
+      margin-top: 1px;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 900;
+      margin: 14px 0 8px;
+      padding-left: 10px;
+      border-left: 4px solid var(--blue);
+      line-height: 1.2;
+      color: var(--ink);
+    }
+
+    .section-title.red   { border-left-color: var(--red); }
+    .section-title.amber { border-left-color: var(--amber); }
+    .section-title.green { border-left-color: var(--green); }
+
+    .chain-flow {
+      display: flex;
+      align-items: stretch;
+      margin: 0 0 14px;
+      background: #fff;
+      border: 1.5px solid var(--line);
+    }
+
+    .chain-node {
+      flex: 1;
+      text-align: center;
+      padding: 9px 6px;
+      border-right: 1px solid var(--line);
+      font-size: 13.5px;
+      font-weight: 700;
+      line-height: 1.4;
+      color: var(--ink);
+    }
+
+    .chain-node:last-child { border-right: none; }
+
+    .chain-node.highlight-blue {
+      background: var(--soft-blue);
+      color: var(--blue);
+    }
+
+    .chain-node.highlight-red {
+      background: var(--soft-red);
+      color: var(--red);
+    }
+
+    .chain-node.highlight-amber {
+      background: var(--amber-soft);
+      color: var(--amber);
+    }
+
+    .chain-node sub {
+      display: block;
+      font-size: 11px;
+      font-weight: 400;
+      color: #666;
+      margin-top: 2px;
+    }
+
+    .chain-arrow {
+      display: flex;
+      align-items: center;
+      padding: 0 2px;
+      font-size: 18px;
+      color: #bbb;
+      flex-shrink: 0;
+    }
+
+    .logic-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .logic-card {
+      position: relative;
+      border: 2px solid var(--blue);
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    .logic-card.amber { border-color: var(--amber); color: var(--amber); }
+    .logic-card.red   { border-color: var(--red);   color: var(--red); }
+    .logic-card       { color: var(--blue); }
+
+    .logic-card::before, .logic-card::after {
+      content: "";
+      position: absolute;
+      width: 20px; height: 20px;
+      background: var(--paper);
+      z-index: 2;
+    }
+
+    .logic-card::before {
+      top: -2px; left: -2px;
+      border-right: 2px solid currentColor;
+      border-bottom: 2px solid currentColor;
+      border-bottom-right-radius: 12px;
+    }
+
+    .logic-card::after {
+      right: -2px; bottom: -2px;
+      border-left: 2px solid currentColor;
+      border-top: 2px solid currentColor;
+      border-top-left-radius: 12px;
+    }
+
+    .logic-head {
+      padding: 9px 12px 7px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logic-icon { font-size: 22px; line-height: 1; }
+
+    .logic-head-text strong {
+      display: block;
+      font-size: 14.5px;
+      font-weight: 900;
+      color: currentColor;
+    }
+
+    .logic-head-text small { font-size: 12px; color: #555; }
+
+    .logic-body {
+      padding: 9px 12px 10px;
+      font-size: 13.5px;
+      line-height: 1.55;
+      color: #111;
+    }
+
+    .logic-keydata {
+      margin-top: 7px;
+      padding: 6px 9px;
+      background: rgba(0,0,0,0.03);
+      border-left: 3px solid currentColor;
+      font-size: 12.5px;
+      line-height: 1.5;
+      color: #222;
+    }
+
+    .logic-keydata .src {
+      font-size: 11px;
+      color: #888;
+      margin-top: 4px;
+      font-style: italic;
+    }
+
+    .flywheel-box {
+      background: #fff;
+      border: 1.5px solid var(--line);
+      padding: 10px 16px 12px;
+      margin-bottom: 14px;
+    }
+
+    .flywheel-title {
+      font-size: 13px;
+      font-weight: 900;
+      color: var(--amber);
+      margin-bottom: 8px;
+    }
+
+    .flywheel {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: nowrap;
+    }
+
+    .fw-node {
+      background: #fff;
+      border: 1.5px solid var(--blue);
+      color: var(--blue);
+      padding: 7px 10px;
+      font-size: 12.5px;
+      font-weight: 900;
+      text-align: center;
+      min-width: 98px;
+      line-height: 1.35;
+    }
+
+    .fw-node.red   { border-color: var(--red);   color: var(--red); }
+    .fw-node.amber { border-color: var(--amber);  color: var(--amber); }
+    .fw-node.green { border-color: var(--green);  color: var(--green); }
+    .fw-node.gray  { border-color: #666;           color: #333; }
+
+    .fw-arrow { font-size: 18px; color: #bbb; padding: 0 3px; flex-shrink: 0; }
+
+    .flywheel-note {
+      font-size: 12px;
+      color: #777;
+      text-align: center;
+      margin-top: 6px;
+      font-style: italic;
+    }
+
+    .price-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border: 1.5px solid var(--line);
+      margin-bottom: 14px;
+      font-size: 13.5px;
+    }
+
+    .price-table th,
+    .price-table td {
+      border: 1px solid var(--line);
+      padding: 7px 10px;
+      vertical-align: middle;
+      line-height: 1.35;
+    }
+
+    .price-table thead tr { background: rgba(7,27,92,0.05); }
+
+    .price-table th { font-weight: 900; font-size: 13px; }
+
+    .price-table .price-val {
+      font-weight: 900;
+      color: var(--red);
+      font-size: 15px;
+    }
+
+    .price-table .change-val {
+      font-weight: 700;
+      color: var(--red);
+    }
+
+    .price-table .src-note {
+      font-size: 11.5px;
+      color: #888;
+      font-style: italic;
+    }
+
+    .status-tag {
+      display: inline-block;
+      padding: 1px 7px;
+      font-size: 12px;
+      font-weight: 700;
+      border-radius: 3px;
+    }
+
+    .status-tag.tight  { background: #ffeaea; color: var(--red); }
+    .status-tag.scarce { background: var(--amber-soft); color: var(--amber); }
+
+    .target-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .target-card {
+      border: 1.5px solid var(--line);
+      background: #fff;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    }
+
+    .target-head {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 10px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(0,0,0,0.02);
+    }
+
+    .target-badge { font-size: 16px; line-height: 1; }
+
+    .target-name {
+      font-size: 15px;
+      font-weight: 900;
+      color: var(--blue);
+    }
+
+    .target-cat {
+      font-size: 11.5px;
+      color: #666;
+      margin-left: auto;
+    }
+
+    .target-body {
+      padding: 7px 10px 9px;
+      font-size: 13px;
+      line-height: 1.55;
+      color: #222;
+    }
+
+    .target-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 6px;
+    }
+
+    .target-tag {
+      font-size: 11.5px;
+      padding: 1px 7px;
+      border-radius: 2px;
+      font-weight: 700;
+    }
+
+    .target-tag.pos   { background: var(--soft-blue); color: var(--blue); }
+    .target-tag.risk  { background: var(--soft-red);  color: var(--red); }
+    .target-tag.amber { background: var(--amber-soft); color: var(--amber); }
+
+    .risk-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .risk-item {
+      background: var(--soft-red);
+      border-left: 3px solid var(--red);
+      padding: 7px 10px;
+      font-size: 13px;
+      line-height: 1.4;
+      color: #222;
+    }
+
+    .risk-item b {
+      color: var(--red);
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .footnote {
+      margin-top: 14px;
+      padding-top: 8px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #888;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="page">
+
+  <div class="watermarks">
+    <span style="top:110px;left:60px">六氟化钨产业链研究</span>
+    <span style="top:380px;left:290px">六氟化钨产业链研究</span>
+    <span style="top:640px;left:70px">六氟化钨产业链研究</span>
+    <span style="top:900px;left:350px">六氟化钨产业链研究</span>
+  </div>
+
+  <div class="content">
+
+    <div class="topline">
+      <span>产业链研究</span>
+      <span class="dot"></span>
+      <span>2026</span>
+      <span class="dot"></span>
+      <span>AI 半导体材料</span>
+      <span class="dot"></span>
+      <span>电子特气 / WF₆</span>
+    </div>
+
+    <h1>六氟化钨产业链拆解<br>日本断供下的结构性供给危机</h1>
+
+    <div class="subtitle">
+      日本2200吨/年产能7月1日永久停产 × 中国钨粉出口管制<br>
+      缺口3000-4000吨，国产替代加速
+    </div>
+
+    <div class="main-rule"></div>
+
+    <div class="conclusion-bar">
+      <span class="label">核心结论</span>
+      <span>
+        六氟化钨是芯片制造关键特种气体。日本关东电化+中央硝子合计2200吨/年产能7月1日永久停产，
+        根源是中国高纯钨粉出口管制致其原料断供。全球供需缺口3000-4000吨，国产替代是唯一出路。
+      </span>
+    </div>
+
+    <!-- 产业链路径 -->
+    <div class="section-title">▎ 产业链路径</div>
+
+    <div class="chain-flow">
+      <div class="chain-node highlight-amber">
+        高纯钨粉
+        <sub>中国产量全球80%<br>出口管制严格</sub>
+      </div>
+      <div class="chain-arrow">→</div>
+      <div class="chain-node highlight-red">
+        WF₆ 合成 ⚡
+        <sub>核心瓶颈环节<br>氟化工+环保审批</sub>
+      </div>
+      <div class="chain-arrow">→</div>
+      <div class="chain-node highlight-blue">
+        CVD/PVD沉积
+        <sub>晶圆厂化学气相沉积<br>钨线路/接触孔/通孔</sub>
+      </div>
+      <div class="chain-arrow">→</div>
+      <div class="chain-node">
+        3D NAND
+        <sub>128→400层+<br>每层需钨线路</sub>
+      </div>
+      <div class="chain-arrow">→</div>
+      <div class="chain-node highlight-red">
+        HBM / GAA 逻辑
+        <sub>8→16层堆叠<br>Contact数量暴增</sub>
+      </div>
+    </div>
+
+    <!-- 三大逻辑 -->
+    <div class="section-title">▎ 三大涨价逻辑</div>
+
+    <div class="logic-grid">
+
+      <div class="logic-card red">
+        <div class="logic-head">
+          <div class="logic-icon">💀</div>
+          <div class="logic-head-text">
+            <strong>逻辑一：日本永久停产</strong>
+            <small>2200吨产能一次性归零</small>
+          </div>
+        </div>
+        <div class="logic-body">
+          不是减产、不是停工检修——是<span style="font-weight:900;color:var(--red)">彻底关掉生产线</span>。已书面通知台积电、三星、SK海力士：6月30日为最后一批货。
+          <div class="logic-keydata">
+            📌 关东电化 + 中央硝子合计 <b>~2200吨/年</b>，占全球约25%<br>
+            📌 停产时间：<b>2026年7月1日</b><br>
+            📌 韩国库存最多撑到<b>8月</b>，SK Specialty现货单日再涨12%<br>
+            📌 根源：中国高纯钨粉出口管制→日企原料断供
+          
+          </div>
+        </div>
+      </div>
+
+      <div class="logic-card amber">
+        <div class="logic-head">
+          <div class="logic-icon">🔑</div>
+          <div class="logic-head-text">
+            <strong>逻辑二：中国握有底牌</strong>
+            <small>钨粉全球80%在中国</small>
+          </div>
+        </div>
+        <div class="logic-body">
+          中国钨产量占全球80%，2026年1月起对日出口几乎归零。<span style="font-weight:900;color:var(--amber)">日企扛了5个月库存，找遍越南、澳洲，无一家能批量供应电子级高纯钨粉</span>。
+          <div class="logic-keydata">
+            📌 WF₆生产成本中<b>60-70%是钨粉</b> → 没钨粉=全线停产<br>
+            📌 全球6N级有效产能仅<b>~5000吨</b>，需求11000吨<br>
+            📌 真正可用增量：中船特气 + 昊华 + 中巨芯<br>
+            📌 韩国同样面临困境：80%+此前从日本采购
+          
+          </div>
+        </div>
+      </div>
+
+      <div class="logic-card">
+        <div class="logic-head">
+          <div class="logic-icon">📈</div>
+          <div class="logic-head-text">
+            <strong>逻辑三：需求不可逆</strong>
+            <small>3D NAND/HBM/GAA三重叠加</small>
+          </div>
+        </div>
+        <div class="logic-body">
+          半导体3D化趋势下WF₆用量只会越来越大：<span style="font-weight:900;color:var(--blue)">NAND从128层→400层+，HBM从8→16层，GAA逻辑Contact暴增</span>。
+          <div class="logic-keydata">
+            📌 全球需求：2025年<b>~8000吨</b> → 2026年<b>~11000吨</b>（+37.5%）<br>
+            📌 供需缺口：<b>3000-4000吨</b><br>
+            📌 缺口缓解窗口：最早<b>2027-2028年</b><br>
+            📌 这不是库存周期，是结构性需求扩张
+          
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 涨价机制流图 -->
+    <div class="flywheel-box">
+      <div class="flywheel-title">▶ 供给冲击传导机制</div>
+      <div class="flywheel">
+        <div class="fw-node red">中国钨粉<br>出口管制</div>
+        <div class="fw-arrow">→</div>
+        <div class="fw-node amber">日本原料<br>断供</div>
+        <div class="fw-arrow">→</div>
+        <div class="fw-node red">全球25%<br>产能消失</div>
+        <div class="fw-arrow">→</div>
+        <div class="fw-node gray">三星/SK<br>库存告急</div>
+        <div class="fw-arrow">→</div>
+        <div class="fw-node red">WF₆价格<br>+190%暴涨</div>
+        <div class="fw-arrow">→</div>
+        <div class="fw-node green">国产替代<br>加速认证</div>
+      </div>
+      <div class="flywheel-note">7月1日日本正式断供→缺口全面暴露→国产认证窗口打开→价格从恐慌溢价逐步回稳</div>
+    </div>
+
+    <!-- 价格追踪 -->
+    <div class="section-title red">▎ 各等级价格参考（截至2026年6月）</div>
+
+    <table class="price-table">
+      <thead>
+        <tr>
+          <th style="width:18%">品类</th>
+          <th style="width:24%">年初价格 → 当前价格</th>
+          <th style="width:14%">涨幅</th>
+          <th style="width:18%">供需状态</th>
+          <th style="width:26%">核心驱动</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>6N级内贸</b></td>
+          <td class="price-val">~90 → 220-300 万元/吨</td>
+          <td class="change-val">+190%</td>
+          <td><span class="status-tag scarce">供给缺口</span></td>
+          <td class="src-note">日本停产+需求暴增，内贸涨幅最大</td>
+        </tr>
+        <tr>
+          <td><b>7N级长协</b></td>
+          <td class="price-val">— → 330-360 万元/吨</td>
+          <td class="change-val">—</td>
+          <td><span class="status-tag scarce">极度稀缺</span></td>
+          <td class="src-note">高纯度长协锁定，仅极少数供应商</td>
+        </tr>
+        <tr>
+          <td><b>7N极单报价</b></td>
+          <td class="price-val">— → 480-500 万元/吨</td>
+          <td class="change-val">—</td>
+          <td><span class="status-tag scarce">恐慌溢价</span></td>
+          <td class="src-note">断供恐慌下的高价成交，非正常市价</td>
+        </tr>
+        <tr>
+          <td><b>出口均价</b></td>
+          <td class="price-val">68.75 → 149.79 美元/kg</td>
+          <td class="change-val">+118%</td>
+          <td><span class="status-tag tight">量价齐升</span></td>
+          <td class="src-note">出口量同比近2倍，价格翻倍（4月海关）</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- 核心关注公司 -->
+    <div class="section-title">▎ 核心关注公司（国产WF₆三强）</div>
+
+    <div class="target-section">
+
+      <div class="target-card">
+        <div class="target-head">
+          <div class="target-badge">👑</div>
+          <div class="target-name">中船特气</div>
+          <div class="target-cat">全球产能第一</div>
+        </div>
+        <div class="target-body">
+          6N级WF₆产能2000-2230吨/年，全球第一。台积电/美光/海力士已打通认证，年底前+100-230吨。4月至今股价+500%。需注意6/8公告澄清"未签新大单"。
+          <div class="target-tags">
+            <span class="target-tag pos">定位：国产绝对龙头</span>
+            <span class="target-tag pos">受益点：出口放量</span>
+            <span class="target-tag risk">风险：股价已超前</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="target-card">
+        <div class="target-head">
+          <div class="target-badge">🏭</div>
+          <div class="target-name">昊华科技</div>
+          <div class="target-cat">央企背景全覆盖</div>
+        </div>
+        <div class="target-body">
+          6N级WF₆产能600吨/年，央企背景。国内客户覆盖中芯/长存/长鑫/华虹，海外通行三星/台积电。相比中船特气涨幅较温和，含其他电子特气业务。
+          <div class="target-tags">
+            <span class="target-tag pos">定位：央企平台</span>
+            <span class="target-tag pos">受益点：认证加速</span>
+            <span class="target-tag amber">注：多品类特气组合</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="target-card">
+        <div class="target-head">
+          <div class="target-badge">🏭</div>
+          <div class="target-name">中巨芯</div>
+          <div class="target-cat">5N5级/成熟制程</div>
+        </div>
+        <div class="target-body">
+          WF₆产能600吨/年，5N5级，主攻成熟制程。与中央硝子合资（博瑞中硝，51:49），日产停产对合资方影响待评估。6/8公告暂无扩产计划。
+          <div class="target-tags">
+            <span class="target-tag amber">定位：成熟制程</span>
+            <span class="target-tag amber">受益点：国产替代</span>
+            <span class="target-tag risk">风险：合资方停产影响</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 关键事件时间轴 -->
+    <div class="flywheel-box">
+      <div class="flywheel-title">▶ 关键时间节点</div>
+      <table class="price-table" style="margin-bottom:0">
+        <thead>
+          <tr>
+            <th style="width:18%">时间</th>
+            <th style="width:82%">事件</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>2026.01</b></td>
+            <td>商务部加强钨相关物项对日出口管制，对日高纯钨出口几乎归零</td>
+          </tr>
+          <tr>
+            <td><b>2026.03-04</b></td>
+            <td>日本关东电化、中央硝子预警停产</td>
+          </tr>
+          <tr>
+            <td><b>2026.05</b></td>
+            <td>书面通知台积电、三星、SK海力士：6月30日最后一批货</td>
+          </tr>
+          <tr>
+            <td style="color:var(--red);font-weight:900">2026.07.01</td>
+            <td style="color:var(--red);font-weight:900">⚡ 永久停产生效——全产业链最关键节点</td>
+          </tr>
+          <tr>
+            <td><b>2026 Q3-Q4</b></td>
+            <td>三星/海力士库存耗尽，缺口全面暴露；国产客户认证加速</td>
+          </tr>
+          <tr>
+            <td><b>2027 H1</b></td>
+            <td>中船特气/昊华科技海外认证提速，出口放量</td>
+          </tr>
+          <tr>
+            <td><b>2027-2028</b></td>
+            <td>国产产能逐步填补缺口，增量需求同步增长</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 风险提示 -->
+    <div class="section-title red">▎ 风险提示</div>
+    <div class="risk-grid">
+      <div class="risk-item">
+        <b>① 股价已超前</b>
+        中船特气4月+500%，6/8澄清"未签新大单"，7月1日断供落实后或利好出尽。
+      </div>
+      <div class="risk-item">
+        <b>② 利润释放滞后</b>
+        钨精矿3月105万→5月40万元腰斩，高价钨粉库存折旧拖累短期利润。
+      </div>
+      <div class="risk-item">
+        <b>③ 替代技术风险</b>
+        钼/钴替代钨在部分工艺中存在可能，长期技术突破或削弱WF₆需求刚性。
+      </div>
+    </div>
+
+    <div class="footnote">
+      <span>来源：产业链调研/公司公告</span>
+      <span>六氟化钨产业链研究 · 2026</span>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>
