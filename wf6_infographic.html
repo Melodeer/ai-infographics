@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>六氟化钨·AI算力链涨价信息图谱</title>
+<style>
+/* ============================================================
+   报纸质感信息图 · 六氟化钨
+   ============================================================ */
+:root {
+  --paper: #f8f8f5;
+  --ink: #050505;
+  --muted: #666;
+  --line: #bdbdbd;
+  --blue: #071b5c;
+  --red: #f23a2e;
+  --green: #37a833;
+  --amber: #b85c00;
+  --gold: #c48b0d;
+  --soft-blue: #e9f0ff;
+  --soft-red: #fff0ee;
+  --soft-gray: #f3f3f1;
+  --amber-soft: #fff7ee;
+  --bg-gold: #fdf6e8;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: #deded8;
+  color: var(--ink);
+  font-family: "Songti SC","Noto Serif CJK SC","SimSun","Times New Roman",serif;
+}
+.page {
+  position: relative;
+  width: 1024px;
+  margin: 0 auto;
+  padding: 26px 28px 32px;
+  background:
+    radial-gradient(circle at 50% 18%, rgba(255,255,255,0.92), rgba(248,248,245,0.96) 48%, rgba(226,226,218,0.45) 100%),
+    linear-gradient(90deg, rgba(0,0,0,0.018) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(0,0,0,0.014) 1px, transparent 1px),
+    var(--paper);
+  background-size: auto, 18px 18px, 18px 18px, auto;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.22);
+}
+.page::before {
+  content: "";
+  position: absolute; inset: 0; pointer-events: none;
+  background-image: repeating-linear-gradient(
+    -25deg, transparent 0, transparent 138px,
+    rgba(120,120,120,0.07) 139px, rgba(120,120,120,0.07) 141px,
+    transparent 142px, transparent 220px
+  );
+  opacity: 0.45; z-index: 1;
+}
+.watermarks {
+  position: absolute; inset: 0; z-index: 2; pointer-events: none;
+  opacity: 0.08; color: #666; font-size: 22px; font-weight: 700;
+  transform: rotate(-25deg);
+}
+.watermarks span { position: absolute; white-space: nowrap; }
+.content { position: relative; z-index: 3; }
+
+/* ── 顶部标识 ── */
+.topline {
+  display: flex; align-items: center; gap: 14px;
+  font-size: 13px; color: #555; letter-spacing: 0.5px;
+}
+.topline .dot { width: 4px; height: 4px; border-radius: 50%; background: #999; display: inline-block; }
+.topline .tag-pill { display: inline-block; padding: 1px 8px; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; border: 1px solid #aaa; }
+
+/* ── 标题 ── */
+h1 { margin: 16px 0 6px; text-align: center; font-size: 36px; line-height: 1.12; font-weight: 900; }
+.subtitle { text-align: center; font-size: 14.5px; color: #444; margin-bottom: 14px; line-height: 1.6; }
+.main-rule { height: 2px; background: #000; margin: 0 0 14px; }
+
+/* ── 板块标题 ── */
+.section-title {
+  font-size: 15px; font-weight: 900; margin: 16px 0 9px;
+  padding-left: 10px; border-left: 4px solid var(--blue);
+  line-height: 1.2; color: var(--ink);
+}
+.section-title.red { border-left-color: var(--red); }
+.section-title.amber { border-left-color: var(--amber); }
+.section-title.green { border-left-color: var(--green); }
+
+/* ── 结论栏 ── */
+.conclusion-bar {
+  background: var(--blue); color: #fff;
+  padding: 11px 18px; font-size: 14px; line-height: 1.6;
+  margin-bottom: 14px; display: flex; gap: 12px; align-items: flex-start;
+}
+.conclusion-bar .label {
+  white-space: nowrap; font-weight: 900; font-size: 12px;
+  background: rgba(255,255,255,0.18); padding: 2px 8px; border-radius: 3px; margin-top: 1px;
+}
+
+/* ── 产业链路径 ── */
+.chain-flow {
+  display: flex; align-items: stretch; margin: 0 0 14px;
+  background: #fff; border: 1.5px solid var(--line);
+}
+.chain-node {
+  flex: 1; text-align: center; padding: 9px 4px;
+  border-right: 1px solid var(--line);
+  font-size: 12.5px; font-weight: 700; line-height: 1.4; color: var(--ink);
+}
+.chain-node:last-child { border-right: none; }
+.chain-node.hl-blue { background: var(--soft-blue); color: var(--blue); }
+.chain-node.hl-red { background: var(--soft-red); color: var(--red); }
+.chain-node.hl-gold { background: var(--bg-gold); color: var(--gold); }
+.chain-node sub { display: block; font-size: 10px; font-weight: 400; color: #666; margin-top: 2px; }
+.chain-arrow { display: flex; align-items: center; padding: 0 1px; font-size: 16px; color: #bbb; flex-shrink: 0; }
+
+/* ── 三栏网格 ── */
+.triple-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+
+/* ── 装饰切角卡片 ── */
+.corner-card {
+  position: relative; border: 2px solid var(--line);
+  background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.corner-card.blue { border-color: var(--blue); color: var(--blue); }
+.corner-card.red { border-color: var(--red); color: var(--red); }
+.corner-card.amber { border-color: var(--amber); color: var(--amber); }
+.corner-card.gold { border-color: var(--gold); color: var(--gold); }
+.corner-card::before, .corner-card::after {
+  content: ""; position: absolute; width: 18px; height: 18px;
+  background: var(--paper); z-index: 2;
+}
+.corner-card::before { top:-2px; left:-2px; border-right:2px solid currentColor; border-bottom:2px solid currentColor; border-bottom-right-radius:10px; }
+.corner-card::after { right:-2px; bottom:-2px; border-left:2px solid currentColor; border-top:2px solid currentColor; border-top-left-radius:10px; }
+
+/* ── 需求引擎条 ── */
+.demand-engines {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  flex-wrap: wrap; padding: 10px; background: #fff; border: 1.5px solid var(--line); margin-bottom: 14px;
+}
+.demand-node {
+  border: 1.5px solid var(--blue); padding: 7px 9px;
+  font-size: 11.5px; font-weight: 700; color: var(--blue);
+  background: var(--soft-blue); text-align: center; line-height: 1.4;
+}
+.demand-node.red { border-color: var(--red); color: var(--red); background: var(--soft-red); }
+.demand-node.gold { border-color: var(--gold); color: var(--gold); background: var(--bg-gold); }
+.demand-arrow { font-size: 16px; color: #bbb; }
+
+/* ── 大数字展示 ── */
+.big-num-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+
+/* ── 价格表格 ── */
+.price-table {
+  width: 100%; border-collapse: collapse;
+  background: #fff; border: 1.5px solid var(--line);
+  margin-bottom: 14px; font-size: 13px;
+}
+.price-table th, .price-table td {
+  border: 1px solid var(--line); padding: 7px 10px;
+  vertical-align: middle; line-height: 1.35;
+}
+.price-table thead tr { background: rgba(7,27,92,0.05); }
+.price-table th { font-weight: 900; font-size: 12.5px; }
+.price-table .pv { font-weight: 900; color: var(--red); font-size: 15px; }
+.price-table .cv { font-weight: 700; color: var(--red); }
+
+/* ── 数据高亮 ── */
+.data-hl { background: rgba(242,58,46,0.08); padding: 1px 4px; font-weight: 700; color: var(--red); border-radius: 2px; }
+.data-hl.blue { background: rgba(7,27,92,0.06); color: var(--blue); }
+.data-hl.gold { background: rgba(196,139,13,0.1); color: var(--gold); }
+
+/* ── 高亮框 ── */
+.highlight-box {
+  background: #fff; border: 2px solid var(--red);
+  padding: 12px 15px; margin-bottom: 12px;
+}
+.highlight-box .hl-title { font-size: 13px; font-weight: 900; margin-bottom: 6px; color: var(--red); }
+.highlight-box .hl-body { font-size: 12.5px; line-height: 1.6; color: #222; }
+.highlight-box.gold { border-color: var(--gold); }
+.highlight-box.gold .hl-title { color: var(--gold); }
+
+/* ── 红色警示框 ── */
+.warn-box {
+  background: var(--soft-red); border: 2px solid var(--red);
+  padding: 12px 15px; margin-bottom: 12px;
+}
+.warn-box .warn-title { font-size: 13px; font-weight: 900; color: var(--red); margin-bottom: 6px; }
+.warn-box .warn-body { font-size: 12.5px; line-height: 1.55; color: #222; }
+
+/* ── 金色高亮框 ── */
+.gold-box {
+  background: var(--bg-gold); border: 2px solid var(--gold);
+  padding: 12px 15px; margin-bottom: 12px;
+}
+.gold-box .gold-title { font-size: 13px; font-weight: 900; color: var(--gold); margin-bottom: 6px; }
+
+/* ── 时间轴盒子 ── */
+.timeline-box {
+  background: #fff; border: 1.5px solid var(--line);
+  padding: 10px 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.03); margin-bottom: 14px;
+}
+.tl-labels { display: flex; justify-content: space-between; font-size: 8px; color: var(--muted); margin-bottom: 3px; padding: 0 2px; }
+.tl-svg { width: 100%; }
+
+/* ── 断供事件条 ── */
+.event-row {
+  display: flex; align-items: center; padding: 9px 12px;
+  background: #fff; border: 1.5px solid var(--line); margin-bottom: 5px; font-size: 12.5px;
+}
+.event-row .event-date { font-weight: 900; color: var(--red); min-width: 80px; white-space: nowrap; }
+.event-row .event-desc { flex: 1; padding-left: 10px; line-height: 1.45; color: #222; }
+.event-row.red-bg { background: var(--soft-red); border-color: var(--red); }
+
+/* ── 国产三强卡片 ── */
+.champion-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+.champion-card { border: 2px solid var(--gold); background: var(--bg-gold); box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+.champion-head { display: flex; align-items: center; gap: 6px; padding: 9px 12px; border-bottom: 1px solid var(--gold); background: rgba(196,139,13,0.06); }
+.champion-badge { font-size: 18px; line-height: 1; }
+.champion-name { font-size: 14px; font-weight: 900; color: var(--gold); }
+.champion-rank { font-size: 10px; color: #888; margin-left: auto; }
+.champion-body { padding: 9px 12px 10px; font-size: 12px; line-height: 1.55; color: #222; }
+.champion-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 5px; }
+.champion-tag { font-size: 10px; padding: 1px 6px; border-radius: 2px; font-weight: 700; }
+.champion-tag.pos { background: var(--bg-gold); color: var(--gold); }
+.champion-tag.risk { background: var(--soft-red); color: var(--red); }
+
+/* ── 伪概念股卡片 ── */
+.fake-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+.fake-card {
+  border: 2px solid var(--red); background: var(--soft-red);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.fake-head { display: flex; align-items: center; gap: 6px; padding: 9px 12px; border-bottom: 1px solid var(--red); background: rgba(242,58,46,0.06); }
+.fake-name { font-size: 14px; font-weight: 900; color: var(--red); text-decoration: line-through; }
+.fake-body { padding: 9px 12px 10px; font-size: 12px; line-height: 1.55; color: #222; }
+
+/* ── 判断标准栏 ── */
+.judge-bar {
+  background: var(--soft-red); border: 1.5px solid var(--red);
+  padding: 9px 14px; text-align: center; font-size: 12.5px;
+  font-weight: 700; color: var(--red); margin-bottom: 14px;
+}
+
+/* ── 电子特气全景表 ── */
+.gas-pano { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+.gas-item { border: 1.5px solid var(--line); background: #fff; }
+.gas-item-head { padding: 8px 12px; border-bottom: 1px solid var(--line); background: rgba(0,0,0,0.02); font-weight: 900; font-size: 13px; }
+.gas-item-head.red { color: var(--red); border-bottom-color: var(--red); }
+.gas-item-head.amber { color: var(--amber); border-bottom-color: var(--amber); }
+.gas-item-head.blue { color: var(--blue); border-bottom-color: var(--blue); }
+.gas-item-body { padding: 9px 12px 10px; font-size: 12px; line-height: 1.55; color: #222; }
+
+/* ── 六大卡点网格 ── */
+.bottleneck-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+.bn-item { background: var(--soft-red); border-left: 3px solid var(--red); padding: 9px 11px; font-size: 12px; line-height: 1.45; color: #222; }
+.bn-item b { color: var(--red); display: block; margin-bottom: 3px; font-size: 13px; }
+.bn-item.green { background: rgba(55,168,51,0.06); border-left-color: var(--green); }
+.bn-item.green b { color: var(--green); }
+.bn-item.amber { background: var(--amber-soft); border-left-color: var(--amber); }
+.bn-item.amber b { color: var(--amber); }
+
+/* ── 收束栏 ── */
+.closing-bar {
+  background: var(--blue); color: #fff;
+  padding: 16px 20px; text-align: center;
+  font-size: 14.5px; font-weight: 900; line-height: 1.7;
+  margin-top: 14px;
+}
+.closing-bar .red-text { color: #ff6b6b; font-size: 16px; }
+
+/* ── 底部脚注 ── */
+.footnote {
+  margin-top: 14px; padding-top: 8px;
+  border-top: 1px solid var(--line);
+  display: flex; justify-content: space-between;
+  font-size: 12px; color: #888;
+}
+
+/* ── 一句话科普 ── */
+.oneliner {
+  background: var(--soft-blue); border-left: 4px solid var(--blue);
+  padding: 10px 14px; font-size: 13px; line-height: 1.6;
+  color: var(--blue); font-weight: 700; margin-bottom: 14px;
+}
+
+/* ── 需求汇聚 ── */
+.demand-converge {
+  background: #fff; border: 1.5px solid var(--blue);
+  padding: 12px 16px; margin-bottom: 14px; text-align: center;
+}
+.demand-converge .dc-label { font-size: 12px; color: var(--muted); margin-bottom: 5px; }
+.demand-converge .dc-big { font-size: 20px; font-weight: 900; color: var(--blue); }
+
+/* ── 悖论框 ── */
+.paradox-box {
+  background: linear-gradient(135deg, #fffbf0 0%, #ffe8d0 100%);
+  border: 2px solid var(--amber);
+  padding: 12px 16px; margin-bottom: 14px; text-align: center;
+}
+.paradox-box .px-title { font-size: 14px; font-weight: 900; color: var(--amber); margin-bottom: 6px; }
+.paradox-box .px-body { font-size: 13px; line-height: 1.6; color: #333; }
+
+/* ── 产能缺口大字 ── */
+.gap-mega {
+  background: var(--soft-red); border: 2px solid var(--red);
+  padding: 16px; text-align: center; margin-bottom: 14px;
+}
+.gap-mega .gm-title { font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+.gap-mega .gm-row { display: flex; justify-content: center; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 4px; }
+.gap-mega .gm-num { font-size: 26px; font-weight: 900; color: var(--red); line-height: 1; }
+.gap-mega .gm-num.big { font-size: 36px; }
+.gap-mega .gm-label { font-size: 12px; color: #555; }
+.gap-mega .gm-arrow { font-size: 20px; color: var(--red); margin: 0 4px; }
+
+/* ── 因果链 ── */
+.causal-flow {
+  display: flex; align-items: center; justify-content: center;
+  flex-wrap: wrap; gap: 4px; padding: 10px;
+  background: #fff; border: 1.5px solid var(--red); margin-bottom: 14px;
+}
+.causal-node { border: 1.5px solid var(--red); padding: 6px 8px; font-size: 11px; font-weight: 700; color: var(--red); background: var(--soft-red); text-align: center; }
+.causal-arrow { font-size: 15px; color: var(--red); }
+
+/* ── 两栏 ── */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- 水印 -->
+  <div class="watermarks">
+    <span style="top:120px;left:60px">公众号：欧派呦呦鹿鸣</span>
+    <span style="top:450px;left:300px">公众号：欧派呦呦鹿鸣</span>
+    <span style="top:780px;left:80px">公众号：欧派呦呦鹿鸣</span>
+    <span style="top:1100px;left:340px">公众号：欧派呦呦鹿鸣</span>
+    <span style="top:1450px;left:120px">公众号：欧派呦呦鹿鸣</span>
+    <span style="top:1800px;left:280px">公众号：欧派呦呦鹿鸣</span>
+    <span style="top:2100px;left:60px">公众号：欧派呦呦鹿鸣</span>
+    <span style="top:2400px;left:320px">公众号：欧派呦呦鹿鸣</span>
+  </div>
+
+  <div class="content">
+
+    <!-- ════════════════════════════════════════════════
+         第一层：标题区
+         ════════════════════════════════════════════════ -->
+    <div class="topline">
+      <span>产业信息图谱</span><span class="dot"></span>
+      <span>2026年6月</span><span class="dot"></span>
+      <span>AI 算力材料</span><span class="dot"></span>
+      <span class="tag-pill">涨价三巨头</span>
+    </div>
+
+    <h1>六氟化钨——芯片制造的钨血管</h1>
+
+    <div class="subtitle">
+      半导体制造不可替代的特种气体，7nm以下芯片把钨镀上晶圆的唯一方式<br>
+      <span style="font-size:22px;font-weight:900;color:var(--red);letter-spacing:1px;">90万 → 360万/吨（较年初+300%），极单价 480-500万/吨</span><br>
+      核心矛盾：<b style="color:var(--red);">日本25%产能7月1日永久停产</b>——不是减产、不是检修，是彻底关闭生产线
+    </div>
+
+    <div class="main-rule"></div>
+
+    <div class="conclusion-bar">
+      <span class="label">核心结论</span>
+      <span>AI算力涨价三巨头 · 断供最彻底的品种 —— 不是产能跟不上，是产能永久消失。日本25%产能7月1日归零，中国握有钨粉这张底牌，国产替代是唯一出路但需要2-3年。</span>
+    </div>
+
+    <!-- ════════════════════════════════════════════════
+         第二层：30秒入门
+         ════════════════════════════════════════════════ -->
+    <div class="section-title">▎ 30秒入门：六氟化钨是怎么来的？</div>
+
+    <!-- 流程图 -->
+    <div class="chain-flow" style="margin-bottom:16px;">
+      <div class="chain-node hl-gold">钨矿<sub>中国占<br>全球80%</sub></div>
+      <div class="chain-arrow">→</div>
+      <div class="chain-node">高纯<br>钨粉<sub>99.99%+</sub></div>
+      <div class="chain-arrow">→</div>
+      <div class="chain-node hl-red">氟化<br>反应<sub>F₂+W→WF₆<br>★核心工艺</sub></div>
+      <div class="chain-arrow">→</div>
+      <div class="chain-node">WF₆<br>气体<sub>高压钢瓶<br>运输</sub></div>
+      <div class="chain-arrow">→</div>
+      <div class="chain-node hl-blue">CVD<br>沉积<sub>化学气相<br>沉积</sub></div>
+      <div class="chain-arrow">→</div>
+      <div class="chain-node hl-blue">钨原子<br>沉积晶圆<sub>7nm以下<br>唯一方式</sub></div>
+      <div class="chain-arrow">→</div>
+      <div class="chain-node hl-blue">晶体管<br>互连<sub>芯片<br>完成</sub></div>
+    </div>
+
+    <!-- 三列认知卡片 -->
+    <div class="triple-grid" style="margin-bottom:14px;">
+      <div class="corner-card red" style="padding:14px 12px;">
+        <div style="font-size:13.5px;font-weight:900;color:var(--red);margin-bottom:8px;">🚫 不可替代</div>
+        <div style="font-size:12px;line-height:1.6;color:#222;">
+          7nm以下只有钨能承受高温+高电阻。把固体钨变成气体镀上晶圆——只有WF₆能做到。<br>
+          <span style="color:var(--red);font-weight:700;">没有替代品，没有B方案。</span>
+        </div>
+      </div>
+      <div class="corner-card blue" style="padding:14px 12px;">
+        <div style="font-size:13.5px;font-weight:900;color:var(--blue);margin-bottom:8px;">📈 用量暴增</div>
+        <div style="font-size:12px;line-height:1.6;color:#222;">
+          3D NAND <span class="data-hl blue" style="color:var(--blue);">128层→400层+</span>，每多一层多一轮WF₆<br>
+          GAA Contact暴增 · HBM <span class="data-hl blue" style="color:var(--blue);">8层→16层</span><br>
+          芯片越先进，WF₆用得越多。
+        </div>
+      </div>
+      <div class="corner-card amber" style="padding:14px 12px;">
+        <div style="font-size:13.5px;font-weight:900;color:var(--amber);margin-bottom:8px;">⚡ 不是贵不贵</div>
+        <div style="font-size:12px;line-height:1.6;color:#222;">
+          没有WF₆ = 没有3nm以下芯片。<br>
+          <span class="data-hl gold" style="color:var(--amber);">台积电/三星/海力士不能停</span>——WF₆在芯片成本中占比极低，但缺了它整条产线停摆。
+        </div>
+      </div>
+    </div>
+
+    <!-- 需求引擎 -->
+    <div class="demand-engines">
+      <div class="demand-node">3D NAND<br>层数暴增</div>
+      <div class="demand-arrow">→</div>
+      <div class="demand-node red">GAA Contact<br>暴增</div>
+      <div class="demand-arrow">→</div>
+      <div class="demand-node red">HBM<br>堆叠翻倍</div>
+      <div class="demand-arrow" style="font-size:20px;">⇒</div>
+      <div class="demand-node gold" style="font-size:13px;">全球WF₆需求<br><span style="font-size:16px;">2025年8000吨<br>→2026年11000吨</span><br>+37.5%</div>
+    </div>
+
+    <!-- 一句话科普 -->
+    <div class="oneliner">
+      把芯片比作城市，晶体管是建筑，钨是连接建筑的桥梁，六氟化钨是把钨变成桥的唯一施工队。
+    </div>
+
+    <!-- ════════════════════════════════════════════════
+         第三层：涨了多少
+         ════════════════════════════════════════════════ -->
+    <div class="section-title red">▎ 涨了多少：价格三级跳</div>
+
+    <!-- 价格阶梯图 -->
+    <div class="corner-card red" style="padding:14px;margin-bottom:14px;">
+      <svg viewBox="0 0 960 300" style="width:100%;">
+        <defs>
+          <pattern id="gfx" width="24" height="24" patternUnits="userSpaceOnUse">
+            <path d="M24 0L0 0 0 24" fill="none" stroke="rgba(0,0,0,0.03)" stroke-width="0.5"/>
+          </pattern>
+        </defs>
+        <rect width="960" height="300" fill="url(#gfx)"/>
+        <!-- Y轴 -->
+        <line x1="120" y1="20" x2="120" y2="270" stroke="var(--muted)" stroke-width="1"/>
+        <text x="110" y="36" text-anchor="end" font-size="13" fill="var(--muted)">500万</text>
+        <text x="110" y="86" text-anchor="end" font-size="13" fill="var(--muted)">400万</text>
+        <text x="110" y="136" text-anchor="end" font-size="13" fill="var(--muted)">300万</text>
+        <text x="110" y="186" text-anchor="end" font-size="13" fill="var(--muted)">200万</text>
+        <text x="110" y="236" text-anchor="end" font-size="13" fill="var(--muted)">100万</text>
+        <!-- 水平参考线 -->
+        <line x1="120" y1="40" x2="940" y2="40" stroke="var(--line)" stroke-width="0.5" stroke-dasharray="4,4"/>
+        <line x1="120" y1="90" x2="940" y2="90" stroke="var(--line)" stroke-width="0.5" stroke-dasharray="4,4"/>
+        <line x1="120" y1="140" x2="940" y2="140" stroke="var(--line)" stroke-width="0.5" stroke-dasharray="4,4"/>
+        <line x1="120" y1="190" x2="940" y2="190" stroke="var(--line)" stroke-width="0.5" stroke-dasharray="4,4"/>
+        <line x1="120" y1="240" x2="940" y2="240" stroke="var(--line)" stroke-width="0.5" stroke-dasharray="4,4"/>
+
+        <!-- 价格阶梯 -->
+        <polyline points="120,220 220,220 220,218 320,218 320,168 460,168 460,120 600,120 600,48 740,48 740,38 920,38"
+          fill="none" stroke="var(--red)" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+        <polygon points="120,220 220,220 220,218 320,218 320,168 460,168 460,120 600,120 600,48 740,48 740,38 920,38 920,270 120,270"
+          fill="rgba(242,58,46,0.05)"/>
+
+        <!-- 标注点 -->
+        <circle cx="220" cy="220" r="7" fill="var(--red)"/>
+        <text x="220" y="245" text-anchor="middle" font-size="13" font-weight="900" fill="var(--red)">~90万/吨</text>
+        <text x="220" y="260" text-anchor="middle" font-size="10" fill="var(--muted)">2026年初 · 供需平衡期</text>
+
+        <circle cx="320" cy="168" r="7" fill="var(--red)"/>
+        <text x="320" y="158" text-anchor="middle" font-size="13" font-weight="900" fill="var(--red)">~100万/吨</text>
+        <text x="320" y="185" text-anchor="middle" font-size="10" fill="var(--muted)">2026年4月 · 停产预警发酵</text>
+
+        <circle cx="600" cy="120" r="7" fill="var(--red)"/>
+        <text x="600" y="108" text-anchor="middle" font-size="13" font-weight="900" fill="var(--red)">220-300万</text>
+        <text x="600" y="124" text-anchor="middle" font-size="10" fill="var(--muted)">长协330-360万</text>
+        <text x="600" y="140" text-anchor="middle" font-size="10" fill="var(--muted)">2026.5.28 · 停产确认跳涨</text>
+
+        <circle cx="920" cy="38" r="8" fill="var(--red)"/>
+        <text x="920" y="28" text-anchor="middle" font-size="14" font-weight="900" fill="var(--red)">480-500万</text>
+        <text x="920" y="58" text-anchor="middle" font-size="11" fill="var(--red)" font-weight="700">2026.06 · 极单价</text>
+
+        <text x="500" y="285" font-size="12" fill="rgba(242,58,46,0.7)" font-weight="700">↗ 不到半年从90万飙至500万，暴涨+450%</text>
+      </svg>
+    </div>
+
+    <!-- 关键数字表 -->
+    <table class="price-table">
+      <thead><tr><th>指标</th><th>数值</th><th>变动</th><th>备注</th></tr></thead>
+      <tbody>
+        <tr>
+          <td style="font-weight:900;">内贸均价</td>
+          <td class="pv">1670-1810元/kg</td>
+          <td class="cv">同比+232.7%</td>
+          <td style="font-size:11.5px;color:#555;">2025年同期523元/kg</td>
+        </tr>
+        <tr>
+          <td style="font-weight:900;">7N长协价</td>
+          <td class="pv">330-360万元/吨</td>
+          <td class="cv">较年初+300%</td>
+          <td style="font-size:11.5px;color:#555;">长协合同价格</td>
+        </tr>
+        <tr>
+          <td style="font-weight:900;color:var(--red);">极单价</td>
+          <td class="pv" style="font-size:17px;">480-500万元/吨</td>
+          <td class="cv">恐慌抢购峰值</td>
+          <td style="font-size:11.5px;color:#555;">现货市场极端报价</td>
+        </tr>
+        <tr>
+          <td style="font-weight:900;">韩国涨价预期</td>
+          <td class="pv">拟再涨70-90%</td>
+          <td class="cv">SK涨价90%停新单</td>
+          <td style="font-size:11.5px;color:#555;">三星/海力士八成依赖日本</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- 价格悖论 -->
+    <div class="paradox-box">
+      <div class="px-title">⚡ 反直觉：价格悖论</div>
+      <div class="px-body">
+        钨精矿从<span class="data-hl gold" style="color:var(--amber);font-size:15px;">105万跌至40万（腰斩↓）</span>，但WF₆较年初暴涨<span class="data-hl" style="font-size:15px;">+300%</span>——<br>
+        因为钨粉是之前高价囤的，成本已锁定。<br>
+        <b style="color:var(--amber);">"拐点到了，利润还没到"</b>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════
+         第四层：为什么涨
+         ════════════════════════════════════════════════ -->
+    <div class="section-title red">▎ 为什么涨：断供——不是威胁，是确认</div>
+
+    <!-- 断供时间线 -->
+    <div style="margin-bottom:14px;">
+      <div class="event-row">
+        <span class="event-date">2026年1月</span>
+        <span class="event-desc">商务部<b style="color:var(--red);">加强钨对日出口管制</b>，对日高纯钨出口近乎归零</span>
+      </div>
+      <div class="event-row">
+        <span class="event-date">2026年3-4月</span>
+        <span class="event-desc">日本两厂<b style="color:var(--red);">预警停产</b>，全球25%产能面临消失</span>
+      </div>
+      <div class="event-row">
+        <span class="event-date">2026年5月</span>
+        <span class="event-desc">两厂<b style="color:var(--red);">书面通知</b>台积电/三星/海力士：<b style="color:var(--red);">6月30日最后一批货</b></span>
+      </div>
+      <div class="event-row red-bg">
+        <span class="event-date" style="font-size:15px;">★ 2026.7.1</span>
+        <span class="event-desc"><b style="color:var(--red);font-size:14px;">永久停产</b> —— 不是减产、不是停工检修、是<b style="color:var(--red);">彻底关掉生产线</b></span>
+      </div>
+      <div class="event-row">
+        <span class="event-date">2026.6.9</span>
+        <span class="event-desc">海外库存仅撑到<b style="color:var(--red);">6月底</b>，下半年供应<b style="color:var(--red);">无法保障</b></span>
+      </div>
+    </div>
+
+    <!-- 因果链 -->
+    <div class="causal-flow">
+      <div class="causal-node">中国钨<br>占全球80%</div>
+      <div class="causal-arrow">→</div>
+      <div class="causal-node">出口管制<br>加码</div>
+      <div class="causal-arrow">→</div>
+      <div class="causal-node" style="border-width:2.5px;font-size:12px;">日企对华钨<br>占30%断供</div>
+      <div class="causal-arrow">→</div>
+      <div class="causal-node">找遍越南/<br>澳洲无替代</div>
+      <div class="causal-arrow">→</div>
+      <div class="causal-node" style="border-width:2.5px;font-size:12px;">WF₆成本<br>60-70%=钨粉</div>
+      <div class="causal-arrow">→</div>
+      <div class="causal-node" style="font-size:12px;border-width:2.5px;">没有钨粉=<br>全线停产</div>
+    </div>
+
+    <div style="text-align:center;font-size:15px;font-weight:900;color:var(--red);margin-bottom:14px;letter-spacing:1px;">
+      不是威胁断供，是<b style="font-size:18px;">确认断供</b>
+    </div>
+
+    <!-- 全球产能缺口大字 -->
+    <div class="gap-mega">
+      <div class="gm-title">全球产能格局（最大字号数据块）</div>
+      <div class="gm-row" style="margin-bottom:6px;">
+        <span class="gm-label">停产前：</span>
+        <span class="gm-num">8500-9000</span>
+        <span class="gm-label">吨/年</span>
+      </div>
+      <div class="gm-row" style="margin-bottom:6px;">
+        <span class="gm-label" style="color:var(--red);">日本永久归零：</span>
+        <span class="gm-num" style="text-decoration:line-through;">-2200</span>
+        <span class="gm-label">吨 → </span>
+        <span class="gm-num">6800</span>
+        <span class="gm-label">吨</span>
+      </div>
+      <div class="gm-row" style="margin-bottom:6px;">
+        <span class="gm-label">全球需求：</span>
+        <span class="gm-num">11000</span>
+        <span class="gm-label">吨（+37.5%）</span>
+      </div>
+      <div class="gm-row" style="margin-bottom:6px;">
+        <span class="gm-label">真正可用：</span>
+        <span class="gm-num">6000-7000</span>
+        <span class="gm-label">吨</span>
+      </div>
+      <div class="gm-row" style="margin-top:8px;padding-top:8px;border-top:2px solid var(--red);">
+        <span class="gm-label" style="font-size:14px;">★ 缺口</span>
+        <span class="gm-num big" style="font-size:40px;">3000-4000吨</span>
+      </div>
+    </div>
+
+    <!-- 韩国困境 -->
+    <div class="warn-box">
+      <div class="warn-title">🇰🇷 韩国困境：三星/海力士面临断气危机</div>
+      <div class="warn-body">
+        三星/海力士八成WF₆来自日本 → 库存最多撑到<span class="data-hl" style="font-size:14px;">8月</span> → SK涨价<span class="data-hl">90%</span>且停新单 → <b>官方确认缺口无法自补</b>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════
+         第五层：多久缓解
+         ════════════════════════════════════════════════ -->
+    <div class="section-title amber">▎ 多久缓解：2-3年替代周期</div>
+
+    <!-- 六大卡点 -->
+    <div class="bottleneck-grid">
+      <div class="bn-item">
+        <b>① 钨粉供应链</b>
+        政策约束，海外无替代。中国掌握全球80%钨资源，出口管制不可逆。
+      </div>
+      <div class="bn-item">
+        <b>② 重污染审批</b>
+        含氟化工项目环评周期长，预计<span style="font-weight:700;">1-2年</span>才能拿到批文。
+      </div>
+      <div class="bn-item">
+        <b>③ 晶圆厂验证</b>
+        新供应商WF₆需通过台积电/三星认证，周期<span style="font-weight:700;">3-6个月</span>。
+      </div>
+      <div class="bn-item amber">
+        <b>④ 产能建设</b>
+        从拿到批文到厂房建成+设备安装调试，<span style="font-weight:700;">1.5-2年</span>。
+      </div>
+      <div class="bn-item amber">
+        <b>⑤ 客户绑定</b>
+        晶圆厂更换气体供应商极为谨慎，验证周期长，绑定关系<span style="font-weight:700;">持续</span>。
+      </div>
+      <div class="bn-item green">
+        <b>⑥ 钨价波动</b>
+        当前钨精矿腰斩，WF₆成本端有松动空间，但短期拖累利润。
+      </div>
+    </div>
+
+    <!-- 缓解时间轴 -->
+    <div class="timeline-box">
+      <div class="tl-labels">
+        <span>2026.07.01</span><span>2026.Q3-Q4</span><span>2027.H1</span><span>2027-2028</span><span>2028+</span>
+      </div>
+      <svg class="tl-svg" viewBox="0 0 960 80">
+        <!-- 紧张期背景 -->
+        <rect x="0" y="0" width="380" height="80" fill="rgba(242,58,46,0.06)" rx="3"/>
+        <text x="190" y="12" text-anchor="middle" font-size="8" fill="rgba(242,58,46,0.4)" font-weight="700">供应最紧张时期</text>
+
+        <rect x="380" y="0" width="200" height="80" fill="rgba(196,139,13,0.04)" rx="3"/>
+        <text x="480" y="12" text-anchor="middle" font-size="8" fill="rgba(196,139,13,0.5)" font-weight="700">认证加速期</text>
+
+        <rect x="580" y="0" width="220" height="80" fill="rgba(7,27,92,0.02)" rx="3"/>
+        <text x="690" y="12" text-anchor="middle" font-size="8" fill="rgba(7,27,92,0.3)" font-weight="700">产能填补期</text>
+
+        <rect x="800" y="0" width="160" height="80" fill="rgba(55,168,51,0.04)" rx="3"/>
+        <text x="880" y="12" text-anchor="middle" font-size="8" fill="rgba(55,168,51,0.5)" font-weight="700">再平衡</text>
+
+        <!-- 基线 -->
+        <line x1="40" y1="55" x2="930" y2="55" stroke="var(--line)" stroke-width="1"/>
+
+        <!-- 紧张曲线 -->
+        <polyline points="40,50 120,40 200,33 280,28 360,32 420,38 500,44 580,48 680,50 800,54 930,55"
+          fill="none" stroke="var(--red)" stroke-width="2.5" stroke-linecap="round"/>
+
+        <!-- 关键刻度 -->
+        <line x1="40" y1="52" x2="40" y2="58" stroke="var(--muted)" stroke-width="0.8"/>
+        <line x1="200" y1="52" x2="200" y2="58" stroke="var(--muted)" stroke-width="0.8"/>
+        <line x1="420" y1="52" x2="420" y2="58" stroke="var(--muted)" stroke-width="0.8"/>
+        <line x1="680" y1="52" x2="680" y2="58" stroke="var(--muted)" stroke-width="0.8"/>
+        <line x1="930" y1="52" x2="930" y2="58" stroke="var(--muted)" stroke-width="0.8"/>
+
+        <!-- 星标断供 -->
+        <text x="40" y="48" text-anchor="middle" font-size="12" fill="var(--red)" font-weight="900">★</text>
+
+        <!-- 关键事件 -->
+        <circle cx="200" cy="33" r="4" fill="var(--red)"/>
+        <text x="200" y="26" text-anchor="middle" font-size="8" fill="var(--red)" font-weight="700">三星/海力士库存耗尽<br>缺口全面暴露</text>
+
+        <circle cx="420" cy="38" r="4" fill="var(--gold)"/>
+        <text x="420" y="30" text-anchor="middle" font-size="8" fill="var(--gold)" font-weight="700">中船/昊华认证提速<br>出口放量</text>
+
+        <circle cx="800" cy="54" r="4" fill="var(--green)"/>
+        <text x="800" y="46" text-anchor="middle" font-size="8" fill="var(--green)" font-weight="700">国产产能填补缺口<br>增量需求同步增长</text>
+      </svg>
+    </div>
+
+    <!-- 本质区别 -->
+    <div class="highlight-box gold" style="border-color:var(--gold);margin-bottom:14px;">
+      <div class="hl-title" style="color:var(--gold);">▸ 本质区别：WF₆ vs 电子布 vs 光纤</div>
+      <div class="hl-body">
+        电子布卡在<span style="color:var(--gold);font-weight:900;">设备交期</span>，光纤卡在<span style="color:var(--gold);font-weight:900;">产能建设</span>，WF₆卡在<span style="color:var(--red);font-weight:900;">资源出口管制</span>——<br>
+        中国握有钨粉这张底牌，这是<b>政策博弈</b>不是产能周期。<br><br>
+        <span class="data-hl">⚠️ 风险：股价已跑在产业前面。</span> 6/8 三家集体澄清"未签新大单"，7月1日才是大考。
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════
+         第六层：谁受益
+         ════════════════════════════════════════════════ -->
+    <div class="section-title">▎ 谁受益：国产三强 vs 必须排除的伪概念股</div>
+
+    <!-- 国产三强（金色框） -->
+    <div style="font-size:13px;font-weight:900;color:var(--gold);margin-bottom:10px;">▸ 国产三强（金色框）</div>
+    <div class="champion-grid">
+      <div class="champion-card">
+        <div class="champion-head">
+          <span class="champion-badge">🏆</span>
+          <span class="champion-name">中船特气</span>
+          <span class="champion-rank">全球第一</span>
+        </div>
+        <div class="champion-body">
+          产能 <span class="data-hl gold">2000-2230吨</span>，<span class="data-hl gold">6N级</span>。<br>
+          台积电/美光/海力士已打通。<br>
+          <span style="font-weight:900;color:var(--gold);">股价+500%</span>
+          <div class="champion-tags">
+            <span class="champion-tag pos">全球第一</span>
+            <span class="champion-tag pos">6N级</span>
+            <span class="champion-tag pos">台积电认证</span>
+            <span class="champion-tag pos">+500%</span>
+          </div>
+        </div>
+      </div>
+      <div class="champion-card">
+        <div class="champion-head">
+          <span class="champion-badge">🥈</span>
+          <span class="champion-name">昊华科技</span>
+          <span class="champion-rank">央企</span>
+        </div>
+        <div class="champion-body">
+          产能 <span class="data-hl gold">600吨</span>，<span class="data-hl gold">6N级</span>。<br>
+          中芯国际/长存/长鑫/<br>三星全覆盖。
+          <div class="champion-tags">
+            <span class="champion-tag pos">央企背景</span>
+            <span class="champion-tag pos">6N级</span>
+            <span class="champion-tag pos">中芯认证</span>
+            <span class="champion-tag pos">三星覆盖</span>
+          </div>
+        </div>
+      </div>
+      <div class="champion-card">
+        <div class="champion-head">
+          <span class="champion-badge">🥉</span>
+          <span class="champion-name">中巨芯</span>
+          <span class="champion-rank">合资</span>
+        </div>
+        <div class="champion-body">
+          产能 <span class="data-hl gold">600吨</span>，<span class="data-hl gold">5N5级</span>。<br>
+          与中央硝子合资51:49，<br>无扩产计划。
+          <div class="champion-tags">
+            <span class="champion-tag pos">合资51:49</span>
+            <span class="champion-tag risk">无扩产计划</span>
+            <span class="champion-tag risk">合资方停产影响待评估</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 必须排除的伪概念股（红色框+删除线） -->
+    <div style="font-size:13px;font-weight:900;color:var(--red);margin-bottom:10px;">▸ 必须排除的伪概念股（红色框+删除线）</div>
+    <div class="fake-grid">
+      <div class="fake-card">
+        <div class="fake-head">
+          <span style="font-size:16px;">❌</span>
+          <span class="fake-name">南大光电</span>
+        </div>
+        <div class="fake-body">
+          主业砷烷/磷烷，<b style="color:var(--red);">无WF₆量产产线</b>。
+        </div>
+      </div>
+      <div class="fake-card">
+        <div class="fake-head">
+          <span style="font-size:16px;">❌</span>
+          <span class="fake-name">金宏气体</span>
+        </div>
+        <div class="fake-body">
+          <b style="color:var(--red);">连产线都没有</b>，仅实验室储备阶段。
+        </div>
+      </div>
+      <div class="fake-card">
+        <div class="fake-head">
+          <span style="font-size:16px;">❌</span>
+          <span class="fake-name">和远气体</span>
+        </div>
+        <div class="fake-body">
+          6/9公告<b style="color:var(--red);">亲自打脸</b>：<br>"未产生任何业绩"。
+        </div>
+      </div>
+    </div>
+
+    <!-- 判断标准 -->
+    <div class="judge-bar">
+      ⚠️ 判断标准：没产能 + 没过认证 + 没出货 = 不要当真
+    </div>
+
+    <!-- 电子特气全景 -->
+    <div style="font-size:13px;font-weight:900;color:var(--blue);margin-bottom:10px;">▸ 电子特气全景：涨价不止WF₆</div>
+    <div class="gas-pano">
+      <div class="gas-item">
+        <div class="gas-item-head red">六氟化钨 WF₆</div>
+        <div class="gas-item-body">
+          <span class="data-hl">日本永久断供</span><br>
+          国产：<span style="font-weight:900;color:var(--gold);">中船特气</span>（全球第一）、<span style="font-weight:900;color:var(--gold);">昊华科技</span><br>
+          缺口：3000-4000吨
+        </div>
+      </div>
+      <div class="gas-item">
+        <div class="gas-item-head amber">氦气 He</div>
+        <div class="gas-item-body">
+          <span class="data-hl gold" style="color:var(--amber);">全球配给制，暴涨6倍</span><br>
+          标的：<span style="font-weight:900;">九丰能源</span>、<span style="font-weight:900;">广钢气体</span><br>
+          美国BLM拍卖暂停+俄罗斯受制裁
+        </div>
+      </div>
+      <div class="gas-item">
+        <div class="gas-item-head blue">锗烷 GeH₄</div>
+        <div class="gas-item-body">
+          <span class="data-hl blue" style="color:var(--blue);">华特气体国内唯一</span><br>
+          &lt;7nm制程必用，<br>
+          <span style="font-weight:900;">5000万/吨</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════
+         底部收束
+         ════════════════════════════════════════════════ -->
+    <div class="closing-bar">
+      六氟化钨是涨价三巨头中<span class="red-text">最特殊</span>的 ——<br>
+      不是产能跟不上，是<span class="red-text">产能永久消失</span>。<br>
+      日本25%产能7月1日归零，中国握有钨粉这张底牌，<br>
+      国产替代是唯一出路但需要2-3年。<br>
+      电子布缺的是织布机，光纤缺的是产能周期，<br>
+      <span class="red-text">WF₆缺的是——中国不卖钨粉。</span><br>
+      逻辑最硬，但<span class="red-text">股价也最透支</span>。
+    </div>
+
+    <!-- 底部脚注 -->
+    <div class="footnote">
+      <span>整理来源：IMA知识库「产业链研究」 / 2026年6月10日</span>
+      <span>本图仅供产业研究参考，不构成投资建议</span>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>
